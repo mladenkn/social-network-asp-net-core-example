@@ -1,0 +1,9 @@
+.vs/
+SocialNetwork/bin/
+SocialNetwork/obj/
+SocialNetwork.TestBuild/obj/
+Utilities/bin/
+Utilities/obj/
+node_modules/
+SocialNetwork.UnitTests/obj/
+SocialNetwork.UnitTests/bin/
