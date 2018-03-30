@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,7 +31,6 @@ namespace SocialNetwork
             services.AddDbContext<SocialNetworkDbContext>(opt => opt.UseInMemoryDatabase("social-network-db"),
                                                             contextLifetime: ServiceLifetime.Singleton);
             services.AddSignalR();
-            services.AddSingleton<PostsHub>();
             services.AddSingleton<IRepository<Post>>(serviceProvider =>
             {
                 return serviceProvider.GetService<SocialNetworkDbContext>()
@@ -59,7 +59,7 @@ namespace SocialNetwork
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseSignalR(routes => routes.MapHub<PostsHub>("/posts"));
+            app.UseSignalR(routes => routes.MapHub<Hub>("/posts"));
             app.UseStaticFiles();
 
             app.UseMvc(routes =>
