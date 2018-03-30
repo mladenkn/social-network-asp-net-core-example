@@ -12,6 +12,7 @@ using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Models;
 using SocialNetwork.TestingUtilities;
 using Utilities;
+using SocialNetwork.Utilities;
 using Xunit;
 
 namespace SocialNetwork.UnitTests
@@ -141,12 +142,12 @@ namespace SocialNetwork.UnitTests
             // arange
             var usersToSave = _testDataContainer.Users.Values;
             var postsToSave = _testDataContainer.Posts;
-            var postToUpdateId = 3;
+            long postToUpdateId = 3;
             var textToSet = "trallalalalla";
 
             // act
             await SaveData(usersToSave, postsToSave);
-            await _postsRepo.Update(it => it.Id == postToUpdateId, it => it.Text = textToSet);
+            await _postsRepo.Update(postToUpdateId, it => it.Text = textToSet);
             await _dbContext.SaveChangesAsync();
 
             // assert
@@ -163,17 +164,17 @@ namespace SocialNetwork.UnitTests
             // arange
             var usersToSave = _testDataContainer.Users.Values;
             var postsToSave = _testDataContainer.Posts;
-            var postToUpdateId = 3;
+            long postToUpdateId = 3;
             var textToSet = "trallalalalla";
 
             // act
             await SaveData(usersToSave, postsToSave);
-            Post postToUpdate = await _postsRepo.GetOne(it => it.Id == postToUpdateId);
+            Post postToUpdate = await _postsRepo.GetOne(postToUpdateId);
             postToUpdate.Text = textToSet;
             await _dbContext.SaveChangesAsync();
 
             // assert
-            Post updatedPost = await _postsRepo.GetOne(it => it.Id == postToUpdateId);
+            Post updatedPost = await _postsRepo.GetOne(postToUpdateId);
             Assert.True(updatedPost.Text == textToSet);
 
             // cleanup
@@ -186,11 +187,11 @@ namespace SocialNetwork.UnitTests
             // arange
             var usersToSave = _testDataContainer.Users.Values;
             var postsToSave = _testDataContainer.Posts;
-            var postToDeleteId = 3;
+            long postToDeleteId = 3;
 
             // act
             await SaveData(usersToSave, postsToSave);
-            await _postsRepo.Delete(it => it.Id == postToDeleteId);
+            await _postsRepo.Delete(postToDeleteId);
             await _dbContext.SaveChangesAsync();
 
             // assert
