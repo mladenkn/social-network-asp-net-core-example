@@ -50,24 +50,21 @@ namespace SocialNetwork.TestingUtilities
             };
         }
 
-        public static Post RandomPost(long? id = null, string heading = null, DateTime? createdAt = null, string text = null, User author = null)
+        public static Post RandomPost(long? id = null, string heading = null, DateTime? createdAt = null, string text = null,
+                                      User author = null, int? likesCount = null, int? dislikesCount = null)
         {
-            id = id ?? 0;
-            heading = heading ?? RandomString(5, 15);
-            createdAt = createdAt ?? DateTime.Today.AddDays(-1 * Rand.Next(100));
-            text = text ?? RandomParagraph();
             author = author ?? RandomUser();
 
             var post = new Post
             {
-                Id = id.Value,
-                Text = text,
+                Id = id ?? 0,
+                Text = text ?? RandomParagraph(),
                 Author = author,
                 AuthorId = author.Id,
-                LikesCount = Rand.Next(10),
-                DislikesCount = Rand.Next(10),
-                CreatedAt = createdAt.Value,
-                Heading = heading
+                LikesCount = likesCount?? Rand.Next(10),
+                DislikesCount = dislikesCount ?? Rand.Next(10),
+                CreatedAt = createdAt ?? DateTime.Today.AddDays(-1 * Rand.Next(100)),
+                Heading = heading ?? RandomString(5, 15)
             };
 
             return post;
