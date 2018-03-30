@@ -33,8 +33,6 @@ namespace SocialNetwork.TestingUtilities
                 RandomPost(createdAt: DateTime.Parse("2018-01-18"), author: Users["Ante"]),
                 RandomPost(createdAt: DateTime.Parse("2018-01-17"), author: Users["Mate"]),  
             };
-
-            Console.WriteLine(Posts);
         }
     }
 }

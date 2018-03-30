@@ -69,6 +69,7 @@ namespace SocialNetwork
                     template: "{controller=Home}/{action=Home}/{id?}");
             });
 
+
             var data = serviceProvider.GetService<TestDataContainer>();
             var postsRepository = serviceProvider.GetService<IRepository<Post>>();
             var usersRepository = serviceProvider.GetService<IRepository<User>>();
