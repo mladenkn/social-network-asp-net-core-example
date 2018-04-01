@@ -18,15 +18,9 @@ namespace SocialNetwork.Web.Controllers
             _signInManager = signInManager;
         }
 
-        public async Task<ViewResult> Register()
-        {
-            return View(new RegisterViewModel());
-        }
+        public ViewResult Register() => View(new RegisterViewModel());
 
-        public async Task<ViewResult> Login()
-        {
-            return View(new LoginViewModel());
-        }
+        public ViewResult Login() => View(new LoginViewModel());
 
         //
         // POST: /Account/Register
@@ -48,12 +42,48 @@ namespace SocialNetwork.Web.Controllers
                     //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
                     //    "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction(nameof(HomeController.Index), "Home");
                 }
             }
-
-            // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        //
+        // POST: /Account/Login
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // This doesn't count login failures towards account lockout
+                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, 
+                    isPersistent: model.RememberMe, 
+                    lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction(nameof(HomeController.Index), "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return View(model);
+                }
+            }
+            else
+                return View(model);
+        }
+
+        //
+        // POST: /Account/LogOut
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
     }
 }
