@@ -30,7 +30,12 @@ namespace SocialNetwork.TestingUtilities
             _data.Users.Values.ForEach(_usersRepository.Insert);
             await _dbOps.SaveChangesAsync();
 
-            var user = new User { UserName = "mladen", Email = "user@mail.com" };
+            var user = new User
+            {
+                UserName = "Mladen",
+                Email = "user@mail.com",
+                ProfileImageUrl = Generator.RandomImage()
+            };
             await _userManager.CreateAsync(user, "a1234567");
         }
     }
