@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SocialNetwork.Interfaces.DAL;
@@ -19,15 +21,17 @@ namespace SocialNetwork.Web.Controllers
         private readonly IHubContext<Hub> _hub;
         private readonly IRepository<Post> _postsRepository;
         private readonly IDatabaseOperations _dbOps;
+        private readonly UserManager<User> _userManager;
 
         public HomeController(IViewRendererService renderer, TestDataContainer testDataContainer, IHubContext<Hub> hub,
-                              IRepository<Post> postsRepository, IDatabaseOperations dbOps)
+                              IRepository<Post> postsRepository, IDatabaseOperations dbOps, UserManager<User> userManager)
         {
             _renderer = renderer;
             _testDataContainer = testDataContainer;
             _hub = hub;
             _postsRepository = postsRepository;
             _dbOps = dbOps;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
@@ -37,6 +41,9 @@ namespace SocialNetwork.Web.Controllers
                 propsToInclude: "Author",
                 count: 5
             );
+            
+            User currentUser = await _userManager.GetUserAsync(User);
+            ViewData["Username"] = currentUser.UserName;
 
             var vm = new HomeViewModel {Posts = a.AsReadOnly() };
             return View(vm);
