@@ -27,6 +27,8 @@
 </head>
 <body>
    
+    
+
     <div class="container body-content">
 
         <nav class="navbar navbar-default">
@@ -46,7 +48,12 @@
                 <ul class="nav navbar-nav navbar-right">
                     @if(isUserAuthenticated)
                     {
-                        <li><a asp-controller="Account" asp-action="Logout">Logout</a></li>
+                        <li>
+                            <form class="form-inline navbar-form" asp-controller="Account" asp-action="Logout">
+                                <button class="btn" type="Submit">Logout</button>
+                            </form>
+                        </li>
+                        @*<li class="navbar-btn"><button>Logout</button></li>*@
                         <li class="navbar-text">@ViewData["Username"]</li>
                     }
                     else
