@@ -58,11 +58,11 @@ namespace SocialNetwork.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> LoadPosts(int count, int skip, string propsToInclude = "Author")
+        public async Task<IActionResult> LoadPosts(int count, int skip, string[] propsToInclude)
         {
             var posts = await _postsRepository.GetMany(
                 orderBy: it => it.OrderByDescending(post => post.CreatedAt),
-                propsToInclude: "Author",
+                propsToInclude: propsToInclude,
                 count: count,
                 skip: skip
             );

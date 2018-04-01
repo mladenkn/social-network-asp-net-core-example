@@ -166,7 +166,8 @@
                     type: 'POST',
                     data: {
                         count: 5,
-                        skip: postsCount
+                        skip: postsCount,
+                        propsToInclude : ["Author"]
                     },
                     success: function(data) {
                         data.forEach(function(postHtml) {
