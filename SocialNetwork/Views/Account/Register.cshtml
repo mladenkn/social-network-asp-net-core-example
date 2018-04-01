@@ -1,24 +1,67 @@
-﻿
+﻿@model SocialNetwork.Web.ViewModels.RegisterViewModel
+
 @{
     ViewData["Title"] = "Register";
 }
 
 <h2>Register</h2>
 
-<form asp-action="Register">
+<style>
+    #btn-submit {
+        float: right;
+        margin-right: 11px;
+        margin-top: 10px;
+    }
+</style>
 
-    <label for="input-email">Email</label>
-    <input type="text" name="email" id="input-email" />
-    <br />
-
-    <label for="input-username">Username</label>
-    <input type="text" name="username" id="input-username" />
-    <br />
-
-    <label for="input-password">Password</label>
-    <input type="text" name="password" id="input-password" />
-    <br />
+<div class="col-md-offset-2 col-md-7">
     
-    <input type="submit" value="Submit"/>
+    @*<form asp-action="Register">
 
-</form>
+        <label for="input-email">Email</label>
+        <input type="text" name="email" id="input-email" />
+        <br />
+
+        <label for="input-username">Username</label>
+        <input type="text" name="username" id="input-username" />
+        <br />
+
+        <label for="input-password">Password</label>
+        <input type="text" name="password" id="input-password" />
+        <br />
+    
+        <input type="submit" value="Submit"/>
+
+    </form>*@
+    
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="form-group col-md-12">
+                <label>Username</label>
+                <input name="" class="form-control" id="" value="" type="">
+            </div>
+            <div class="form-group col-md-12">
+                <label>Email Address</label>
+                <input name="" class="form-control" id="" value="" type="">
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group col-md-12">
+                <label>Password</label>
+                <input name="" class="form-control" id="" value="" type="password">
+            </div>
+            <div class="form-group col-md-12">
+                <label>Repeat Password</label>
+                <input name="" class="form-control" id="" value="" type="password">
+            </div>
+        </div>
+        
+        <div class="form-group col-md-2" id="btn-submit">
+            <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+
+    </div>
+
+</div>
