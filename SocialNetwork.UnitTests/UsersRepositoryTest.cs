@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using SocialNetwork.DAL;
 using SocialNetwork.DAL.Repositories;
 using SocialNetwork.Interfaces.DAL;

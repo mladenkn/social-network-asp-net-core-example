@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure.Storage.Blob.Protocol;
 using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Models;
 

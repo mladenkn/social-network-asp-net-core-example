@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using SocialNetwork.DAL.Repositories;
 using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Models;
 using SocialNetwork.TestingUtilities;
-using SocialNetwork.Web.Services;
 using SocialNetwork.Web.ViewModels;
-using SocialNetwork.Utilities;
 using SocialNetwork.Web.ServiceInterfaces;
 using Utilities;
 
