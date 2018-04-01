@@ -52,7 +52,7 @@ namespace SocialNetwork.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePost(string postText)
         {
-            User author = _testDataContainer.Users.Values.ToList().RandomElement();
+            User author = await _userManager.GetUserAsync(User);
             Post post = Generator.RandomPost(text: postText, createdAt: DateTime.Today, author: author, likesCount: 0, dislikesCount: 0);
             Post storedPost = _postsRepository.Insert(post);
 
