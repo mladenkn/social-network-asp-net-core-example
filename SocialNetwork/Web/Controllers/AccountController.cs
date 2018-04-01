@@ -20,7 +20,12 @@ namespace SocialNetwork.Web.Controllers
 
         public async Task<ViewResult> Register()
         {
-            return View();
+            return View(new RegisterViewModel());
+        }
+
+        public async Task<ViewResult> Login()
+        {
+            return View(new LoginViewModel());
         }
 
         //
