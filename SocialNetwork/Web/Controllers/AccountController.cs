@@ -18,8 +18,10 @@ namespace SocialNetwork.Web.Controllers
             _signInManager = signInManager;
         }
 
+        [AllowAnonymous]
         public ViewResult Register() => View(new RegisterViewModel());
 
+        [AllowAnonymous]
         public ViewResult Login() => View(new LoginViewModel());
 
         //
@@ -31,7 +33,7 @@ namespace SocialNetwork.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.UserName, Email = "mladen.knezovic.1993@gmail.com" };
+                var user = new User { UserName = model.UserName, Email = "user@mail.com" };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

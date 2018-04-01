@@ -1,7 +1,9 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -81,7 +83,17 @@ namespace SocialNetwork
             services.AddSingleton<IDatabaseOperations, DatabaseOperations>();
             services.AddTransient<IViewRendererService, ViewRendererService>();
             services.AddTransient<Initializer>();
-            services.AddMvc(config => config.Filters.Add(typeof(ExceptionHandler)));
+
+            services.AddMvc(config =>
+            {
+                config.Filters.Add(typeof(ExceptionHandler));
+
+                new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build()
+                    .Let(it => new AuthorizeFilter(it))
+                    .Also(config.Filters.Add);
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
@@ -92,7 +104,7 @@ namespace SocialNetwork
                 app.UseDeveloperExceptionPage();
 
                 var seeder = serviceProvider.GetService<Initializer>();
-                seeder.Seed().Wait();
+                seeder.Initialize().Wait();
             }
             else
             {
