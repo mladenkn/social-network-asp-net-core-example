@@ -10,6 +10,7 @@ using SocialNetwork.DAL;
 using SocialNetwork.DAL.Repositories;
 using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Models;
+using SocialNetwork.Services;
 using SocialNetwork.TestingUtilities;
 using SocialNetwork.Web.ServiceInterfaces;
 using SocialNetwork.Web.Services;
@@ -44,6 +45,7 @@ namespace SocialNetwork
             services.AddSingleton<TestDataContainer>();
             services.AddSingleton<IDatabaseOperations, DatabaseOperations>();
             services.AddTransient<IViewRendererService, ViewRendererService>();
+            services.AddTransient<DbSeeder>();
             services.AddMvc(config => config.Filters.Add(typeof(ExceptionHandler)));
         }
 
@@ -69,15 +71,8 @@ namespace SocialNetwork
                     template: "{controller=Home}/{action=Home}/{id?}");
             });
 
-
-            var data = serviceProvider.GetService<TestDataContainer>();
-            var postsRepository = serviceProvider.GetService<IRepository<Post>>();
-            var usersRepository = serviceProvider.GetService<IRepository<User>>();
-            
-            data.Posts.ForEach(postsRepository.Insert);
-            data.Users.Values.ForEach(usersRepository.Insert);
-
-            serviceProvider.GetService<IDatabaseOperations>().SaveChangesAsync();
+            var seeder = serviceProvider.GetService<DbSeeder>();
+            seeder.Seed().Wait();
         }
     }
 }
