@@ -38,20 +38,20 @@
         var connection = new signalR.HubConnection('/posts');
         var postsCount = $('.post').length
         
-        connection.on('@Constants.PostsEvents.PostPublished', postHtml => {
+        connection.on('@PostsEvents.PostPublished', function (postHtml){
             var id = $(postHtml).attr('id')
             $('#posts-list').prepend(postHtml)
             setHandlersForPost($('#' + id))
             postsCount++;
         })
 
-        connection.on('@Constants.PostsEvents.PostDeleted', postId => {
+        connection.on('@PostsEvents.PostDeleted', function (postId){
             var postHtml = $('#posts-list ' + ' #post-' + postId)
             postHtml.remove()
             postsCount--;
         })
 
-        connection.on('@Constants.PostsEvents.PostChanged', newPostHtml => {
+        connection.on('@PostsEvents.PostChanged', function (newPostHtml){
             var postId = $(newPostHtml).attr('id')
             var oldPostHtml = $('#' + postId)
             oldPostHtml.replaceWith(newPostHtml)
