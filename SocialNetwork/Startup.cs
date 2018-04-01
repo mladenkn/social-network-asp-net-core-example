@@ -10,7 +10,6 @@ using SocialNetwork.DAL;
 using SocialNetwork.DAL.Repositories;
 using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Models;
-using SocialNetwork.Services;
 using SocialNetwork.TestingUtilities;
 using SocialNetwork.Web.ServiceInterfaces;
 using SocialNetwork.Web.Services;
@@ -43,7 +42,6 @@ namespace SocialNetwork
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
-                options.Password.RequiredUniqueChars = 6;
 
                 // Lockout settings
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
@@ -82,7 +80,7 @@ namespace SocialNetwork
             services.AddSingleton<TestDataContainer>();
             services.AddSingleton<IDatabaseOperations, DatabaseOperations>();
             services.AddTransient<IViewRendererService, ViewRendererService>();
-            services.AddTransient<DbSeeder>();
+            services.AddTransient<Initializer>();
             services.AddMvc(config => config.Filters.Add(typeof(ExceptionHandler)));
         }
 
@@ -92,6 +90,9 @@ namespace SocialNetwork
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
+
+                var seeder = serviceProvider.GetService<Initializer>();
+                seeder.Seed().Wait();
             }
             else
             {
@@ -109,9 +110,6 @@ namespace SocialNetwork
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            var seeder = serviceProvider.GetService<DbSeeder>();
-            seeder.Seed().Wait();
         }
     }
 }
