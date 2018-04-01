@@ -40,11 +40,11 @@ namespace SocialNetwork.TestingUtilities
                 .Let(string.Concat);
         }
 
-        public static User RandomUser(long? id = null, string userName = null)
+        public static User RandomUser(string id = null, string userName = null)
         {
             return new User
             {
-                Id = id ?? 0,
+                Id = id,
                 ProfileImageUrl = RandomImage(),
                 UserName = userName ?? RandomString(5, 15)
             };

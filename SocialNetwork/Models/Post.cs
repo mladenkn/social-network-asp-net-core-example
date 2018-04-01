@@ -11,7 +11,7 @@ namespace SocialNetwork.Models
 
         public string Text { get; set; }
 
-        public long AuthorId { get; set; }
+        public string AuthorId { get; set; }
 
         public int LikesCount { get; set; }
 

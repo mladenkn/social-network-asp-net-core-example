@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
@@ -9,6 +10,7 @@ using SocialNetwork.DAL.Repositories;
 using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Models;
 using SocialNetwork.TestingUtilities;
+using SocialNetwork.Utilities;
 using Utilities;
 using Xunit;
 
@@ -60,6 +62,27 @@ namespace SocialNetwork.UnitTests
             // prepare assert
             IList<User> users = await _usersRepo.GetMany();
             users.ForEach(it => it.Posts);
+
+            Cleenup();
+        }
+
+        [Fact]
+        public async Task ReadById()
+        {
+            // arange
+            var usersToSave = _testDataContainer.Users.Values.ToList();
+            var postsToSave = _testDataContainer.Posts;
+            const string userName = "mate";
+            Generator.RandomUser(userName, userName).Also(usersToSave.Add);
+
+            // act
+            await SaveData(usersToSave, postsToSave);
+
+            // prepare assert
+            User user = await _usersRepo.GetOne(userName);
+
+            // assert
+            Assert.True(user.Id == userName);
 
             Cleenup();
         }

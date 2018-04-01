@@ -2,9 +2,9 @@
 
 namespace SocialNetwork.Models
 {
-    public class User : IEntity<long>
+    public class User : IEntity<string>
     {
-        public long Id { get; set; }
+        public string Id { get; set; }
         public string UserName { get; set; }
         public string ProfileImageUrl { get; set; }
 
