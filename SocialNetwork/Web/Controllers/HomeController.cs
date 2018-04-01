@@ -30,7 +30,7 @@ namespace SocialNetwork.Web.Controllers
             _dbOps = dbOps;
         }
 
-        public async Task<IActionResult> Home()
+        public async Task<IActionResult> Index()
         {
             var a = await _postsRepository.GetMany(
                 orderBy: it => it.OrderByDescending(post => post.CreatedAt),
