@@ -41,9 +41,12 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li class="@GetClassForNavItem("Home/Index")"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
                     <li class="@GetClassForNavItem("Account/Login")"><a asp-controller="Account" asp-action="Login">Login</a></li>
                     <li class="@GetClassForNavItem("Account/Register")"><a asp-controller="Account" asp-action="Register">Register</a></li>
-                    <li class="@GetClassForNavItem("Account/Register")"><a asp-controller="Account" asp-action="Logout">Logout</a></li>
+                    <li><a asp-controller="Account" asp-action="Logout">Logout</a></li>
+                    <li class="navbar-text">Username</li>
                 </ul>
             </div>
         </nav>
