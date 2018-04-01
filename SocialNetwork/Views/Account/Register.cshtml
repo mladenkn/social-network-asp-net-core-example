@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Register";
+    ViewData["ActivePage"] = "Account/Register";
 }
 
 <h2>Register</h2>
@@ -9,12 +10,12 @@
 <style>
     #btn-submit {
         float: right;
-        margin-right: 11px;
+        margin-right: 9px;
         margin-top: 10px;
     }
 </style>
 
-<div class="col-md-offset-2 col-md-7">
+<div class="col-md-offset-2 col-md-9">
     
     @*<form asp-action="Register">
 
@@ -35,7 +36,6 @@
     </form>*@
     
     <div class="row">
-
         <div class="col-md-6">
             <div class="form-group col-md-12">
                 <label>Username</label>
@@ -46,7 +46,6 @@
                 <input name="" class="form-control" id="" value="" type="">
             </div>
         </div>
-
         <div class="col-md-6">
             <div class="form-group col-md-12">
                 <label>Password</label>
@@ -57,11 +56,12 @@
                 <input name="" class="form-control" id="" value="" type="password">
             </div>
         </div>
-        
+    </div>
+    
+    <div class="row">
         <div class="form-group col-md-2" id="btn-submit">
             <button type="submit" class="btn btn-primary">Register</button>
         </div>
-
     </div>
 
 </div>
