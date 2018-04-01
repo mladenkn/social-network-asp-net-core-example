@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +31,43 @@ namespace SocialNetwork
         {
             services.AddDbContext<SocialNetworkDbContext>(opt => opt.UseInMemoryDatabase("social-network-db"),
                                                             contextLifetime: ServiceLifetime.Singleton);
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<SocialNetworkDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequiredUniqueChars = 6;
+
+                // Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings
+                options.User.RequireUniqueEmail = true;
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                // If the LoginPath isn't set, ASP.NET Core defaults 
+                // the path to /Account/Login.
+                options.LoginPath = "/Account/Login";
+                // If the AccessDeniedPath isn't set, ASP.NET Core defaults 
+                // the path to /Account/AccessDenied.
+                options.AccessDeniedPath = "/Account/AccessDenied";
+                options.SlidingExpiration = true;
+            });
+
             services.AddSignalR();
             services.AddSingleton<IRepository<Post>>(serviceProvider =>
             {
@@ -63,11 +101,13 @@ namespace SocialNetwork
             app.UseSignalR(routes => routes.MapHub<Hub>("/posts"));
             app.UseStaticFiles();
 
+            app.UseAuthentication();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Home}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
 
             var seeder = serviceProvider.GetService<DbSeeder>();

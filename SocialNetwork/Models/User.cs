@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
 namespace SocialNetwork.Models
 {
-    public class User : IEntity<string>
+    public class User : IdentityUser, IEntity<string>
     {
-        public string Id { get; set; }
-        public string UserName { get; set; }
         public string ProfileImageUrl { get; set; }
 
         public ICollection<Post> Posts { get; set; }
