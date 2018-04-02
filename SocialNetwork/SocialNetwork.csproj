@@ -14,13 +14,17 @@
 
   <ItemGroup>
     <Compile Remove="ApiControllers\**" />
+    <Compile Remove="Services\**" />
     <Content Remove="ApiControllers\**" />
+    <Content Remove="Services\**" />
     <EmbeddedResource Remove="ApiControllers\**" />
+    <EmbeddedResource Remove="Services\**" />
     <None Remove="ApiControllers\**" />
+    <None Remove="Services\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="LanguageExt.Core" Version="2.2.13-beta" />
+    <PackageReference Include="LanguageExt.Core" Version="2.1.32" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-preview1-final" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
@@ -31,11 +35,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SocialNetwork.DAL\SocialNetwork.DAL.csproj" />
+    <ProjectReference Include="..\SocialNetwork.Interfaces\SocialNetwork.Interfaces.csproj" />
+    <ProjectReference Include="..\SocialNetwork.Models\SocialNetwork.Models.csproj" />
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

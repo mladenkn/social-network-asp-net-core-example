@@ -7,7 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork", "SocialNetw
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities", "Utilities\Utilities.csproj", "{D23B2996-697F-42C4-9A3B-AB97288EF504}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.UnitTests", "SocialNetwork.UnitTests\SocialNetwork.UnitTests.csproj", "{5AE6BAC7-633F-4B22-8E9C-809778224481}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.UnitTests", "SocialNetwork.UnitTests\SocialNetwork.UnitTests.csproj", "{5AE6BAC7-633F-4B22-8E9C-809778224481}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.Interfaces", "SocialNetwork.Interfaces\SocialNetwork.Interfaces.csproj", "{A46DAF61-78CB-4098-8EB8-1A4427FDACF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.Models", "SocialNetwork.Models\SocialNetwork.Models.csproj", "{8B2ADAAE-957E-43C3-B8A1-9E3E354D5B3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.DAL", "SocialNetwork.DAL\SocialNetwork.DAL.csproj", "{7726EACE-4DD8-46D9-BA23-D9233807D4B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +33,18 @@ Global
 		{5AE6BAC7-633F-4B22-8E9C-809778224481}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AE6BAC7-633F-4B22-8E9C-809778224481}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AE6BAC7-633F-4B22-8E9C-809778224481}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A46DAF61-78CB-4098-8EB8-1A4427FDACF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A46DAF61-78CB-4098-8EB8-1A4427FDACF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A46DAF61-78CB-4098-8EB8-1A4427FDACF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A46DAF61-78CB-4098-8EB8-1A4427FDACF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B2ADAAE-957E-43C3-B8A1-9E3E354D5B3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B2ADAAE-957E-43C3-B8A1-9E3E354D5B3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B2ADAAE-957E-43C3-B8A1-9E3E354D5B3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B2ADAAE-957E-43C3-B8A1-9E3E354D5B3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7726EACE-4DD8-46D9-BA23-D9233807D4B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7726EACE-4DD8-46D9-BA23-D9233807D4B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7726EACE-4DD8-46D9-BA23-D9233807D4B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7726EACE-4DD8-46D9-BA23-D9233807D4B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
