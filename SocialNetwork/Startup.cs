@@ -68,7 +68,7 @@ namespace SocialNetwork.Web
             services.AddSingleton<DbSet<User>>(provider => provider.GetService<SocialNetworkDbContext>().Users);
 
             services.AddTransient<IRepository<Post>, Repository<Post>>();
-            services.AddTransient<IRepository<User>, UserManager>();
+            services.AddTransient<IRepository<User>, Repository<User>>();
 
             services.AddSingleton<TestDataContainer>();
             services.AddTransient<IHub, Hub>();
@@ -76,7 +76,7 @@ namespace SocialNetwork.Web
             services.AddTransient<IViewRendererService, ViewRendererService>();
             services.AddTransient<Initializer>();
             services.AddTransient<UserManager<User>>();
-            services.AddTransient<IUserManager, UserManager>();
+            services.AddTransient<IAuthenticator, Authenticator>();
 
             services.AddMvc(config =>
             {

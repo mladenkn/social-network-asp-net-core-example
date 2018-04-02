@@ -10,12 +10,12 @@ using SignInResult = SocialNetwork.Interfaces.Models.SignInResult;
 
 namespace SocialNetwork.Services
 {
-    public class UserManager : Repository<User>, IUserManager
+    public class Authenticator : IAuthenticator
     {
         private readonly UserManager<User> _manager;
         private readonly SignInManager<User> _signInManager;
 
-        public UserManager(UserManager<User> manager, DbSet<User> usersDbSet, SignInManager<User> signInManager) : base(usersDbSet)
+        public Authenticator(UserManager<User> manager, SignInManager<User> signInManager)
         {
             _manager = manager;
             _signInManager = signInManager;

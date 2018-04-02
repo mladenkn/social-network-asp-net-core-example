@@ -6,7 +6,7 @@ using SignInResult = SocialNetwork.Interfaces.Models.SignInResult;
 
 namespace SocialNetwork.Interfaces.Services
 {
-    public interface IUserManager : IRepository<User>
+    public interface IAuthenticator
     {
         Task<RegistrationResult> Register(User user, string password);
         Task<SignInResult> SignIn(string username, string password, bool isPersistent);

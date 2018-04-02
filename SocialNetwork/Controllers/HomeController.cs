@@ -19,16 +19,16 @@ namespace SocialNetwork.Web.Controllers
         private readonly IHub _hub;
         private readonly IRepository<Post> _postsRepository;
         private readonly IDatabaseOperations _dbOps;
-        private readonly IUserManager _userManager;
+        private readonly IRepository<User> _usersRepository;
 
-        public HomeController(IViewRendererService renderer, IHub hub, IUserManager userManager,
+        public HomeController(IViewRendererService renderer, IHub hub, IRepository<User> usersRepository,
                               IRepository<Post> postsRepository, IDatabaseOperations dbOps)
         {
             _renderer = renderer;
             _hub = hub;
             _postsRepository = postsRepository;
             _dbOps = dbOps;
-            _userManager = userManager;
+            _usersRepository = usersRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -39,7 +39,7 @@ namespace SocialNetwork.Web.Controllers
                 count: 5
             );
 
-            User currentUser = await _userManager.GetOne(it => it.UserName == User.Identity.Name);
+            User currentUser = await _usersRepository.GetOne(it => it.UserName == User.Identity.Name);
             ViewData["Username"] = currentUser.UserName;
 
             var vm = new HomeViewModel {Posts = a.AsReadOnly() };
@@ -49,7 +49,7 @@ namespace SocialNetwork.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePost(string postText)
         {
-            User author = await _userManager.GetOne(it => it.UserName == User.Identity.Name);
+            User author = await _usersRepository.GetOne(it => it.UserName == User.Identity.Name);
             Post post = Generator.RandomPost(text: postText, createdAt: DateTime.Today, author: author, likesCount: 0, dislikesCount: 0);
             Post storedPost = _postsRepository.Insert(post);
 
