@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SocialNetwork.Models;
+using Utilities;
 
 namespace SocialNetwork.DevelopmentUtilities
 {
@@ -13,30 +15,26 @@ namespace SocialNetwork.DevelopmentUtilities
 
         public TestDataContainer()
         {
-            Users = new Dictionary<string, User>
-            {
-                ["Frane"] = Generator.RandomUser(userName: "Frane"),
-                ["Mate"] = Generator.RandomUser(userName: "Mate"),
-                ["Ante"] = Generator.RandomUser(userName: "Ante"),
-                ["Mladen"] = new User
-                {
-                    UserName = "Mladen",
-                    Email = "someone@someemail.com",
-                    ProfileImageUrl = Generator.RandomImage()
-                }
-            };
+            Users = 
+                new[] {"Frane", "Mate", "Ante", "Mladen"}
+                    .Select(it => Generator.RandomUser(userName: it))
+                    .Select(it => new KeyValuePair<string, User>(it.UserName, it))
+                    .Let(it => new Dictionary<string, User>(it));
 
-            Posts = new[]
-            {
-                Generator.RandomPost(createdAt: DateTime.Parse("2018-03-18"), author: Users["Mate"]),
-                Generator.RandomPost(createdAt: DateTime.Parse("2018-03-17"), author: Users["Mate"]),
-                Generator.RandomPost(createdAt: DateTime.Parse("2018-03-10"), author: Users["Frane"]),
-                Generator.RandomPost(createdAt: DateTime.Parse("2018-02-20"), author: Users["Frane"]),
-                Generator.RandomPost(createdAt: DateTime.Parse("2018-02-10"), author: Users["Ante"]),
-                Generator.RandomPost(createdAt: DateTime.Parse("2018-02-09"), author: Users["Mate"]),
-                Generator.RandomPost(createdAt: DateTime.Parse("2018-01-18"), author: Users["Ante"]),
-                Generator.RandomPost(createdAt: DateTime.Parse("2018-01-17"), author: Users["Mate"]),  
-            };
+            Posts =
+                new[]
+                {
+                    (DateTime.Parse("2018-03-18"), Users["Mladen"]),
+                    (DateTime.Parse("2018-03-17"), Users["Mate"]),
+                    (DateTime.Parse("2018-03-10"), Users["Frane"]),
+                    (DateTime.Parse("2018-02-20"), Users["Frane"]),
+                    (DateTime.Parse("2018-02-10"), Users["Mladen"]),
+                    (DateTime.Parse("2018-02-09"), Users["Mate"]),
+                    (DateTime.Parse("2018-01-18"), Users["Ante"]),
+                    (DateTime.Parse("2018-01-17"), Users["Mate"])
+                }
+                .Select(it => Generator.RandomPost(createdAt: it.Item1, author: it.Item2))
+                .ToList();
         }
     }
 }

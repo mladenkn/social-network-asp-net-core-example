@@ -1,12 +1,15 @@
 ﻿using System;
+using Bogus;
 using SocialNetwork.Models;
 using Utilities;
+using Utils = Utilities.Utils;
 
 namespace SocialNetwork.DevelopmentUtilities
 {
     public static class Generator
     {
         private static readonly Random Rand = new Random();
+        private static readonly Faker _faker = new Faker();
 
         private static readonly char[] AllowedChars = "qwertzuiopšđžćčlkjhgfddsayxcvbnm1234567890".ToCharArray();
 
@@ -43,9 +46,9 @@ namespace SocialNetwork.DevelopmentUtilities
             return new User
             {
                 Id = id,
-                ProfileImageUrl = RandomImage(),
-                UserName = userName ?? RandomString(5, 15),
-                Email = email
+                ProfileImageUrl = _faker.Internet.Avatar(),
+                UserName = userName ?? _faker.Internet.UserName(),
+                Email = email ?? _faker.Internet.Email()
             };
         }
 
@@ -57,13 +60,13 @@ namespace SocialNetwork.DevelopmentUtilities
             var post = new Post
             {
                 Id = id ?? 0,
-                Text = text ?? RandomParagraph(),
+                Text = text ?? _faker.Lorem.Paragraph(),
                 Author = author,
                 AuthorId = author.Id,
                 LikesCount = likesCount?? Rand.Next(10),
                 DislikesCount = dislikesCount ?? Rand.Next(10),
                 CreatedAt = createdAt ?? DateTime.Today.AddDays(-1 * Rand.Next(100)),
-                Heading = heading ?? RandomString(5, 15)
+                Heading = heading ?? _faker.Lorem.Sentence(Rand.Next(1, 4))
             };
 
             return post;
