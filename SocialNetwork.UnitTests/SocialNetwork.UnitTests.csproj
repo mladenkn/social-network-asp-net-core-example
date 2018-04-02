@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SocialNetwork.TestingUtilities\SocialNetwork.TestingUtilities.csproj" />
+    <ProjectReference Include="..\SocialNetwork.TestingUtilities\SocialNetwork.DevelopmentUtilities.csproj" />
     <ProjectReference Include="..\SocialNetwork\SocialNetwork.Web.csproj" />
   </ItemGroup>
 

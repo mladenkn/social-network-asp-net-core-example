@@ -31,7 +31,7 @@ namespace SocialNetwork.DAL
             query = query.Skip(skip);
             query = count != null ? query.Take(count.Value) : query;
 
-            return TaskExtensions.Map(query.ToListAsync(), it => (IList<TEntity>)it);
+            return query.ToListAsync().Map(it => (IList<TEntity>)it);
         }
 
         public Task<TEntity> GetOne(Expression<Func<TEntity, bool>> selector = null, params string[] propsToInclude)

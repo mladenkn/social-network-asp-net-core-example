@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.Models", "Soc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.DAL", "SocialNetwork.DAL\SocialNetwork.DAL.csproj", "{7726EACE-4DD8-46D9-BA23-D9233807D4B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.TestingUtilities", "SocialNetwork.TestingUtilities\SocialNetwork.TestingUtilities.csproj", "{93767AB2-2407-4EDE-961F-4CAF4D749427}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.DevelopmentUtilities", "SocialNetwork.TestingUtilities\SocialNetwork.DevelopmentUtilities.csproj", "{93767AB2-2407-4EDE-961F-4CAF4D749427}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
