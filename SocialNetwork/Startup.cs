@@ -1,7 +1,9 @@
 ﻿using System;
-using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +32,36 @@ namespace SocialNetwork
         {
             services.AddDbContext<SocialNetworkDbContext>(opt => opt.UseInMemoryDatabase("social-network-db"),
                                                             contextLifetime: ServiceLifetime.Singleton);
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<SocialNetworkDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.AllowedForNewUsers = true;
+
+                options.User.RequireUniqueEmail = true;
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+
+                options.LoginPath = "/Account/Login";
+
+                options.AccessDeniedPath = "/Account/AccessDenied";
+                options.SlidingExpiration = true;
+            });
+
             services.AddSignalR();
             services.AddSingleton<IRepository<Post>>(serviceProvider =>
             {
@@ -44,7 +76,18 @@ namespace SocialNetwork
             services.AddSingleton<TestDataContainer>();
             services.AddSingleton<IDatabaseOperations, DatabaseOperations>();
             services.AddTransient<IViewRendererService, ViewRendererService>();
-            services.AddMvc(config => config.Filters.Add(typeof(ExceptionHandler)));
+            services.AddTransient<Initializer>();
+
+            services.AddMvc(config =>
+            {
+                config.Filters.Add(typeof(ExceptionHandler));
+
+                new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build()
+                    .Let(it => new AuthorizeFilter(it))
+                    .Also(config.Filters.Add);
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
@@ -53,6 +96,9 @@ namespace SocialNetwork
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
+
+                var seeder = serviceProvider.GetService<Initializer>();
+                seeder.Initialize().Wait();
             }
             else
             {
@@ -62,22 +108,14 @@ namespace SocialNetwork
             app.UseSignalR(routes => routes.MapHub<Hub>("/posts"));
             app.UseStaticFiles();
 
+            app.UseAuthentication();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Home}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-
-            var data = serviceProvider.GetService<TestDataContainer>();
-            var postsRepository = serviceProvider.GetService<IRepository<Post>>();
-            var usersRepository = serviceProvider.GetService<IRepository<User>>();
-            
-            data.Posts.ForEach(postsRepository.Insert);
-            data.Users.Values.ForEach(usersRepository.Insert);
-
-            serviceProvider.GetService<IDatabaseOperations>().SaveChangesAsync();
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using SocialNetwork.Models;
-using SocialNetwork.Utilities;
-using Utilities;
 using static SocialNetwork.TestingUtilities.Generator;
 
 namespace SocialNetwork.TestingUtilities
