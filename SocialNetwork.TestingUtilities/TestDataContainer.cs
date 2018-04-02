@@ -15,11 +15,11 @@ namespace SocialNetwork.DevelopmentUtilities
 
         public TestDataContainer()
         {
-            Users = 
+            Users =
                 new[] {"Frane", "Mate", "Ante", "Mladen"}
                     .Select(it => Generator.RandomUser(userName: it))
                     .Select(it => new KeyValuePair<string, User>(it.UserName, it))
-                    .Let(it => new Dictionary<string, User>(it));
+                    .Collect(new Dictionary<string, User>());
 
             Posts = 
                 new []

@@ -16,11 +16,11 @@ namespace Utilities
 
         public static IList<T> NewList<T>(Func<T> supplier, int count) =>
             new List<T>(count)
-                .AddMany(supplier, count);
+                .AddRange(supplier, count);
 
-        public static System.Collections.Generic.HashSet<T> NewHashSet<T>(Func<T> supplier, int count) =>
-            new System.Collections.Generic.HashSet<T>(count)
-                .AddMany(supplier, count);
+        public static HashSet<T> NewHashSet<T>(Func<T> supplier, int count) =>
+            new HashSet<T>(count)
+                .AddRange(supplier, count);
 
         public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
         {
@@ -38,7 +38,7 @@ namespace Utilities
             Utils.Random.Next(array.Count)
                 .Let(i => array[i]);
 
-        public static TCollection AddMany<TCollection, TElement>(this TCollection collection, Func<TElement> supplier, int count)
+        public static TCollection AddRange<TCollection, TElement>(this TCollection collection, Func<TElement> supplier, int count)
             where TCollection : ICollection<TElement>
         {
             Enumerable.Range(0, count)
@@ -73,6 +73,18 @@ namespace Utilities
         public static IOrderedEnumerable<T> Schuffle<T>(this IEnumerable<T> list)
         {
             return list.OrderBy(it => it, Comparer<T>.Create((_, __) => Utils.Random.Next(-1, 1)));
+        }
+
+        public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> items)
+        {
+            items.ForEach(collection.Add);
+        }
+
+        public static TCollection Collect<TCollection, TElement>(this IEnumerable<TElement> enumerable, TCollection collection)
+            where TCollection : ICollection<TElement>
+        {
+            collection.AddRange(enumerable);
+            return collection;
         }
     }
 }
