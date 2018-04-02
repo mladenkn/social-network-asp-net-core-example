@@ -15,7 +15,7 @@ namespace SocialNetwork.TestingUtilities
         private readonly UserManager<User> _userManager;
 
         public Initializer(IRepository<Post> postsRepository, IRepository<User> usersRepository, TestDataContainer data,
-                        IDatabaseOperations dbOps, UserManager<User> userManager)
+                           IDatabaseOperations dbOps, UserManager<User> userManager)
         {
             _postsRepository = postsRepository;
             _usersRepository = usersRepository;

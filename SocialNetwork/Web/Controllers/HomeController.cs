@@ -17,17 +17,15 @@ namespace SocialNetwork.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IViewRendererService _renderer;
-        private readonly TestDataContainer _testDataContainer;
         private readonly IHubContext<Hub> _hub;
         private readonly IRepository<Post> _postsRepository;
         private readonly IDatabaseOperations _dbOps;
         private readonly UserManager<User> _userManager;
 
-        public HomeController(IViewRendererService renderer, TestDataContainer testDataContainer, IHubContext<Hub> hub,
+        public HomeController(IViewRendererService renderer, IHubContext<Hub> hub,
                               IRepository<Post> postsRepository, IDatabaseOperations dbOps, UserManager<User> userManager)
         {
             _renderer = renderer;
-            _testDataContainer = testDataContainer;
             _hub = hub;
             _postsRepository = postsRepository;
             _dbOps = dbOps;
