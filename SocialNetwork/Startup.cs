@@ -68,7 +68,7 @@ namespace SocialNetwork.Web
             services.AddSingleton<DbSet<User>>(provider => provider.GetService<SocialNetworkDbContext>().Users);
 
             services.AddTransient<IRepository<Post>, Repository<Post>>();
-            services.AddTransient<IRepository<User>, Repository<User>>();
+            services.AddTransient<IReadOnlyRepository<User>, Repository<User>>();
 
             services.AddTransient<UserManager<User>>();
 

@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using SocialNetwork.DevelopmentUtilities;
 using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Interfaces.Services;
@@ -30,7 +29,7 @@ namespace SocialNetwork.Web
             var mladen = new User
             {
                 UserName = "Mladen",
-                Email = "someone@somemail.com",
+                Email = "someone@someemail.com",
                 ProfileImageUrl = Generator.RandomImage()
             };
 
