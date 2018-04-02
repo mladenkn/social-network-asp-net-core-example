@@ -33,8 +33,9 @@ namespace SocialNetwork.Web
                 ProfileImageUrl = Generator.RandomImage()
             };
 
-            await _data.Users.Values.ToList()
-                .Also(it => it.Add(mladen))
+            _data.Users.Values.ToList().Add(mladen);
+
+            await _data.Users.Values
                 .Select(it => _authenticator.Register(it, _data.DummyPassword))
                 .Let(Task.WhenAll);
 
