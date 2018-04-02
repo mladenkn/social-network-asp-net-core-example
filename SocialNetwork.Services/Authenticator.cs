@@ -28,7 +28,7 @@ namespace SocialNetwork.Services
                 .Map(it => new RegistrationResult(it.Succeeded));
         }
 
-        public Task<SignInResult> SignIn(string username, string password, bool isPersistent)
+        public Task<SignInResult> SignIn(string username, string password, bool isPersistent = true)
         {
             return _signInManager
                 .PasswordSignInAsync(username, password, isPersistent: isPersistent, lockoutOnFailure: false)

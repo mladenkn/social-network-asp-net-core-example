@@ -9,7 +9,7 @@ namespace SocialNetwork.Interfaces.Services
     public interface IAuthenticator
     {
         Task<RegistrationResult> Register(User user, string password);
-        Task<SignInResult> SignIn(string username, string password, bool isPersistent);
+        Task<SignInResult> SignIn(string username, string password, bool isPersistent = true);
         Task SignOut();
     }
 }

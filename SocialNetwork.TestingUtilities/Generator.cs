@@ -38,13 +38,14 @@ namespace SocialNetwork.DevelopmentUtilities
                 .Let(string.Concat);
         }
 
-        public static User RandomUser(string id = null, string userName = null)
+        public static User RandomUser(string id = null, string userName = null, string email = null)
         {
             return new User
             {
                 Id = id,
                 ProfileImageUrl = RandomImage(),
-                UserName = userName ?? RandomString(5, 15)
+                UserName = userName ?? RandomString(5, 15),
+                Email = email
             };
         }
 
