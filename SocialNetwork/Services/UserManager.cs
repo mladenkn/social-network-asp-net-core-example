@@ -21,8 +21,6 @@ namespace SocialNetwork.Web.Services
             _repo = repo;
         }
 
-        public Task<User> GetOneByUsernameAsync(string username) => _repo.GetOne(it => it.UserName == username);
-
         public Task<IList<User>> GetMany(Expression<Func<User, bool>> filter = null,
             Expression<Func<IQueryable<User>, IOrderedQueryable<User>>> orderBy = null,
             int? count = null, int skip = 0,

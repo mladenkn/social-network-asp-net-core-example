@@ -41,7 +41,7 @@ namespace SocialNetwork.Web.Controllers
                 count: 5
             );
 
-            User currentUser = await _userManager.GetOneByUsernameAsync(User.Identity.Name);
+            User currentUser = await _userManager.GetOne(it => it.UserName == User.Identity.Name);
             ViewData["Username"] = currentUser.UserName;
 
             var vm = new HomeViewModel {Posts = a.AsReadOnly() };
@@ -51,7 +51,7 @@ namespace SocialNetwork.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePost(string postText)
         {
-            User author = await _userManager.GetOneByUsernameAsync(User.Identity.Name);
+            User author = await _userManager.GetOne(it => it.UserName == User.Identity.Name);
             Post post = Generator.RandomPost(text: postText, createdAt: DateTime.Today, author: author, likesCount: 0, dislikesCount: 0);
             Post storedPost = _postsRepository.Insert(post);
 

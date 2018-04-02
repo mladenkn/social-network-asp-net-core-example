@@ -6,6 +6,5 @@ namespace SocialNetwork.Interfaces.Services
 {
     public interface IUserManager : IRepository<User>
     {
-        Task<User> GetOneByUsernameAsync(string username);
     }
 }
