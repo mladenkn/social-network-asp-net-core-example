@@ -35,7 +35,7 @@ namespace SocialNetwork.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = new User { UserName = model.UserName, Email = "user@mail.com" };
-                var result = await _userManager.CreateAsync(user, model.Password);
+                IdentityResult result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713

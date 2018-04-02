@@ -5,6 +5,6 @@ namespace SocialNetwork.Interfaces.Services
 {
     public interface IUserManager
     {
-        Task<User> GetByUsernameAsync(string username);
+        Task<User> GetOneByUsernameAsync(string username);
     }
 }
