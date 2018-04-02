@@ -16,11 +16,11 @@ namespace Utilities
 
         public static IList<T> NewList<T>(Func<T> supplier, int count) =>
             new List<T>(count)
-                .AddRange(supplier, count);
+                .AddMany(supplier, count);
 
         public static HashSet<T> NewHashSet<T>(Func<T> supplier, int count) =>
             new HashSet<T>(count)
-                .AddRange(supplier, count);
+                .AddMany(supplier, count);
 
         public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
         {
@@ -38,7 +38,7 @@ namespace Utilities
             Utils.Random.Next(array.Count)
                 .Let(i => array[i]);
 
-        public static TCollection AddRange<TCollection, TElement>(this TCollection collection, Func<TElement> supplier, int count)
+        public static TCollection AddMany<TCollection, TElement>(this TCollection collection, Func<TElement> supplier, int count)
             where TCollection : ICollection<TElement>
         {
             Enumerable.Range(0, count)
