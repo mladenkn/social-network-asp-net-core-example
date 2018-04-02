@@ -18,6 +18,12 @@ namespace SocialNetwork.DevelopmentUtilities
                 ["Frane"] = Generator.RandomUser(userName: "Frane"),
                 ["Mate"] = Generator.RandomUser(userName: "Mate"),
                 ["Ante"] = Generator.RandomUser(userName: "Ante"),
+                ["Mladen"] = new User
+                {
+                    UserName = "Mladen",
+                    Email = "someone@someemail.com",
+                    ProfileImageUrl = Generator.RandomImage()
+                }
             };
 
             Posts = new[]

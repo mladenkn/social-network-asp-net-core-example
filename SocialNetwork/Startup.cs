@@ -98,8 +98,9 @@ namespace SocialNetwork.Web
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
 
-                var seeder = serviceProvider.GetService<Initializer>();
-                seeder.Initialize().Wait();
+                serviceProvider
+                    .GetService<Initializer>()
+                    .Initialize().Wait();
             }
             else
             {
