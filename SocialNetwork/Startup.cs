@@ -16,6 +16,7 @@ using SocialNetwork.TestingUtilities;
 using SocialNetwork.Web.ServiceInterfaces;
 using SocialNetwork.Web.Services;
 using Utilities;
+using Hub = SocialNetwork.Web.Services.Hub;
 
 namespace SocialNetwork.Web
 {
@@ -75,6 +76,7 @@ namespace SocialNetwork.Web
                     .Let(it => new Repository<User>(it.Users));
             });
             services.AddSingleton<TestDataContainer>();
+            services.AddTransient<IHub, Hub>();
             services.AddTransient<IDatabaseOperations, DatabaseOperations>();
             services.AddTransient<IViewRendererService, ViewRendererService>();
             services.AddTransient<Initializer>();
@@ -106,7 +108,7 @@ namespace SocialNetwork.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseSignalR(routes => routes.MapHub<Hub>("/posts"));
+            app.UseSignalR(routes => routes.MapHub<Microsoft.AspNetCore.SignalR.Hub>("/posts"));
             app.UseStaticFiles();
 
             app.UseAuthentication();

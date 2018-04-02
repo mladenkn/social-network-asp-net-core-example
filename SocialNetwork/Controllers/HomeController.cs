@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SocialNetwork.DevelopmentUtilities;
 using SocialNetwork.Interfaces.DAL;
+using SocialNetwork.Interfaces.Services;
 using SocialNetwork.Models;
-using SocialNetwork.TestingUtilities;
 using SocialNetwork.Web.ServiceInterfaces;
 using SocialNetwork.Web.ViewModels;
+using SocialNetwork.Web.Constants;
 using Utilities;
 
 namespace SocialNetwork.Web.Controllers
@@ -17,16 +18,16 @@ namespace SocialNetwork.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IViewRendererService _renderer;
-        private readonly IHubContext<Hub> _hub;
+        private readonly IHub _hub;
         private readonly IRepository<Post> _postsRepository;
         private readonly IDatabaseOperations _dbOps;
         private readonly UserManager<User> _userManager;
 
-        public HomeController(IViewRendererService renderer, IHubContext<Hub> hub,
+        public HomeController(IViewRendererService renderer, IHub _hub,
                               IRepository<Post> postsRepository, IDatabaseOperations dbOps, UserManager<User> userManager)
         {
             _renderer = renderer;
-            _hub = hub;
+            this._hub = _hub;
             _postsRepository = postsRepository;
             _dbOps = dbOps;
             _userManager = userManager;
@@ -57,7 +58,7 @@ namespace SocialNetwork.Web.Controllers
             Task saveChangesTask = _dbOps.SaveChangesAsync();
             string postHtml = await _renderer.RenderPartialView("_Post", storedPost);
             await saveChangesTask;
-            await _hub.Clients.All.SendAsync(Constants.PostsEvents.PostPublished, postHtml);
+            await _hub.Emit(PostsEvents.PostPublished, postHtml);
 
             return Ok("");
         }
@@ -94,7 +95,7 @@ namespace SocialNetwork.Web.Controllers
             Task saveChangesTask = _dbOps.SaveChangesAsync();
             string postHtml = await _renderer.RenderPartialView("_Post", post);
             await saveChangesTask;
-            await _hub.Clients.All.SendAsync(Constants.PostsEvents.PostChanged, postHtml);
+            await _hub.Emit(PostsEvents.PostChanged, postHtml);
 
             return Ok("");
         }
@@ -105,7 +106,7 @@ namespace SocialNetwork.Web.Controllers
             await _postsRepository.Delete(it => it.Id == postId);
 
             await _dbOps.SaveChangesAsync();
-            await _hub.Clients.All.SendAsync(Constants.PostsEvents.PostDeleted, postId);
+            await _hub.Emit(PostsEvents.PostDeleted, postId);
 
             return Ok("");
         }
