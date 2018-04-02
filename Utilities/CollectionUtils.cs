@@ -74,17 +74,5 @@ namespace Utilities
         {
             return list.OrderBy(it => it, Comparer<T>.Create((_, __) => Utils.Random.Next(-1, 1)));
         }
-
-        public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> items)
-        {
-            items.ForEach(collection.Add);
-        }
-
-        public static TCollection Collect<TCollection, TElement>(this IEnumerable<TElement> enumerable, TCollection collection)
-            where TCollection : ICollection<TElement>
-        {
-            collection.AddRange(enumerable);
-            return collection;
-        }
     }
 }
