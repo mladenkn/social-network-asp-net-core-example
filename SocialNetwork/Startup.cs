@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,9 +13,9 @@ using SocialNetwork.Interfaces.Services;
 using SocialNetwork.Models;
 using SocialNetwork.TestingUtilities;
 using SocialNetwork.Web.ServiceInterfaces;
+using SocialNetwork.Services;
 using SocialNetwork.Web.Services;
 using Utilities;
-using Hub = SocialNetwork.Web.Services.Hub;
 
 namespace SocialNetwork.Web
 {

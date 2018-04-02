@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using SocialNetwork.Interfaces.Services;
 
-namespace SocialNetwork.Web.Services
+namespace SocialNetwork.Services
 {
     public class Hub : IHub
     {

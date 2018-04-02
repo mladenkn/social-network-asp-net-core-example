@@ -8,7 +8,7 @@ using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Interfaces.Services;
 using SocialNetwork.Models;
 
-namespace SocialNetwork.Web.Services
+namespace SocialNetwork.Services
 {
     public class UserManager : IUserManager
     {

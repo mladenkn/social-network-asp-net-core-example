@@ -15,3 +15,5 @@ SocialNetwork.DAL/obj/
 SocialNetwork.DAL/bin/
 SocialNetwork.TestingUtilities/bin/
 SocialNetwork.TestingUtilities/obj/
+SocialNetwork.Services/obj/
+SocialNetwork.Services/bin/

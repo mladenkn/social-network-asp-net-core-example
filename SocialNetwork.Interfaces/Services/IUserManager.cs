@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using SocialNetwork.Interfaces.DAL;
+﻿using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Models;
 
 namespace SocialNetwork.Interfaces.Services
