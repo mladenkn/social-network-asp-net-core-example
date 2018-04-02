@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using SocialNetwork.DevelopmentUtilities;
 using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Interfaces.Services;
@@ -21,13 +21,13 @@ namespace SocialNetwork.Web.Controllers
         private readonly IHub _hub;
         private readonly IRepository<Post> _postsRepository;
         private readonly IDatabaseOperations _dbOps;
-        private readonly UserManager<User> _userManager;
+        private readonly IUserManager _userManager;
 
-        public HomeController(IViewRendererService renderer, IHub _hub,
-                              IRepository<Post> postsRepository, IDatabaseOperations dbOps, UserManager<User> userManager)
+        public HomeController(IViewRendererService renderer, IHub hub, IUserManager userManager,
+                              IRepository<Post> postsRepository, IDatabaseOperations dbOps)
         {
             _renderer = renderer;
-            this._hub = _hub;
+            _hub = hub;
             _postsRepository = postsRepository;
             _dbOps = dbOps;
             _userManager = userManager;
@@ -40,8 +40,8 @@ namespace SocialNetwork.Web.Controllers
                 propsToInclude: "Author",
                 count: 5
             );
-            
-            User currentUser = await _userManager.GetUserAsync(User);
+
+            User currentUser = await _userManager.GetByUsernameAsync(User.Identity.Name);
             ViewData["Username"] = currentUser.UserName;
 
             var vm = new HomeViewModel {Posts = a.AsReadOnly() };
@@ -51,7 +51,7 @@ namespace SocialNetwork.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePost(string postText)
         {
-            User author = await _userManager.GetUserAsync(User);
+            User author = await _userManager.GetByUsernameAsync(User.Identity.Name);
             Post post = Generator.RandomPost(text: postText, createdAt: DateTime.Today, author: author, likesCount: 0, dislikesCount: 0);
             Post storedPost = _postsRepository.Insert(post);
 

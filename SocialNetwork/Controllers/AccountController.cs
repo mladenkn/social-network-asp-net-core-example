@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.Models;
 using SocialNetwork.Web.ViewModels;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace SocialNetwork.Web.Controllers
 {
@@ -61,7 +62,7 @@ namespace SocialNetwork.Web.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, 
+                SignInResult result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, 
                     isPersistent: model.RememberMe, 
                     lockoutOnFailure: false);
                 if (result.Succeeded)

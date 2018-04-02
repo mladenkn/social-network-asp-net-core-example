@@ -80,6 +80,8 @@ namespace SocialNetwork.Web
             services.AddTransient<IDatabaseOperations, DatabaseOperations>();
             services.AddTransient<IViewRendererService, ViewRendererService>();
             services.AddTransient<Initializer>();
+            services.AddTransient<UserManager<User>>();
+            services.AddTransient<IUserManager, UserManager>();
 
             services.AddMvc(config =>
             {
