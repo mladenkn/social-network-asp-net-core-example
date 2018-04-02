@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Models;
+using SocialNetwork.TestingUtilities;
 using Utilities;
 
-namespace SocialNetwork.Web.TestingUtilities
+namespace SocialNetwork.Web
 {
     public class Initializer
     {

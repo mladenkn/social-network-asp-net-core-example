@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SocialNetwork.Models;
 
-namespace SocialNetwork.Web.TestingUtilities
+namespace SocialNetwork.TestingUtilities
 {
     public class TestDataContainer
     {

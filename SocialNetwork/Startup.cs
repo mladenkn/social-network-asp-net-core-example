@@ -11,9 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using SocialNetwork.DAL;
 using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Models;
+using SocialNetwork.TestingUtilities;
 using SocialNetwork.Web.ServiceInterfaces;
 using SocialNetwork.Web.Services;
-using SocialNetwork.Web.TestingUtilities;
 using Utilities;
 
 namespace SocialNetwork.Web

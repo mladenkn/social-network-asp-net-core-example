@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SocialNetwork.DAL;
 using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Models;
-using SocialNetwork.Web.TestingUtilities;
+using SocialNetwork.TestingUtilities;
 using SocialNetwork.Web.Utilities;
 using Utilities;
 using Xunit;

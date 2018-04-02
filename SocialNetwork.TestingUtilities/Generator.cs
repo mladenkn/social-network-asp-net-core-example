@@ -2,7 +2,7 @@
 using SocialNetwork.Models;
 using Utilities;
 
-namespace SocialNetwork.Web.TestingUtilities
+namespace SocialNetwork.TestingUtilities
 {
     public static class Generator
     {

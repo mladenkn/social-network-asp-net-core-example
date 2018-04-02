@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Models;
+using SocialNetwork.TestingUtilities;
 using SocialNetwork.Web.ServiceInterfaces;
-using SocialNetwork.Web.TestingUtilities;
 using SocialNetwork.Web.ViewModels;
 using Utilities;
 

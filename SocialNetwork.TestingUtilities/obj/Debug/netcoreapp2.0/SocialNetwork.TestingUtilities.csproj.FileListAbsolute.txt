@@ -1,0 +1,14 @@
+C:\Users\mladen\projekti\SocialNetwork\SocialNetwork.TestingUtilities\bin\Debug\netcoreapp2.0\SocialNetwork.TestingUtilities.deps.json
+C:\Users\mladen\projekti\SocialNetwork\SocialNetwork.TestingUtilities\bin\Debug\netcoreapp2.0\SocialNetwork.TestingUtilities.dll
+C:\Users\mladen\projekti\SocialNetwork\SocialNetwork.TestingUtilities\bin\Debug\netcoreapp2.0\SocialNetwork.TestingUtilities.pdb
+C:\Users\mladen\projekti\SocialNetwork\SocialNetwork.TestingUtilities\bin\Debug\netcoreapp2.0\SocialNetwork.Models.dll
+C:\Users\mladen\projekti\SocialNetwork\SocialNetwork.TestingUtilities\bin\Debug\netcoreapp2.0\Utilities.dll
+C:\Users\mladen\projekti\SocialNetwork\SocialNetwork.TestingUtilities\bin\Debug\netcoreapp2.0\SocialNetwork.Models.pdb
+C:\Users\mladen\projekti\SocialNetwork\SocialNetwork.TestingUtilities\bin\Debug\netcoreapp2.0\Utilities.pdb
+C:\Users\mladen\projekti\SocialNetwork\SocialNetwork.TestingUtilities\obj\Debug\netcoreapp2.0\SocialNetwork.TestingUtilities.csprojResolveAssemblyReference.cache
+C:\Users\mladen\projekti\SocialNetwork\SocialNetwork.TestingUtilities\obj\Debug\netcoreapp2.0\SocialNetwork.TestingUtilities.csproj.CoreCompileInputs.cache
+C:\Users\mladen\projekti\SocialNetwork\SocialNetwork.TestingUtilities\obj\Debug\netcoreapp2.0\SocialNetwork.TestingUtilities.AssemblyInfoInputs.cache
+C:\Users\mladen\projekti\SocialNetwork\SocialNetwork.TestingUtilities\obj\Debug\netcoreapp2.0\SocialNetwork.TestingUtilities.AssemblyInfo.cs
+C:\Users\mladen\projekti\SocialNetwork\SocialNetwork.TestingUtilities\obj\Debug\netcoreapp2.0\SocialNetwork.TestingUtilities.csproj.CopyComplete
+C:\Users\mladen\projekti\SocialNetwork\SocialNetwork.TestingUtilities\obj\Debug\netcoreapp2.0\SocialNetwork.TestingUtilities.dll
+C:\Users\mladen\projekti\SocialNetwork\SocialNetwork.TestingUtilities\obj\Debug\netcoreapp2.0\SocialNetwork.TestingUtilities.pdb
