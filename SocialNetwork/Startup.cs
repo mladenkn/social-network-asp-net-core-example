@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SocialNetwork.DAL;
 using SocialNetwork.Interfaces.DAL;
+using SocialNetwork.Interfaces.Services;
 using SocialNetwork.Models;
 using SocialNetwork.TestingUtilities;
 using SocialNetwork.Web.ServiceInterfaces;
@@ -62,18 +63,19 @@ namespace SocialNetwork.Web
             });
 
             services.AddSignalR();
-            services.AddSingleton<IRepository<Post>>(serviceProvider =>
+
+            services.AddTransient<IRepository<Post>>(serviceProvider =>
             {
                 return serviceProvider.GetService<SocialNetworkDbContext>()
                     .Let(it => new Repository<Post>(it.Posts));
             });
-            services.AddSingleton<IRepository<User>>(serviceProvider =>
+            services.AddTransient<IRepository<User>>(serviceProvider =>
             {
                 return serviceProvider.GetService<SocialNetworkDbContext>()
                     .Let(it => new Repository<User>(it.Users));
             });
             services.AddSingleton<TestDataContainer>();
-            services.AddSingleton<IDatabaseOperations, DatabaseOperations>();
+            services.AddTransient<IDatabaseOperations, DatabaseOperations>();
             services.AddTransient<IViewRendererService, ViewRendererService>();
             services.AddTransient<Initializer>();
 
