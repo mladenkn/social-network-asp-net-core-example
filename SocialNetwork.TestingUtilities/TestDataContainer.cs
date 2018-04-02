@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using SocialNetwork.DevelopmentUtilities;
 using SocialNetwork.Models;
 
-namespace SocialNetwork.TestingUtilities
+namespace SocialNetwork.DevelopmentUtilities
 {
     public class TestDataContainer
     {

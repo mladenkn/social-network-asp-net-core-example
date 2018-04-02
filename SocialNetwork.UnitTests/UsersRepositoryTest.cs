@@ -6,7 +6,6 @@ using SocialNetwork.DAL;
 using SocialNetwork.DevelopmentUtilities;
 using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Models;
-using SocialNetwork.TestingUtilities;
 using SocialNetwork.Web.Utilities;
 using Utilities;
 using Xunit;

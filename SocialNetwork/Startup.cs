@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SocialNetwork.DAL;
+using SocialNetwork.DevelopmentUtilities;
 using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Interfaces.Services;
 using SocialNetwork.Models;
-using SocialNetwork.TestingUtilities;
 using SocialNetwork.Web.ServiceInterfaces;
 using SocialNetwork.Services;
 using SocialNetwork.Web.Services;
@@ -70,12 +70,13 @@ namespace SocialNetwork.Web
             services.AddTransient<IRepository<Post>, Repository<Post>>();
             services.AddTransient<IRepository<User>, Repository<User>>();
 
+            services.AddTransient<UserManager<User>>();
+
             services.AddSingleton<TestDataContainer>();
             services.AddTransient<IHub, Hub>();
             services.AddTransient<IDatabaseOperations, DatabaseOperations>();
             services.AddTransient<IViewRendererService, ViewRendererService>();
             services.AddTransient<Initializer>();
-            services.AddTransient<UserManager<User>>();
             services.AddTransient<IAuthenticator, Authenticator>();
 
             services.AddMvc(config =>
