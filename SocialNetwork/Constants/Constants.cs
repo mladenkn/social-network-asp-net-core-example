@@ -1,4 +1,4 @@
-﻿namespace SocialNetwork.Constants
+﻿namespace SocialNetwork.Web.Constants
 {
     public static class PostsEvents
     {

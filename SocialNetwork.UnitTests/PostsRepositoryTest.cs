@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using SocialNetwork.DAL;
 using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Models;
-using SocialNetwork.TestingUtilities;
+using SocialNetwork.Web.TestingUtilities;
+using SocialNetwork.Web.Utilities;
 using Utilities;
-using SocialNetwork.Utilities;
 using Xunit;
 
 namespace SocialNetwork.UnitTests

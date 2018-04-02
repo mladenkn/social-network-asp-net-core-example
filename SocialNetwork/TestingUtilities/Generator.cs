@@ -1,9 +1,8 @@
 ﻿using System;
 using SocialNetwork.Models;
 using Utilities;
-using static Utilities.CollectionUtils;
 
-namespace SocialNetwork.TestingUtilities
+namespace SocialNetwork.Web.TestingUtilities
 {
     public static class Generator
     {
@@ -24,7 +23,7 @@ namespace SocialNetwork.TestingUtilities
         public static string RandomImage() => AllowedImageUrls.RandomElement();
 
         public static string RandomString(int len) =>
-            NewEnumerable(RandomChar, len)
+            CollectionUtils.NewEnumerable(RandomChar, len)
                 .Let(string.Concat);
 
         public static string RandomString(int minLength, int maxLength) =>
@@ -35,7 +34,7 @@ namespace SocialNetwork.TestingUtilities
         {
             wordsCount = wordsCount ?? Utils.Random.Next(10, 50);
             string RandomText() => RandomString(3, 15) + " ";
-            return NewEnumerable(RandomText, wordsCount.Value)
+            return CollectionUtils.NewEnumerable(RandomText, wordsCount.Value)
                 .Let(string.Concat);
         }
 

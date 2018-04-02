@@ -14,13 +14,9 @@
 
   <ItemGroup>
     <Compile Remove="ApiControllers\**" />
-    <Compile Remove="Services\**" />
     <Content Remove="ApiControllers\**" />
-    <Content Remove="Services\**" />
     <EmbeddedResource Remove="ApiControllers\**" />
-    <EmbeddedResource Remove="Services\**" />
     <None Remove="ApiControllers\**" />
-    <None Remove="Services\**" />
   </ItemGroup>
 
   <ItemGroup>

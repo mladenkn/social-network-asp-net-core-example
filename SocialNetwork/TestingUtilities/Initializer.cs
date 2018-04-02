@@ -4,7 +4,7 @@ using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Models;
 using Utilities;
 
-namespace SocialNetwork.TestingUtilities
+namespace SocialNetwork.Web.TestingUtilities
 {
     public class Initializer
     {
