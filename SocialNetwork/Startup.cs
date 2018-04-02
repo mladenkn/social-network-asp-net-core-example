@@ -65,16 +65,12 @@ namespace SocialNetwork.Web
 
             services.AddSignalR();
 
-            services.AddTransient<IRepository<Post>>(serviceProvider =>
-            {
-                return serviceProvider.GetService<SocialNetworkDbContext>()
-                    .Let(it => new Repository<Post>(it.Posts));
-            });
-            services.AddTransient<IRepository<User>>(serviceProvider =>
-            {
-                return serviceProvider.GetService<SocialNetworkDbContext>()
-                    .Let(it => new Repository<User>(it.Users));
-            });
+            services.AddSingleton<DbSet<Post>>(provider => provider.GetService<SocialNetworkDbContext>().Posts);
+            services.AddSingleton<DbSet<User>>(provider => provider.GetService<SocialNetworkDbContext>().Users);
+
+            services.AddTransient<IRepository<Post>, Repository<Post>>();
+            services.AddTransient<IRepository<User>, Repository<User>>();
+
             services.AddSingleton<TestDataContainer>();
             services.AddTransient<IHub, Hub>();
             services.AddTransient<IDatabaseOperations, DatabaseOperations>();

@@ -10,7 +10,7 @@ using SocialNetwork.Models;
 
 namespace SocialNetwork.Web.Services
 {
-    public class UserManager : IRepository<User>, IUserManager
+    public class UserManager : IUserManager
     {
         private readonly UserManager<User> _manager;
         private readonly IRepository<User> _repo;
