@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SocialNetwork.Interfaces.DAL;
 
-namespace SocialNetwork.DAL.Repositories
+namespace SocialNetwork.DAL
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
@@ -31,8 +31,7 @@ namespace SocialNetwork.DAL.Repositories
             query = query.Skip(skip);
             query = count != null ? query.Take(count.Value) : query;
 
-            return query.ToListAsync()
-                .Map(it => (IList<TEntity>)it);
+            return TaskExtensions.Map(query.ToListAsync(), it => (IList<TEntity>)it);
         }
 
         public Task<TEntity> GetOne(Expression<Func<TEntity, bool>> selector = null, params string[] propsToInclude)

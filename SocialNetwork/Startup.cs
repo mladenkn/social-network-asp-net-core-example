@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SocialNetwork.DAL;
-using SocialNetwork.DAL.Repositories;
 using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Models;
 using SocialNetwork.TestingUtilities;

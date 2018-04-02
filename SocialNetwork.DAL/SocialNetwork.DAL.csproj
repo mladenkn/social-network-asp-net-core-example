@@ -16,4 +16,8 @@
     <ProjectReference Include="..\SocialNetwork.Models\SocialNetwork.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>
