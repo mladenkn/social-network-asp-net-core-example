@@ -10,11 +10,11 @@ namespace SocialNetwork.DAL
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        protected readonly DbSet<TEntity> _wrapeeContainer;
+        protected readonly DbSet<TEntity> _wrapedContainer;
 
-        public Repository(DbSet<TEntity> wrapeeContainer)
+        public Repository(DbSet<TEntity> wrapedContainer)
         {
-            _wrapeeContainer = wrapeeContainer;
+            _wrapedContainer = wrapedContainer;
         }
 
         public Task<IList<TEntity>> GetMany(Expression<Func<TEntity, bool>> filter = null,
@@ -22,8 +22,8 @@ namespace SocialNetwork.DAL
         {
             IQueryable<TEntity> query =
                 propsToInclude.Any() 
-                    ? _wrapeeContainer.Include(propsToInclude[0])
-                    : _wrapeeContainer;
+                    ? _wrapedContainer.Include(propsToInclude[0])
+                    : _wrapedContainer;
 
             if (filter != null)
                 query = query.Where(filter);
@@ -42,7 +42,7 @@ namespace SocialNetwork.DAL
                                                        Expression<Func<TEntity, bool>> filter = null,
                                                        int? count = null, int skip = 0)
         {
-            IQueryable<TEntity> query_ = _wrapeeContainer;
+            IQueryable<TEntity> query_ = _wrapedContainer;
 
             if(filter != null)
                 query_ = query_.Where(filter);
@@ -63,8 +63,8 @@ namespace SocialNetwork.DAL
         {
             IQueryable<TEntity> query = 
                 propsToInclude.Any()
-                    ? _wrapeeContainer.Include(propsToInclude[0])
-                    : _wrapeeContainer;
+                    ? _wrapedContainer.Include(propsToInclude[0])
+                    : _wrapedContainer;
 
             if (selector != null)
                 return query.SingleAsync(selector);
@@ -74,25 +74,25 @@ namespace SocialNetwork.DAL
 
         public async Task<TEntity> Update(Expression<Func<TEntity, bool>> selector, Action<TEntity> consumeItem, params string[] propsToInclude)
         {
-            var item = await GetOne(selector, propsToInclude);
+            TEntity item = await GetOne(selector, propsToInclude);
             consumeItem(item);
-            return _wrapeeContainer.Update(item).Entity;
+            return _wrapedContainer.Update(item).Entity;
         }
 
         public TEntity Update(TEntity item)
         {
-            return _wrapeeContainer.Update(item).Entity;
+            return _wrapedContainer.Update(item).Entity;
         }
 
         public virtual TEntity Insert(TEntity entity)
         {
-            return _wrapeeContainer.Add(entity).Entity;
+            return _wrapedContainer.Add(entity).Entity;
         }
 
         public async Task Delete(Expression<Func<TEntity, bool>> filter)
         {
             TEntity item = await GetOne(filter);
-            _wrapeeContainer.Remove(item);
+            _wrapedContainer.Remove(item);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace SocialNetwork.DAL
 {
     public class PostsRepository : Repository<Post>, IPostsRepository
     {
-        public PostsRepository(DbSet<Post> wrapeeContainer) : base(wrapeeContainer)
+        public PostsRepository(DbSet<Post> wrapedContainer) : base(wrapedContainer)
         {
         }
 
@@ -20,8 +20,8 @@ namespace SocialNetwork.DAL
         {
             IQueryable<Post> query =
                 propsToInclude.Any()
-                    ? _wrapeeContainer.Include(propsToInclude[0])
-                    : _wrapeeContainer;
+                    ? _wrapedContainer.Include(propsToInclude[0])
+                    : _wrapedContainer;
 
             if(order == PostsOrder.CreatedAt_Descending)
                 query = query.OrderByDescending(it => it.CreatedAt);
