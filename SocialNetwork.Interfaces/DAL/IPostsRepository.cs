@@ -15,6 +15,6 @@ namespace SocialNetwork.Interfaces.DAL
 
     public enum PostsOrder
     {
-        CreatedAt
+        CreatedAt_Descending
     }
 }

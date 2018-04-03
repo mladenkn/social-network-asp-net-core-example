@@ -33,7 +33,7 @@ namespace SocialNetwork.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var a = await _posts.GetMany(count: 5, order: PostsOrder.CreatedAt, propsToInclude: "Author");
+            var a = await _posts.GetMany(count: 5, order: PostsOrder.CreatedAt_Descending, propsToInclude: "Author");
 
             User currentUser = await _users.GetOne(it => it.UserName == User.Identity.Name);
             ViewData["Username"] = currentUser.UserName;
@@ -61,7 +61,7 @@ namespace SocialNetwork.Web.Controllers
         public async Task<IActionResult> LoadPosts(int count, int skip, string[] propsToInclude)
         {
             var posts = await _posts.GetMany(
-                order: PostsOrder.CreatedAt,
+                order: PostsOrder.CreatedAt_Descending,
                 propsToInclude: propsToInclude,
                 count: count,
                 skip: skip

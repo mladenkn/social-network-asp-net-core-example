@@ -123,7 +123,7 @@ namespace SocialNetwork.UnitTests
             await SaveData(usersToSave, schuffledPosts);
 
             // prepare assert assert
-            var loadedPostsOrderedByDate = await _postsRepo.GetMany(order: PostsOrder.CreatedAt);
+            var loadedPostsOrderedByDate = await _postsRepo.GetMany(order: PostsOrder.CreatedAt_Descending);
 
             // assert
             loadedPostsOrderedByDate.SequenceEqual(postsOrderedByDate).Also(Assert.True);
