@@ -43,7 +43,7 @@ namespace Utilities
 
         public static void Assert(bool boolean) => Assert(boolean, new Exception("Assertation failed"));
 
-        public static U CastIt<T, U>(T o) where U : T => (U) o;
+        public static T CastIt<T>(this object o) => (T)o;
 
         public static string Capitalize(this string str)
         {

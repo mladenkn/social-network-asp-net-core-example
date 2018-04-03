@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SocialNetwork.Interfaces.DAL;
+using Utilities;
 
 namespace SocialNetwork.DAL
 {
@@ -31,7 +33,7 @@ namespace SocialNetwork.DAL
             query = query.Skip(skip);
             query = count != null ? query.Take(count.Value) : query;
 
-            return query.ToListAsync().Map(it => (IList<TEntity>)it);
+            return query.ToListAsync().Map(it => it.CastIt<IList<TEntity>>());
         }
 
         public Task<TEntity> GetOne(Expression<Func<TEntity, bool>> selector = null, params string[] propsToInclude)
