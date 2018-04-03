@@ -9,7 +9,6 @@ namespace SocialNetwork.Interfaces.DAL
     public interface IRepository<TEntity>
     {
         Task<IList<TEntity>> GetMany(Expression<Func<TEntity, bool>> filter = null,
-            Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderBy = null,
             int? count = null, int skip = 0, params string[] propsToInclude);
 
         Task<TEntity> GetOne(Expression<Func<TEntity, bool>> selector = null, params string[] propsToInclude);

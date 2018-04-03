@@ -10,7 +10,7 @@ namespace SocialNetwork.DAL
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        private readonly DbSet<TEntity> _wrapeeContainer;
+        protected readonly DbSet<TEntity> _wrapeeContainer;
 
         public Repository(DbSet<TEntity> wrapeeContainer)
         {
@@ -18,15 +18,13 @@ namespace SocialNetwork.DAL
         }
 
         public Task<IList<TEntity>> GetMany(Expression<Func<TEntity, bool>> filter = null,
-                                            Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderBy = null,
                                             int? count = null, int skip = 0, params string[] propsToInclude)
         {
             IQueryable<TEntity> query =
                 propsToInclude.Any() 
                     ? _wrapeeContainer.Include(propsToInclude[0])
                     : _wrapeeContainer;
-
-            query = orderBy != null ? orderBy.Compile()(query) : query;
+            
             query = filter != null ? query.Where(filter) : query;
             query = query.Skip(skip);
             query = count != null ? query.Take(count.Value) : query;

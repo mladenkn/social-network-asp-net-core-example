@@ -17,7 +17,7 @@ namespace SocialNetwork.UnitTests
     {
         private readonly SqliteConnection _dbConnection;
         private readonly SocialNetworkDbContext _dbContext;
-        private readonly IRepository<Post> _postsRepo;
+        private readonly IPostsRepository _postsRepo;
         private readonly IRepository<User> _usersRepo;
         private readonly TestDataContainer _testDataContainer;
 
@@ -27,7 +27,7 @@ namespace SocialNetwork.UnitTests
             var (dbContext, connection) = TestUtils.InitDbInMemory().Result;
             _dbConnection = connection;
             _dbContext = dbContext;
-            _postsRepo = new Repository<Post>(_dbContext.Posts);
+            _postsRepo = new PostsRepository(_dbContext.Posts);
             _usersRepo = new Repository<User>(_dbContext.Users);
 
             _testDataContainer = new TestDataContainer();
@@ -123,7 +123,7 @@ namespace SocialNetwork.UnitTests
             await SaveData(usersToSave, schuffledPosts);
 
             // prepare assert assert
-            var loadedPostsOrderedByDate = await _postsRepo.GetMany(orderBy: it => it.OrderByDescending(post => post.CreatedAt));
+            var loadedPostsOrderedByDate = await _postsRepo.GetManyOrderedByDateDescending();
 
             // assert
             loadedPostsOrderedByDate.SequenceEqual(postsOrderedByDate).Also(Assert.True);

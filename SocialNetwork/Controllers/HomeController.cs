@@ -17,12 +17,12 @@ namespace SocialNetwork.Web.Controllers
     {
         private readonly IViewRendererService _renderer;
         private readonly IHub _hub;
-        private readonly IRepository<Post> _posts;
+        private readonly IPostsRepository _posts;
         private readonly IDatabaseOperations _dbOps;
         private readonly IRepository<User> _users;
 
         public HomeController(IViewRendererService renderer, IHub hub, IRepository<User> users,
-                              IRepository<Post> posts, IDatabaseOperations dbOps)
+                              IPostsRepository posts, IDatabaseOperations dbOps)
         {
             _renderer = renderer;
             _hub = hub;
@@ -33,8 +33,7 @@ namespace SocialNetwork.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var a = await _posts.GetMany(
-                orderBy: it => it.OrderByDescending(post => post.CreatedAt),
+            var a = await _posts.GetManyOrderedByDateDescending(
                 propsToInclude: "Author",
                 count: 5
             );
@@ -64,8 +63,7 @@ namespace SocialNetwork.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> LoadPosts(int count, int skip, string[] propsToInclude)
         {
-            var posts = await _posts.GetMany(
-                orderBy: it => it.OrderByDescending(post => post.CreatedAt),
+            var posts = await _posts.GetManyOrderedByDateDescending(
                 propsToInclude: propsToInclude,
                 count: count,
                 skip: skip
