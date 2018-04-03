@@ -7,7 +7,8 @@ namespace Utilities
     public static class CollectionUtils
     {
         public static IEnumerable<T> NewEnumerable<T>(Func<T> supplier, int count) =>
-            Enumerable.Range(0, count)
+            Enumerable
+                .Range(0, count)
                 .Select(i => supplier());
 
         public static T[] NewArray<T>(Func<T> supplier, int count) =>
@@ -18,8 +19,8 @@ namespace Utilities
             new List<T>(count)
                 .AddMany(supplier, count);
 
-        public static System.Collections.Generic.HashSet<T> NewHashSet<T>(Func<T> supplier, int count) =>
-            new System.Collections.Generic.HashSet<T>(count)
+        public static HashSet<T> NewHashSet<T>(Func<T> supplier, int count) =>
+            new HashSet<T>(count)
                 .AddMany(supplier, count);
 
         public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
@@ -35,20 +36,23 @@ namespace Utilities
         }
 
         public static T RandomElement<T>(this IReadOnlyList<T> array) =>
-            Utils.Random.Next(array.Count)
+            Utils.Random
+                .Next(array.Count)
                 .Let(i => array[i]);
 
         public static TCollection AddMany<TCollection, TElement>(this TCollection collection, Func<TElement> supplier, int count)
             where TCollection : ICollection<TElement>
         {
-            Enumerable.Range(0, count)
+            Enumerable
+                .Range(0, count)
                 .ForEach(i => collection.Add(supplier()));
             return collection;
         }
 
         public static T[] Fill<T>(this T[] array, Func<T> supplier)
         {
-           Enumerable.Range(0, array.Length)
+           Enumerable
+               .Range(0, array.Length)
                .ForEach(i => array[i] = supplier());
             return array;
         }

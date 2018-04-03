@@ -7,3 +7,13 @@ Utilities/obj/
 node_modules/
 SocialNetwork.UnitTests/obj/
 SocialNetwork.UnitTests/bin/
+SocialNetwork.Interfaces/obj/
+SocialNetwork.Models/bin/
+SocialNetwork.Models/obj/
+SocialNetwork.Interfaces/bin/
+SocialNetwork.DAL/obj/
+SocialNetwork.DAL/bin/
+SocialNetwork.TestingUtilities/bin/
+SocialNetwork.TestingUtilities/obj/
+SocialNetwork.Services/obj/
+SocialNetwork.Services/bin/

@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
+using SocialNetwork.DevelopmentUtilities;
 using SocialNetwork.Interfaces.DAL;
+using SocialNetwork.Interfaces.Services;
 using SocialNetwork.Models;
-using SocialNetwork.TestingUtilities;
-using SocialNetwork.Web.ViewModels;
 using SocialNetwork.Web.ServiceInterfaces;
+using SocialNetwork.Web.ViewModels;
+using SocialNetwork.Web.Constants;
 using Utilities;
 
 namespace SocialNetwork.Web.Controllers
@@ -17,30 +16,30 @@ namespace SocialNetwork.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IViewRendererService _renderer;
-        private readonly IHubContext<Hub> _hub;
-        private readonly IRepository<Post> _postsRepository;
+        private readonly IHub _hub;
+        private readonly IRepository<Post> _posts;
         private readonly IDatabaseOperations _dbOps;
-        private readonly UserManager<User> _userManager;
+        private readonly IReadOnlyRepository<User> _users;
 
-        public HomeController(IViewRendererService renderer, IHubContext<Hub> hub,
-                              IRepository<Post> postsRepository, IDatabaseOperations dbOps, UserManager<User> userManager)
+        public HomeController(IViewRendererService renderer, IHub hub, IReadOnlyRepository<User> users,
+                              IRepository<Post> posts, IDatabaseOperations dbOps)
         {
             _renderer = renderer;
             _hub = hub;
-            _postsRepository = postsRepository;
+            _posts = posts;
             _dbOps = dbOps;
-            _userManager = userManager;
+            _users = users;
         }
 
         public async Task<IActionResult> Index()
         {
-            var a = await _postsRepository.GetMany(
+            var a = await _posts.GetMany(
                 orderBy: it => it.OrderByDescending(post => post.CreatedAt),
                 propsToInclude: "Author",
                 count: 5
             );
-            
-            User currentUser = await _userManager.GetUserAsync(User);
+
+            User currentUser = await _users.GetOne(it => it.UserName == User.Identity.Name);
             ViewData["Username"] = currentUser.UserName;
 
             var vm = new HomeViewModel {Posts = a.AsReadOnly() };
@@ -50,14 +49,14 @@ namespace SocialNetwork.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePost(string postText)
         {
-            User author = await _userManager.GetUserAsync(User);
+            User author = await _users.GetOne(it => it.UserName == User.Identity.Name);
             Post post = Generator.RandomPost(text: postText, createdAt: DateTime.Today, author: author, likesCount: 0, dislikesCount: 0);
-            Post storedPost = _postsRepository.Insert(post);
+            Post storedPost = _posts.Insert(post);
 
             Task saveChangesTask = _dbOps.SaveChangesAsync();
             string postHtml = await _renderer.RenderPartialView("_Post", storedPost);
             await saveChangesTask;
-            await _hub.Clients.All.SendAsync(Constants.PostsEvents.PostPublished, postHtml);
+            await _hub.Emit(PostsEvents.PostPublished, postHtml);
 
             return Ok("");
         }
@@ -65,7 +64,7 @@ namespace SocialNetwork.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> LoadPosts(int count, int skip, string[] propsToInclude)
         {
-            var posts = await _postsRepository.GetMany(
+            var posts = await _posts.GetMany(
                 orderBy: it => it.OrderByDescending(post => post.CreatedAt),
                 propsToInclude: propsToInclude,
                 count: count,
@@ -80,7 +79,7 @@ namespace SocialNetwork.Web.Controllers
         public async Task<IActionResult> UpdatePost(long id, string text = null, string heading = null,
                                                     bool addLike = false, bool addDislike = false)
         {
-            Post post = await _postsRepository.GetOne(it => it.Id == id, "Author");
+            Post post = await _posts.GetOne(it => it.Id == id, "Author");
 
             post.Text = text ?? post.Text;
             post.Heading = heading ?? post.Heading;
@@ -89,12 +88,12 @@ namespace SocialNetwork.Web.Controllers
             if (addDislike)
                 post.DislikesCount++;
 
-            _postsRepository.Update(post);
+            _posts.Update(post);
     
             Task saveChangesTask = _dbOps.SaveChangesAsync();
             string postHtml = await _renderer.RenderPartialView("_Post", post);
             await saveChangesTask;
-            await _hub.Clients.All.SendAsync(Constants.PostsEvents.PostChanged, postHtml);
+            await _hub.Emit(PostsEvents.PostChanged, postHtml);
 
             return Ok("");
         }
@@ -102,10 +101,10 @@ namespace SocialNetwork.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> DeletePost(long postId)
         {
-            await _postsRepository.Delete(it => it.Id == postId);
+            await _posts.Delete(it => it.Id == postId);
 
             await _dbOps.SaveChangesAsync();
-            await _hub.Clients.All.SendAsync(Constants.PostsEvents.PostDeleted, postId);
+            await _hub.Emit(PostsEvents.PostDeleted, postId);
 
             return Ok("");
         }

@@ -35,15 +35,15 @@ namespace Utilities
             return o;
         }
 
-        public static void AssertIsTrue(bool boolean, Exception e)
+        public static void Assert(bool boolean, Exception e)
         {
             if (!boolean)
                 throw e;
         }
 
-        public static void AssertIsTrue(bool boolean) => AssertIsTrue(boolean, new Exception("Assertation failed"));
+        public static void Assert(bool boolean) => Assert(boolean, new Exception("Assertation failed"));
 
-        public static U CastIt<T, U>(T o) where U : T => (U) o;
+        public static T CastIt<T>(this object o) => (T)o;
 
         public static string Capitalize(this string str)
         {
@@ -56,7 +56,8 @@ namespace Utilities
 
         public static StringBuilder AppendMany(this StringBuilder stringBuilder, string toAppend, int count)
         {
-            Enumerable.Repeat(toAppend, count)
+            Enumerable
+                .Repeat(toAppend, count)
                 .ForEach(stringBuilder.Append);
             return stringBuilder;
         }
@@ -65,11 +66,6 @@ namespace Utilities
         {
             stringBuilder.Length--;
             return stringBuilder;
-        }
-
-        public static bool DoesUserNameSatisfy(string userName)
-        {
-            return userName == "mladen";
         }
     }
 }

@@ -4,12 +4,11 @@ using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using SocialNetwork.DAL;
-using SocialNetwork.DAL.Repositories;
+using SocialNetwork.DevelopmentUtilities;
 using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Models;
-using SocialNetwork.TestingUtilities;
+using SocialNetwork.Web.Utilities;
 using Utilities;
-using SocialNetwork.Utilities;
 using Xunit;
 
 namespace SocialNetwork.UnitTests

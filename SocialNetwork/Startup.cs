@@ -4,20 +4,20 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SocialNetwork.DAL;
-using SocialNetwork.DAL.Repositories;
+using SocialNetwork.DevelopmentUtilities;
 using SocialNetwork.Interfaces.DAL;
+using SocialNetwork.Interfaces.Services;
 using SocialNetwork.Models;
-using SocialNetwork.TestingUtilities;
 using SocialNetwork.Web.ServiceInterfaces;
+using SocialNetwork.Services;
 using SocialNetwork.Web.Services;
 using Utilities;
 
-namespace SocialNetwork
+namespace SocialNetwork.Web
 {
     public class Startup
     {
@@ -63,20 +63,21 @@ namespace SocialNetwork
             });
 
             services.AddSignalR();
-            services.AddSingleton<IRepository<Post>>(serviceProvider =>
-            {
-                return serviceProvider.GetService<SocialNetworkDbContext>()
-                    .Let(it => new Repository<Post>(it.Posts));
-            });
-            services.AddSingleton<IRepository<User>>(serviceProvider =>
-            {
-                return serviceProvider.GetService<SocialNetworkDbContext>()
-                    .Let(it => new Repository<User>(it.Users));
-            });
+
+            services.AddSingleton<DbSet<Post>>(provider => provider.GetService<SocialNetworkDbContext>().Posts);
+            services.AddSingleton<DbSet<User>>(provider => provider.GetService<SocialNetworkDbContext>().Users);
+
+            services.AddTransient<IRepository<Post>, Repository<Post>>();
+            services.AddTransient<IReadOnlyRepository<User>, Repository<User>>();
+
+            services.AddTransient<UserManager<User>>();
+
             services.AddSingleton<TestDataContainer>();
-            services.AddSingleton<IDatabaseOperations, DatabaseOperations>();
+            services.AddTransient<IHub, Hub>();
+            services.AddTransient<IDatabaseOperations, DatabaseOperations>();
             services.AddTransient<IViewRendererService, ViewRendererService>();
             services.AddTransient<Initializer>();
+            services.AddTransient<IAuthenticator, Authenticator>();
 
             services.AddMvc(config =>
             {
@@ -97,15 +98,16 @@ namespace SocialNetwork
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
 
-                var seeder = serviceProvider.GetService<Initializer>();
-                seeder.Initialize().Wait();
+                serviceProvider
+                    .GetService<Initializer>()
+                    .Initialize().Wait();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseSignalR(routes => routes.MapHub<Hub>("/posts"));
+            app.UseSignalR(routes => routes.MapHub<Microsoft.AspNetCore.SignalR.Hub>("/posts"));
             app.UseStaticFiles();
 
             app.UseAuthentication();

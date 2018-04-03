@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Models;
 
-namespace SocialNetwork.Utilities
+namespace SocialNetwork.Web.Utilities
 {
     public static class RepositoryExtensions
     {
