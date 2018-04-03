@@ -43,7 +43,9 @@ namespace Utilities
 
         public static void Assert(bool boolean) => Assert(boolean, new Exception("Assertation failed"));
 
-        public static T CastIt<T>(this object o) => (T)o;
+        public static U UpCast<T, U>(this T o) where U : T => (U)o;
+        public static U DownCast<T, U>(this T o) where T : U => o;
+        public static T AnyCast<T>(this object o) => (T) o;
 
         public static string Capitalize(this string str)
         {
