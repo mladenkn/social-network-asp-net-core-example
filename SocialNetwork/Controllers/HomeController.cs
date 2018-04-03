@@ -19,9 +19,9 @@ namespace SocialNetwork.Web.Controllers
         private readonly IHub _hub;
         private readonly IRepository<Post> _posts;
         private readonly IDatabaseOperations _dbOps;
-        private readonly IReadOnlyRepository<User> _users;
+        private readonly IRepository<User> _users;
 
-        public HomeController(IViewRendererService renderer, IHub hub, IReadOnlyRepository<User> users,
+        public HomeController(IViewRendererService renderer, IHub hub, IRepository<User> users,
                               IRepository<Post> posts, IDatabaseOperations dbOps)
         {
             _renderer = renderer;
