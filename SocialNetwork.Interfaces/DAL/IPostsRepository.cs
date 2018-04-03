@@ -9,7 +9,12 @@ namespace SocialNetwork.Interfaces.DAL
 {
     public interface IPostsRepository : IRepository<Post>
     {
-        Task<IList<Post>> GetManyOrderedByDateDescending(
-            Expression<Func<Post, bool>> filter = null, int? count = null, int skip = 0, params string[] propsToInclude);
+        Task<IList<Post>> GetMany(Expression<Func<Post, bool>> filter = null,
+            int? count = null, int skip = 0, PostsOrder? order = null, params string[] propsToInclude);
+    }
+
+    public enum PostsOrder
+    {
+        CreatedAt
     }
 }

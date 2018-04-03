@@ -15,15 +15,17 @@ namespace SocialNetwork.DAL
         {
         }
 
-        public Task<IList<Post>> GetManyOrderedByDateDescending(Expression<Func<Post, bool>> filter = null, int? count = null, int skip = 0,
-            params string[] propsToInclude)
+        public Task<IList<Post>> GetMany(Expression<Func<Post, bool>> filter = null, int? count = null, int skip = 0,
+                                         PostsOrder? order = null, params string[] propsToInclude)
         {
             IQueryable<Post> query =
                 propsToInclude.Any()
                     ? _wrapeeContainer.Include(propsToInclude[0])
                     : _wrapeeContainer;
 
-            query = query.OrderByDescending(it => it.CreatedAt);
+            if(order == PostsOrder.CreatedAt)
+                query = query.OrderByDescending(it => it.CreatedAt);
+
             query = filter != null ? query.Where(filter) : query;
             query = query.Skip(skip);
             query = count != null ? query.Take(count.Value) : query;
