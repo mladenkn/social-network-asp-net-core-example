@@ -26,9 +26,13 @@ namespace SocialNetwork.DAL
             if(order == PostsOrder.CreatedAt_Descending)
                 query = query.OrderByDescending(it => it.CreatedAt);
 
-            query = filter != null ? query.Where(filter) : query;
+            if (filter != null)
+                query = query.Where(filter);
+
             query = query.Skip(skip);
-            query = count != null ? query.Take(count.Value) : query;
+
+            if (count != null)
+                query = query.Take(count.Value);
 
             return query
                 .ToListAsync()

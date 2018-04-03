@@ -24,10 +24,14 @@ namespace SocialNetwork.DAL
                 propsToInclude.Any() 
                     ? _wrapeeContainer.Include(propsToInclude[0])
                     : _wrapeeContainer;
-            
-            query = filter != null ? query.Where(filter) : query;
+
+            if (filter != null)
+                query = query.Where(filter);
+
             query = query.Skip(skip);
-            query = count != null ? query.Take(count.Value) : query;
+
+            if (count != null)
+                query = query.Take(count.Value);
 
             return query
                 .ToListAsync()
@@ -39,10 +43,14 @@ namespace SocialNetwork.DAL
                                                        int? count = null, int skip = 0)
         {
             var query = _wrapeeContainer.Select(selector);
+            
+            if (filter != null)
+                query = query.Where(filter);
 
-            query = filter != null ? query.Where(filter) : query;
             query = query.Skip(skip);
-            query = count != null ? query.Take(count.Value) : query;
+
+            if (count != null)
+                query = query.Take(count.Value);
 
             return query
                 .ToListAsync()
@@ -56,8 +64,10 @@ namespace SocialNetwork.DAL
                     ? _wrapeeContainer.Include(propsToInclude[0])
                     : _wrapeeContainer;
 
-            query = selector != null ? query.Where(selector) : query;
-            return query.SingleAsync();
+            if (selector != null)
+                return query.SingleAsync(selector);
+            else
+                return query.SingleAsync();
         }
 
         public async Task<TEntity> Update(Expression<Func<TEntity, bool>> selector, Action<TEntity> consumeItem, params string[] propsToInclude)
