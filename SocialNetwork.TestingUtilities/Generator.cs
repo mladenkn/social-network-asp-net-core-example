@@ -1,8 +1,6 @@
 ﻿using System;
 using Bogus;
 using SocialNetwork.Models;
-using Utilities;
-using Utils = Utilities.Utils;
 
 namespace SocialNetwork.DevelopmentUtilities
 {
@@ -22,14 +20,14 @@ namespace SocialNetwork.DevelopmentUtilities
             };
         }
 
-        public static Post RandomPost(long? id = null, string heading = null, DateTime? createdAt = null, string text = null,
+        public static Post RandomPost(long id = 0, string heading = null, DateTime? createdAt = null, string text = null,
                                       User author = null, int? likesCount = null, int? dislikesCount = null)
         {
             author = author ?? RandomUser();
 
             var post = new Post
             {
-                Id = id ?? 0,
+                Id = id,
                 Text = text ?? _faker.Lorem.Paragraph(),
                 Author = author,
                 AuthorId = author.Id,

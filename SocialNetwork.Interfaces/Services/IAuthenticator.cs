@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using SocialNetwork.Interfaces.DAL;
 using SocialNetwork.Interfaces.Models;
 using SocialNetwork.Models;
 using SignInResult = SocialNetwork.Interfaces.Models.SignInResult;

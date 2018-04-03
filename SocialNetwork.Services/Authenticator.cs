@@ -1,8 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using SocialNetwork.DAL;
 using SocialNetwork.Interfaces.Models;
 using SocialNetwork.Interfaces.Services;
 using SocialNetwork.Models;
