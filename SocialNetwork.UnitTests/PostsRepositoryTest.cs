@@ -102,7 +102,10 @@ namespace SocialNetwork.UnitTests
             _postsRepo.Insert(Generator.RandomPost());
             await _dbContext.SaveChangesAsync();
 
-            var savedPosts = (await _postsRepo.GetMany()).Select(it => it.Id);
+            var savedPosts =
+                await _postsRepo
+                    .GetMany(selector: it => it.Id);
+
             savedPosts.SequenceEqual(new long[] {1, 2, 3, 4});
 
             // cleanup

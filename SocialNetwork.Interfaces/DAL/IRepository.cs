@@ -11,6 +11,10 @@ namespace SocialNetwork.Interfaces.DAL
         Task<IList<TEntity>> GetMany(Expression<Func<TEntity, bool>> filter = null,
             int? count = null, int skip = 0, params string[] propsToInclude);
 
+        Task<IList<TProperty>> GetMany<TProperty>(Expression<Func<TEntity, TProperty>> selector,
+            Expression<Func<TProperty, bool>> filter = null,
+            int? count = null, int skip = 0);
+
         Task<TEntity> GetOne(Expression<Func<TEntity, bool>> selector = null, params string[] propsToInclude);
 
         Task<TEntity> Update(Expression<Func<TEntity, bool>> selector, Action<TEntity> consumeItem, params string[] propsToInclude);

@@ -34,6 +34,21 @@ namespace SocialNetwork.DAL
                 .Map(it => (IList<TEntity>)it);
         }
 
+        public Task<IList<TProperty>> GetMany<TProperty>(Expression<Func<TEntity, TProperty>> selector, 
+                                                       Expression<Func<TProperty, bool>> filter = null,
+                                                       int? count = null, int skip = 0)
+        {
+            var query = _wrapeeContainer.Select(selector);
+
+            query = filter != null ? query.Where(filter) : query;
+            query = query.Skip(skip);
+            query = count != null ? query.Take(count.Value) : query;
+
+            return query
+                .ToListAsync()
+                .Map(it => (IList<TProperty>)it);
+        }
+
         public Task<TEntity> GetOne(Expression<Func<TEntity, bool>> selector = null, params string[] propsToInclude)
         {
             IQueryable<TEntity> query = 
