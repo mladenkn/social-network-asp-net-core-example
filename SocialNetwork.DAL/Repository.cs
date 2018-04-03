@@ -39,13 +39,15 @@ namespace SocialNetwork.DAL
         }
 
         public Task<IList<TProperty>> GetMany<TProperty>(Expression<Func<TEntity, TProperty>> selector, 
-                                                       Expression<Func<TProperty, bool>> filter = null,
+                                                       Expression<Func<TEntity, bool>> filter = null,
                                                        int? count = null, int skip = 0)
         {
-            var query = _wrapeeContainer.Select(selector);
-            
-            if (filter != null)
-                query = query.Where(filter);
+            IQueryable<TEntity> query_ = _wrapeeContainer;
+
+            if(filter != null)
+                query_ = query_.Where(filter);
+
+            IQueryable<TProperty> query = query_.Select(selector);
 
             query = query.Skip(skip);
 
