@@ -98,10 +98,6 @@ namespace SocialNetwork.Web
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
-
-                serviceProvider
-                    .GetService<Initializer>()
-                    .Initialize().Wait();
             }
             else
             {
@@ -119,6 +115,13 @@ namespace SocialNetwork.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            if (env.IsDevelopment())
+            {
+                serviceProvider
+                    .GetService<Initializer>()
+                    .Initialize().Wait();
+            }
         }
     }
 }

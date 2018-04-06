@@ -11,7 +11,7 @@ namespace SocialNetwork.DevelopmentUtilities
         public IReadOnlyDictionary<string, User> Users { get; set; }
         public IReadOnlyList<Post> Posts { get; set; }
         
-        public string DummyPassword { get; } = "a1234567";
+        public string DummyPassword => "a1234567";
 
         public TestDataContainer()
         {
