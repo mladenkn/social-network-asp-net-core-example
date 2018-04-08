@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities", "Utilities\Util
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.UnitTests", "SocialNetwork.UnitTests\SocialNetwork.UnitTests.csproj", "{5AE6BAC7-633F-4B22-8E9C-809778224481}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.Interfaces", "SocialNetwork.Interfaces\SocialNetwork.Interfaces.csproj", "{A46DAF61-78CB-4098-8EB8-1A4427FDACF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.Interface", "SocialNetwork.Interfaces\SocialNetwork.Interface.csproj", "{A46DAF61-78CB-4098-8EB8-1A4427FDACF0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.Models", "SocialNetwork.Models\SocialNetwork.Models.csproj", "{8B2ADAAE-957E-43C3-B8A1-9E3E354D5B3A}"
 EndProject
@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.DAL", "Social
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.DevelopmentUtilities", "SocialNetwork.TestingUtilities\SocialNetwork.DevelopmentUtilities.csproj", "{93767AB2-2407-4EDE-961F-4CAF4D749427}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.Services", "SocialNetwork.Services\SocialNetwork.Services.csproj", "{1D1E8258-B096-4DB4-B06B-F461156302E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.Services", "SocialNetwork.Services\SocialNetwork.Services.csproj", "{1D1E8258-B096-4DB4-B06B-F461156302E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

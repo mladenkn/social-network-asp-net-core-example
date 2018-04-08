@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using SocialNetwork.DevelopmentUtilities;
-using SocialNetwork.Interfaces.DAL;
-using SocialNetwork.Interfaces.Services;
+using SocialNetwork.Interface.DAL;
+using SocialNetwork.Interface.Services;
 using SocialNetwork.Models;
 using Utilities;
 

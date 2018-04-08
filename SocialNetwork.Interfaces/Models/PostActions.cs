@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SocialNetwork.Interfaces.Models
+namespace SocialNetwork.Interface.Models
 {
     [Flags]
     public enum PostActions

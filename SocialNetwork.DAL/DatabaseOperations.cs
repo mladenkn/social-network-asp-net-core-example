@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using SocialNetwork.Interfaces.DAL;
+using SocialNetwork.Interface.DAL;
 
 namespace SocialNetwork.DAL
 {

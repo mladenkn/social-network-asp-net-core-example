@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
-using SocialNetwork.Interfaces.Services;
+using SocialNetwork.Interface.Services;
 
 namespace SocialNetwork.Services
 {

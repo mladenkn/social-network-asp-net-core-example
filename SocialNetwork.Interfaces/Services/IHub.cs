@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace SocialNetwork.Interfaces.Services
+namespace SocialNetwork.Interface.Services
 {
     public interface IHub
     {

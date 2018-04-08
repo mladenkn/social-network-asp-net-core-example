@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace SocialNetwork.Interfaces.DAL
+namespace SocialNetwork.Interface.DAL
 {
     public interface IRepository<TEntity>
     {

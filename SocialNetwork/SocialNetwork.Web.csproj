@@ -31,7 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SocialNetwork.DAL\SocialNetwork.DAL.csproj" />
-    <ProjectReference Include="..\SocialNetwork.Interfaces\SocialNetwork.Interfaces.csproj" />
+    <ProjectReference Include="..\SocialNetwork.Interfaces\SocialNetwork.Interface.csproj" />
     <ProjectReference Include="..\SocialNetwork.Models\SocialNetwork.Models.csproj" />
     <ProjectReference Include="..\SocialNetwork.Services\SocialNetwork.Services.csproj" />
     <ProjectReference Include="..\SocialNetwork.TestingUtilities\SocialNetwork.DevelopmentUtilities.csproj" />

@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.DevelopmentUtilities;
-using SocialNetwork.Interfaces.Models;
-using SocialNetwork.Interfaces.Services;
+using SocialNetwork.Interface.Models;
+using SocialNetwork.Interface.Services;
 using SocialNetwork.Models;
 using SocialNetwork.Web.ViewModels;
 using Utilities;
-using SignInResult = SocialNetwork.Interfaces.Models.SignInResult;
+using SignInResult = SocialNetwork.Interface.Models.SignInResult;
 
 namespace SocialNetwork.Web.Controllers
 {

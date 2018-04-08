@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-using SocialNetwork.Interfaces.Models;
+using SocialNetwork.Interface.Models;
 using SocialNetwork.Models;
-using SignInResult = SocialNetwork.Interfaces.Models.SignInResult;
+using SignInResult = SocialNetwork.Interface.Models.SignInResult;
 
-namespace SocialNetwork.Interfaces.Services
+namespace SocialNetwork.Interface.Services
 {
     public interface IAuthenticator
     {

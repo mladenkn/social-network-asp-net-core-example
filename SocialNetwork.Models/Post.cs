@@ -31,7 +31,7 @@ namespace SocialNetwork.Models
 
         public void AddRating(string userId, PostRating.Type type)
         {
-            new PostRating()
+            new PostRating
             {
                 Post = this,
                 PostId = Id,

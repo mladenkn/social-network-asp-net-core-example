@@ -1,4 +1,4 @@
-﻿namespace SocialNetwork.Interfaces.Models
+﻿namespace SocialNetwork.Interface.Models
 {
     public class RegistrationResult
     {

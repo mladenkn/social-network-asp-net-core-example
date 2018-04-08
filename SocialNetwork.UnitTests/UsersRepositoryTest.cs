@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
 using SocialNetwork.DAL;
 using SocialNetwork.DevelopmentUtilities;
-using SocialNetwork.Interfaces.DAL;
+using SocialNetwork.Interface.DAL;
 using SocialNetwork.Models;
 using SocialNetwork.Web.Utilities;
 using Utilities;

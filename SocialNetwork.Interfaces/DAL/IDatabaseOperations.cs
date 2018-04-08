@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace SocialNetwork.Interfaces.DAL
+namespace SocialNetwork.Interface.DAL
 {
     public interface IDatabaseOperations
     {

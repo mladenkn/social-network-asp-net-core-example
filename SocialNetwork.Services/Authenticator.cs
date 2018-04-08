@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using SocialNetwork.Interfaces.Models;
-using SocialNetwork.Interfaces.Services;
+using SocialNetwork.Interface.Models;
+using SocialNetwork.Interface.Services;
 using SocialNetwork.Models;
-using SignInResult = SocialNetwork.Interfaces.Models.SignInResult;
+using SignInResult = SocialNetwork.Interface.Models.SignInResult;
 
 namespace SocialNetwork.Services
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using SocialNetwork.Interfaces.DAL;
+using SocialNetwork.Interface.DAL;
 using SocialNetwork.Models;
 
 namespace SocialNetwork.Web.Utilities
