@@ -274,5 +274,51 @@ namespace SocialNetwork.UnitTests
 
             await AssertThatPostWasntRatedByUsers(3, "3", "4");
         }
+
+        [Fact]
+        public async Task ReadPostRaters()
+        {
+            long lastGeneratedPostId = 0;
+            int lastGeneratedUserId = 0;
+
+            // arange
+            var usersToSave = _testDataContainer.Users.Values.ToArray();
+            var postsToSave = _testDataContainer.Posts;
+
+            usersToSave.ForEach(it => it.Id = (++lastGeneratedUserId).ToString());
+            postsToSave.ForEach(it => it.Id = ++lastGeneratedPostId);
+
+            PostRating NewPostRating(long postId, string userId) => new PostRating()
+            {
+                PostId = postId,
+                UserId = userId,
+                RatingType = Generator.RandomEnumValue<PostRating.Type>()
+            };
+
+            var ratingsToSave = new[]
+            {
+                NewPostRating(1, "1"),
+                NewPostRating(1, "4"),
+                NewPostRating(2, "1"),
+                NewPostRating(2, "4"),
+                NewPostRating(3, "1"),
+                NewPostRating(3, "2"),
+                NewPostRating(4, "1"),
+                NewPostRating(4, "2"),
+                NewPostRating(4, "3"),
+            };
+
+            await SaveData(usersToSave, postsToSave);
+            ratingsToSave.ForEach(_dbContext.PostRatings.Add);
+
+            await _dbContext.SaveChangesAsync();
+
+            var allSavedPosts = await _postsRepo.GetMany();
+
+            allSavedPosts.ForEach(it => it.Ratings.Select(rating => rating.User));
+
+            var post4Raters = allSavedPosts.Single(it => it.Id == 4).Ratings.Select(it => it.User);
+            post4Raters.Select(it => it.Id).ContainsAll(new[] {"1", "2", "3"}).Also(Assert.True);
+        }
     }
 }

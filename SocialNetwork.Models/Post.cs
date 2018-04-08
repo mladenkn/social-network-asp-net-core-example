@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace SocialNetwork.Models
 {
@@ -22,6 +24,6 @@ namespace SocialNetwork.Models
 
         public User Author { get; set; }
 
-        public ICollection<PostRating> Ratings { get; set; } = new HashSet<PostRating>();
+        public ICollection<PostRating> Ratings { get; } = new HashSet<PostRating>();
     }
 }
