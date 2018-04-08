@@ -79,7 +79,8 @@ namespace SocialNetwork.Web.Controllers
             Post storedPost = _posts.Insert(post);
 
             Task saveChangesTask = _dbOps.SaveChangesAsync();
-            string postHtml = await _renderer.RenderPartialView("_Post", CreatePostViewModel(storedPost, author.Id));
+            var postVm = CreatePostViewModel(storedPost, author.Id);
+            string postHtml = await _renderer.RenderPartialView("_Post", postVm);
             await saveChangesTask;
             await _hub.Emit(PostsEvents.PostPublished, postHtml);
 
@@ -98,7 +99,10 @@ namespace SocialNetwork.Web.Controllers
                 skip: skip
             );
 
-            var renderingTasks = posts.Select(it => _renderer.RenderPartialView("_Post", CreatePostViewModel(it, currentUserId)));
+            var renderingTasks = posts
+                .Select(it => CreatePostViewModel(it, currentUserId))
+                .Let(it => _renderer.RenderPartialView("_Post", it));
+
             var rendered = await Task.WhenAll(renderingTasks);
             return Ok(rendered);
         }
@@ -107,10 +111,12 @@ namespace SocialNetwork.Web.Controllers
         public async Task<IActionResult> UpdatePost(long id, string text = null, string heading = null,
                                                     bool addLike = false, bool addDislike = false)
         {
+            var currentUserId = await GetCurrentUser().Map(it => it.Id);
             Post post = await _posts.GetOne(it => it.Id == id, "Author");
 
             post.Text = text ?? post.Text;
             post.Heading = heading ?? post.Heading;
+
             if (addLike)
                 post.LikesCount++;
             if (addDislike)
@@ -119,7 +125,8 @@ namespace SocialNetwork.Web.Controllers
             _posts.Update(post);
     
             Task saveChangesTask = _dbOps.SaveChangesAsync();
-            string postHtml = await _renderer.RenderPartialView("_Post", post);
+            var postVm = CreatePostViewModel(post, currentUserId);
+            string postHtml = await _renderer.RenderPartialView("_Post", postVm);
             await saveChangesTask;
             await _hub.Emit(PostsEvents.PostChanged, postHtml);
 
