@@ -160,7 +160,7 @@
             },
             reachedPageBottom: function () {
                 $.ajax({
-                    url: '@Url.Action("LoadPosts")',
+                    url: '@Url.Action("LoadPostsAjax")',
                     type: 'POST',
                     data: {
                         count: 5,

@@ -1,40 +1,52 @@
-﻿@model SocialNetwork.Models.Post
+﻿@model SocialNetwork.Web.ViewModels.PostViewModel
 
-<div class="well post" id="post-@Model.Id">
+<div class="well post" id="post-@Model.PostId">
     <div class="media">
         <a class="pull-left" href="#">
-            <img class="media-object" src="@Model.Author.ProfileImageUrl" width="40" height="40">
+            <img class="media-object" src="@Model.Author.ProfileImgUrl" width="40" height="40">
         </a>
         <div class="media-body">
             <h4 class="media-heading">@Model.Heading</h4>
-            <p class="text-right">By @Model.Author.UserName</p>
+            <p class="text-right">By @Model.Author.Username</p>
             <p class="post-text">@Model.Text</p>
             <ul class="list-inline list-unstyled">
-                <li><span><i class="glyphicon glyphicon-calendar"></i> @Model.CreatedAt.ToShortDateString() </span></li>
+                <li><span><i class="glyphicon glyphicon-calendar"></i> @Model.PublishedAt.ToShortDateString() </span></li>
                 <li>|</li>
                 <li><span><i class="glyphicon glyphicon-thumbs-up"></i> @Model.LikesCount likes</span></li>
                 <li>|</li>
                 <li><span><i class="glyphicon glyphicon-thumbs-down"></i> @Model.DislikesCount dislikes</span></li>
-                <li class="control-btn control-btn-delete">
-                    <span>
-                        <button class="btn btn-primary">Delete</button>
-                    </span>
-                </li>
-                <li class="control-btn control-btn-edit">
-                    <span>
-                        <button class="btn btn-primary">Edit</button>
-                    </span>
-                </li>
-                <li class="control-btn control-btn-dislike">
-                    <button type="button" class="btn btn-primary">
-                        <span class="glyphicon glyphicon-thumbs-down"></span>
-                    </button>
-                </li>
-                <li class="control-btn control-btn-like">
-                    <button type="button" class="btn btn-primary">
-                        <span class="glyphicon glyphicon-thumbs-up"></span>
-                    </button>
-                </li>
+                @if(Model.CanDelete)
+                {
+                    <li class="control-btn control-btn-delete">
+                        <span>
+                            <button class="btn btn-primary">Delete</button>
+                        </span>
+                    </li>
+                }
+                @if(Model.CanEdit)
+                {
+                    <li class="control-btn control-btn-edit">
+                        <span>
+                            <button class="btn btn-primary">Edit</button>
+                        </span>
+                    </li>
+                }
+                @if(Model.CanDislike)
+                {
+                    <li class="control-btn control-btn-dislike">
+                        <button type="button" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-thumbs-down"></span>
+                        </button>
+                    </li>
+                }
+                @if(Model.CanLike)
+                {
+                    <li class="control-btn control-btn-like">
+                        <button type="button" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-thumbs-up"></span>
+                        </button>
+                    </li>
+                }
             </ul>
         </div>
     </div>

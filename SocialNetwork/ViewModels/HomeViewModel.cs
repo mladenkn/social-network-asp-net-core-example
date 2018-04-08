@@ -5,6 +5,6 @@ namespace SocialNetwork.Web.ViewModels
 {
     public class HomeViewModel : BaseViewModel
     {
-        public IReadOnlyCollection<Post> Posts { get; set; }
+        public IReadOnlyCollection<PostViewModel> Posts { get; set; }
     }
 }

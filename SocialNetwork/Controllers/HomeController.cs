@@ -31,15 +31,39 @@ namespace SocialNetwork.Web.Controllers
             _users = users;
         }
 
+        private PostViewModel CreatePostViewModel(Post post, string currentUserId)
+        {
+            return new PostViewModel
+            {
+                PostId = post.Id,
+                DislikesCount = post.DislikesCount,
+                LikesCount = post.LikesCount,
+                Heading = post.Heading,
+                PublishedAt = post.CreatedAt,
+                Text = post.Text,
+
+                CanDelete = post.AuthorId == currentUserId,
+                CanEdit = post.AuthorId == currentUserId,
+                CanDislike = true,
+                CanLike = true,
+
+                Author = (post.Author.ProfileImageUrl, post.Author.UserName)
+            };
+        }
+
+        private Task<User> GetCurrentUser() => _users.GetOne(it => it.UserName == User.Identity.Name);
+
         public async Task<IActionResult> Index()
         {
-            var a = await _posts.GetMany(count: 5, order: PostsOrder.CreatedAt_Descending, propsToInclude: "Author");
-
-            User currentUser = await _users.GetOne(it => it.UserName == User.Identity.Name);
+            User currentUser = await GetCurrentUser();
+            var posts = await _posts.GetMany(count: 5, order: PostsOrder.CreatedAt_Descending, propsToInclude: "Author");
+            var postsViewModels = posts
+                .Select(it => CreatePostViewModel(it, currentUser.Id))
+                .ToList().AsReadOnly();
 
             var vm = new HomeViewModel
             {
-                Posts = a.AsReadOnly(),
+                Posts = postsViewModels,
                 Title = "Social Network",
                 ActivePage = Page.Home,
                 Username = currentUser.UserName
@@ -50,12 +74,12 @@ namespace SocialNetwork.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePost(string postText)
         {
-            User author = await _users.GetOne(it => it.UserName == User.Identity.Name);
+            User author = await GetCurrentUser();
             Post post = Generator.GeneratePost(text: postText, createdAt: DateTime.Today, author: author, likesCount: 0, dislikesCount: 0);
             Post storedPost = _posts.Insert(post);
 
             Task saveChangesTask = _dbOps.SaveChangesAsync();
-            string postHtml = await _renderer.RenderPartialView("_Post", storedPost);
+            string postHtml = await _renderer.RenderPartialView("_Post", CreatePostViewModel(storedPost, author.Id));
             await saveChangesTask;
             await _hub.Emit(PostsEvents.PostPublished, postHtml);
 
@@ -63,15 +87,18 @@ namespace SocialNetwork.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> LoadPosts(int count, int skip, string[] propsToInclude)
+        public async Task<IActionResult> LoadPostsAjax(int count, int skip, string[] propsToInclude)
         {
+            string currentUserId = await GetCurrentUser().Map(it => it.Id);
+
             var posts = await _posts.GetMany(
                 order: PostsOrder.CreatedAt_Descending,
                 propsToInclude: propsToInclude,
                 count: count,
                 skip: skip
             );
-            var renderingTasks = posts.Select(it => _renderer.RenderPartialView("_Post", it));
+
+            var renderingTasks = posts.Select(it => _renderer.RenderPartialView("_Post", CreatePostViewModel(it, currentUserId)));
             var rendered = await Task.WhenAll(renderingTasks);
             return Ok(rendered);
         }
