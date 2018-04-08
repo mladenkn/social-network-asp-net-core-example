@@ -11,15 +11,6 @@ namespace SocialNetwork.DAL
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-
-            builder.Entity<PostRating>()
-                .HasKey(it => new {it.PostId, it.UserId});
-        }
-
         public DbSet<Post> Posts { get; set; }
-        public DbSet<PostRating> PostRatings { get; set; }
     }
 }

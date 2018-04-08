@@ -218,108 +218,108 @@ namespace SocialNetwork.UnitTests
             posts.Select(it => it.Author).ForEach(Assert.NotNull);
         }
 
-        [Fact]
-        public async Task TestPostRatings()
-        {
-            long lastGeneratedPostId = 0;
-            int lastGeneratedUserId = 0;
+        //[Fact]
+        //public async Task TestPostRatings()
+        //{
+        //    long lastGeneratedPostId = 0;
+        //    int lastGeneratedUserId = 0;
 
-            // arange
-            var usersToSave = _testDataContainer.Users.Values.ToArray();
-            var postsToSave = _testDataContainer.Posts;
+        //    // arange
+        //    var usersToSave = _testDataContainer.Users.Values.ToArray();
+        //    var postsToSave = _testDataContainer.Posts;
             
-            usersToSave.ForEach(it => it.Id = (++lastGeneratedUserId).ToString());
-            postsToSave.ForEach(it => it.Id = ++lastGeneratedPostId);
+        //    usersToSave.ForEach(it => it.Id = (++lastGeneratedUserId).ToString());
+        //    postsToSave.ForEach(it => it.Id = ++lastGeneratedPostId);
 
-            PostRating NewPostRating(long postId, string userId) => new PostRating()
-            {
-                PostId = postId,
-                UserId = userId,
-                RatingType = Generator.RandomEnumValue<PostRating.Type>()
-            };
+        //    PostRating NewPostRating(long postId, string userId) => new PostRating()
+        //    {
+        //        PostId = postId,
+        //        UserId = userId,
+        //        RatingType = Generator.RandomEnumValue<PostRating.Type>()
+        //    };
 
-            var ratingsToSave = new []
-            {
-                NewPostRating(1, "1"),
-                NewPostRating(2, "1"),
-                NewPostRating(1, "4"),
-                NewPostRating(3, "1"),
-                NewPostRating(4, "1"),
-                NewPostRating(2, "4"),
-                NewPostRating(3, "2"),
-                NewPostRating(4, "3"),
-                NewPostRating(4, "2"),
-            };
+        //    var ratingsToSave = new []
+        //    {
+        //        NewPostRating(1, "1"),
+        //        NewPostRating(2, "1"),
+        //        NewPostRating(1, "4"),
+        //        NewPostRating(3, "1"),
+        //        NewPostRating(4, "1"),
+        //        NewPostRating(2, "4"),
+        //        NewPostRating(3, "2"),
+        //        NewPostRating(4, "3"),
+        //        NewPostRating(4, "2"),
+        //    };
 
-            await SaveData(usersToSave, postsToSave);
-            ratingsToSave.ForEach(_dbContext.PostRatings.Add);
+        //    await SaveData(usersToSave, postsToSave);
+        //    ratingsToSave.ForEach(_dbContext.PostRatings.Add);
 
-            await _dbContext.SaveChangesAsync();
+        //    await _dbContext.SaveChangesAsync();
 
-            async Task AssertThatPostWasRatedByUsers(long postId, params string[] userIds)
-            {
-                var post = await _postsRepo.GetOne(postId);
-                var post1RaterIds = post.Ratings.Select(it => it.UserId);
-                Assert.True(post1RaterIds.ContainsAll(userIds));
-            }
+        //    async Task AssertThatPostWasRatedByUsers(long postId, params string[] userIds)
+        //    {
+        //        var post = await _postsRepo.GetOne(postId);
+        //        var post1RaterIds = post.Ratings.Select(it => it.UserId);
+        //        Assert.True(post1RaterIds.ContainsAll(userIds));
+        //    }
 
-            async Task AssertThatPostWasntRatedByUsers(long postId, params string[] userIds)
-            {
-                var post = await _postsRepo.GetOne(postId);
-                var post1RatersIds = post.Ratings.Select(it => it.UserId);
-                Assert.True(post1RatersIds.All(it => !userIds.Contains(it)));
-            }
+        //    async Task AssertThatPostWasntRatedByUsers(long postId, params string[] userIds)
+        //    {
+        //        var post = await _postsRepo.GetOne(postId);
+        //        var post1RatersIds = post.Ratings.Select(it => it.UserId);
+        //        Assert.True(post1RatersIds.All(it => !userIds.Contains(it)));
+        //    }
 
-            await AssertThatPostWasRatedByUsers(1, "1", "4");
-            await AssertThatPostWasRatedByUsers(4, "2", "3", "1");
+        //    await AssertThatPostWasRatedByUsers(1, "1", "4");
+        //    await AssertThatPostWasRatedByUsers(4, "2", "3", "1");
 
-            await AssertThatPostWasntRatedByUsers(3, "3", "4");
-        }
+        //    await AssertThatPostWasntRatedByUsers(3, "3", "4");
+        //}
 
-        [Fact]
-        public async Task ReadPostRaters()
-        {
-            long lastGeneratedPostId = 0;
-            int lastGeneratedUserId = 0;
+        //[Fact]
+        //public async Task ReadPostRaters()
+        //{
+        //    long lastGeneratedPostId = 0;
+        //    int lastGeneratedUserId = 0;
 
-            // arange
-            var usersToSave = _testDataContainer.Users.Values.ToArray();
-            var postsToSave = _testDataContainer.Posts;
+        //    // arange
+        //    var usersToSave = _testDataContainer.Users.Values.ToArray();
+        //    var postsToSave = _testDataContainer.Posts;
 
-            usersToSave.ForEach(it => it.Id = (++lastGeneratedUserId).ToString());
-            postsToSave.ForEach(it => it.Id = ++lastGeneratedPostId);
+        //    usersToSave.ForEach(it => it.Id = (++lastGeneratedUserId).ToString());
+        //    postsToSave.ForEach(it => it.Id = ++lastGeneratedPostId);
 
-            PostRating NewPostRating(long postId, string userId) => new PostRating()
-            {
-                PostId = postId,
-                UserId = userId,
-                RatingType = Generator.RandomEnumValue<PostRating.Type>()
-            };
+        //    PostRating NewPostRating(long postId, string userId) => new PostRating()
+        //    {
+        //        PostId = postId,
+        //        UserId = userId,
+        //        RatingType = Generator.RandomEnumValue<PostRating.Type>()
+        //    };
 
-            var ratingsToSave = new[]
-            {
-                NewPostRating(1, "1"),
-                NewPostRating(1, "4"),
-                NewPostRating(2, "1"),
-                NewPostRating(2, "4"),
-                NewPostRating(3, "1"),
-                NewPostRating(3, "2"),
-                NewPostRating(4, "1"),
-                NewPostRating(4, "2"),
-                NewPostRating(4, "3"),
-            };
+        //    var ratingsToSave = new[]
+        //    {
+        //        NewPostRating(1, "1"),
+        //        NewPostRating(1, "4"),
+        //        NewPostRating(2, "1"),
+        //        NewPostRating(2, "4"),
+        //        NewPostRating(3, "1"),
+        //        NewPostRating(3, "2"),
+        //        NewPostRating(4, "1"),
+        //        NewPostRating(4, "2"),
+        //        NewPostRating(4, "3"),
+        //    };
 
-            await SaveData(usersToSave, postsToSave);
-            ratingsToSave.ForEach(_dbContext.PostRatings.Add);
+        //    await SaveData(usersToSave, postsToSave);
+        //    ratingsToSave.ForEach(_dbContext.PostRatings.Add);
 
-            await _dbContext.SaveChangesAsync();
+        //    await _dbContext.SaveChangesAsync();
 
-            var allSavedPosts = await _postsRepo.GetMany();
+        //    var allSavedPosts = await _postsRepo.GetMany();
 
-            allSavedPosts.ForEach(it => it.Ratings.Select(rating => rating.User));
+        //    allSavedPosts.ForEach(it => it.Ratings.Select(rating => rating.User));
 
-            var post4Raters = allSavedPosts.Single(it => it.Id == 4).Ratings.Select(it => it.User);
-            post4Raters.Select(it => it.Id).ContainsAll(new[] {"1", "2", "3"}).Also(Assert.True);
-        }
+        //    var post4Raters = allSavedPosts.Single(it => it.Id == 4).Ratings.Select(it => it.User);
+        //    post4Raters.Select(it => it.Id).ContainsAll(new[] {"1", "2", "3"}).Also(Assert.True);
+        //}
     }
 }

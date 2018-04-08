@@ -31,20 +31,18 @@
                         </span>
                     </li>
                 }
-                @if(Model.DislikeActionArgs.ShowBtn)
+                @if(Model.CanLike)
                 {
-                    var disabled = Model.DislikeActionArgs.Enabled ? "" : "disabled";
                     <li class="control-btn control-btn-dislike">
-                        <button type="button" class="btn btn-primary" @disabled>
+                        <button type="button" class="btn btn-primary">
                             <span class="glyphicon glyphicon-thumbs-down"></span>
                         </button>
                     </li>
                 }
-                @if(Model.LikeActionArgs.ShowBtn)
+                @if(Model.CanDislike)
                 {
-                    var disabled = Model.LikeActionArgs.Enabled ? "" : "disabled";
                     <li class="control-btn control-btn-like">
-                        <button type="button" class="btn btn-primary" @disabled>
+                        <button type="button" class="btn btn-primary">
                             <span class="glyphicon glyphicon-thumbs-up"></span>
                         </button>
                     </li>

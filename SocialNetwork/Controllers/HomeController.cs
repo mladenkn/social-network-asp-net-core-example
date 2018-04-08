@@ -38,7 +38,6 @@ namespace SocialNetwork.Web.Controllers
 
         private PostViewModel CreatePostViewModel(Post post, string currentUserId)
         {
-            bool isUserPostAuthor = post.AuthorId == currentUserId;
             PostActions permissions = _permissionsCalculator.Calculate(currentUserId, post);
 
             return new PostViewModel
@@ -50,19 +49,10 @@ namespace SocialNetwork.Web.Controllers
                 PublishedAt = post.CreatedAt,
                 Text = post.Text,
 
-                LikeActionArgs = new PostViewModel.RateActionArgs
-                {
-                    Enabled = permissions.HasFlag(PostActions.Like),
-                    ShowBtn = !isUserPostAuthor,
-                },
-                DislikeActionArgs = new PostViewModel.RateActionArgs
-                {
-                    Enabled = permissions.HasFlag(PostActions.Dislike),
-                    ShowBtn = !isUserPostAuthor,
-                },
-
                 CanEdit = permissions.HasFlag(PostActions.EditContent),
                 CanDelete = permissions.HasFlag(PostActions.Delete),
+                CanLike = permissions.HasFlag(PostActions.Like),
+                CanDislike = permissions.HasFlag(PostActions.Dislike),
 
                 Author = (post.Author.ProfileImageUrl, post.Author.UserName)
             };
@@ -149,10 +139,9 @@ namespace SocialNetwork.Web.Controllers
 
             if (model.AddLike)
             {
-                if (post.AuthorId != currentUserId  &&  !post.IsRatedByUser(currentUserId))
+                if (post.AuthorId != currentUserId)
                 {
                     post.LikesCount++;
-                    post.AddRating(currentUserId, PostRating.Type.Like);
                 }
                 else
                     return Forbid();
@@ -160,10 +149,9 @@ namespace SocialNetwork.Web.Controllers
             
             if (model.AddDislike)
             {
-                if (post.AuthorId != currentUserId && !post.IsRatedByUser(currentUserId))
+                if (post.AuthorId != currentUserId)
                 {
                     post.DislikesCount++;
-                    post.AddRating(currentUserId, PostRating.Type.Dislike);
                 }
                 else
                     return Forbid();
