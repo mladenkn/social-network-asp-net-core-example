@@ -8,21 +8,6 @@ namespace SocialNetwork.Models
 {
     public class Post : IEntity<long>
     {
-        public Post()
-        {
-            LikesBy = new PivotTableWrapper<PostRating, User>(
-                Ratings,
-                rating => rating.User, 
-                rating => rating.RatingType == PostRating.Type.Like
-            );
-
-            DislikesBy = new PivotTableWrapper<PostRating, User>(
-                Ratings,
-                rating => rating.User,
-                rating => rating.RatingType == PostRating.Type.Dislike
-            );
-        }
-
         public long Id { get; set; }
 
         public string Heading { get; set; }
@@ -40,9 +25,5 @@ namespace SocialNetwork.Models
         public User Author { get; set; }
 
         public ICollection<PostRating> Ratings { get; } = new HashSet<PostRating>();
-
-        public ICollection<User> LikesBy { get; }
-
-        public ICollection<User> DislikesBy { get; set; }
     }
 }

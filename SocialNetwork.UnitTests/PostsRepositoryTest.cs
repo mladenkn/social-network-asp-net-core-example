@@ -288,11 +288,11 @@ namespace SocialNetwork.UnitTests
             usersToSave.ForEach(it => it.Id = (++lastGeneratedUserId).ToString());
             postsToSave.ForEach(it => it.Id = ++lastGeneratedPostId);
 
-            PostRating NewPostRating(long postId, string userId, PostRating.Type? postRating = null) => new PostRating()
+            PostRating NewPostRating(long postId, string userId) => new PostRating()
             {
                 PostId = postId,
                 UserId = userId,
-                RatingType = postRating ?? Generator.RandomEnumValue<PostRating.Type>()
+                RatingType = Generator.RandomEnumValue<PostRating.Type>()
             };
 
             var ratingsToSave = new[]
@@ -303,9 +303,9 @@ namespace SocialNetwork.UnitTests
                 NewPostRating(2, "4"),
                 NewPostRating(3, "1"),
                 NewPostRating(3, "2"),
-                NewPostRating(4, "1", PostRating.Type.Like),
-                NewPostRating(4, "2", PostRating.Type.Like),
-                NewPostRating(4, "3", PostRating.Type.Dislike),
+                NewPostRating(4, "1"),
+                NewPostRating(4, "2"),
+                NewPostRating(4, "3"),
             };
 
             await SaveData(usersToSave, postsToSave);
@@ -317,17 +317,8 @@ namespace SocialNetwork.UnitTests
 
             allSavedPosts.ForEach(it => it.Ratings.Select(rating => rating.User));
 
-            allSavedPosts
-                .Single(it => it.Id == 4).LikesBy
-                .Select(it => it.Id)
-                .ContainsAll(new[] { "1", "2" })
-                .Also(Assert.True);
-
-            allSavedPosts
-                .Single(it => it.Id == 4).DislikesBy
-                .Select(it => it.Id)
-                .ContainsAll(new[] { "3" })
-                .Also(Assert.True);
+            var post4Raters = allSavedPosts.Single(it => it.Id == 4).Ratings.Select(it => it.User);
+            post4Raters.Select(it => it.Id).ContainsAll(new[] {"1", "2", "3"}).Also(Assert.True);
         }
     }
 }
