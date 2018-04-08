@@ -5,7 +5,7 @@ namespace SocialNetwork.Interfaces.Services
 {
     public class PermissionsCalculator
     {
-        public UserPostActions Calculate(string userId, Post post)
+        public PostActions Calculate(string userId, Post post)
         {
 
         }
