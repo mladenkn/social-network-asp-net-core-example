@@ -117,6 +117,9 @@ namespace SocialNetwork.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdatePost(UpdatePostModel model)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
             var currentUserId = await GetCurrentUser().Map(it => it.Id);
             Post post = await _posts.GetOne(it => it.Id == model.Id, "Author");
 
