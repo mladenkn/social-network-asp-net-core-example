@@ -24,7 +24,6 @@ namespace SocialNetwork.Web.Controllers
         private readonly IPostsRepository _posts;
         private readonly IDatabaseOperations _dbOps;
         private readonly IRepository<User> _users;
-        private readonly PermissionsCalculator _permissionsCalculator = new PermissionsCalculator();
 
         public HomeController(IViewRendererService renderer, IHub hub, IRepository<User> users,
                               IPostsRepository posts, IDatabaseOperations dbOps)
@@ -38,7 +37,7 @@ namespace SocialNetwork.Web.Controllers
 
         private PostViewModel CreatePostViewModel(Post post, string currentUserId)
         {
-            PostActions permissions = _permissionsCalculator.Calculate(currentUserId, post);
+            bool isCurrentUserAuthor = post.AuthorId != currentUserId;
 
             return new PostViewModel
             {
@@ -49,10 +48,10 @@ namespace SocialNetwork.Web.Controllers
                 PublishedAt = post.CreatedAt,
                 Text = post.Text,
 
-                CanEdit = permissions.HasFlag(PostActions.EditContent),
-                CanDelete = permissions.HasFlag(PostActions.Delete),
-                CanLike = permissions.HasFlag(PostActions.Like),
-                CanDislike = permissions.HasFlag(PostActions.Dislike),
+                CanEdit = !isCurrentUserAuthor,
+                CanDelete = !isCurrentUserAuthor,
+                CanLike = !isCurrentUserAuthor,
+                CanDislike = !isCurrentUserAuthor,
 
                 Author = (post.Author.ProfileImageUrl, post.Author.UserName)
             };
@@ -140,9 +139,7 @@ namespace SocialNetwork.Web.Controllers
             if (model.AddLike)
             {
                 if (post.AuthorId != currentUserId)
-                {
                     post.LikesCount++;
-                }
                 else
                     return Forbid();
             }
@@ -150,9 +147,7 @@ namespace SocialNetwork.Web.Controllers
             if (model.AddDislike)
             {
                 if (post.AuthorId != currentUserId)
-                {
                     post.DislikesCount++;
-                }
                 else
                     return Forbid();
             }
