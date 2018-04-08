@@ -5,6 +5,7 @@ using SocialNetwork.Interfaces.Models;
 using SocialNetwork.Interfaces.Services;
 using SocialNetwork.Models;
 using SocialNetwork.Web.ViewModels;
+using Utilities;
 using SignInResult = SocialNetwork.Interfaces.Models.SignInResult;
 
 namespace SocialNetwork.Web.Controllers
@@ -18,18 +19,36 @@ namespace SocialNetwork.Web.Controllers
             _authenticator = authenticator;
         }
 
-        [AllowAnonymous]
-        public ViewResult Register() => View(new RegisterViewModel());
+        private ViewResult CreateRegisterView(RegisterFormViewModel formModel) =>
+                new RegisterViewModel
+                {
+                    ActivePage = Page.Account_Register,
+                    Form = formModel,
+                    Title = "Register"
+                }
+                .Let(View);
+
+        private ViewResult CreateLoginView(LoginFormViewModel formModel) =>
+            new LoginViewModel
+            {
+                ActivePage = Page.Account_Register,
+                Form = formModel,
+                Title = "Register"
+            }
+            .Let(View);
 
         [AllowAnonymous]
-        public ViewResult Login() => View(new LoginViewModel());
+        public ViewResult Register() => CreateRegisterView(new RegisterFormViewModel());
+
+        [AllowAnonymous]
+        public ViewResult Login() => CreateLoginView(new LoginFormViewModel());
 
         //
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterFormViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -47,7 +66,8 @@ namespace SocialNetwork.Web.Controllers
                     return RedirectToAction(nameof(HomeController.Index), "Home");
                 }
             }
-            return View(model);
+
+            return CreateRegisterView(model);
         }
 
         //
@@ -55,7 +75,7 @@ namespace SocialNetwork.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginFormViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -70,11 +90,11 @@ namespace SocialNetwork.Web.Controllers
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
+                    return CreateLoginView(model);
                 }
             }
             else
-                return View(model);
+                return CreateLoginView(model);
         }
 
         //

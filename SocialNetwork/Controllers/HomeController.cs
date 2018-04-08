@@ -36,9 +36,14 @@ namespace SocialNetwork.Web.Controllers
             var a = await _posts.GetMany(count: 5, order: PostsOrder.CreatedAt_Descending, propsToInclude: "Author");
 
             User currentUser = await _users.GetOne(it => it.UserName == User.Identity.Name);
-            ViewData["Username"] = currentUser.UserName;
 
-            var vm = new HomeViewModel {Posts = a.AsReadOnly() };
+            var vm = new HomeViewModel
+            {
+                Posts = a.AsReadOnly(),
+                Title = "Social Network",
+                ActivePage = Page.Home,
+                Username = currentUser.UserName
+            };
             return View(vm);
         }
 
