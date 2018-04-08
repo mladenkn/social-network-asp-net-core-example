@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 
 namespace SocialNetwork.Models
 {
@@ -19,5 +21,7 @@ namespace SocialNetwork.Models
         public DateTime CreatedAt { get; set; }
 
         public User Author { get; set; }
+
+        public ICollection<PostRating> Ratings { get; set; } = new HashSet<PostRating>();
     }
 }

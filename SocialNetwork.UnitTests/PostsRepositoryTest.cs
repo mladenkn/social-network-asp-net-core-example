@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
@@ -10,6 +11,7 @@ using SocialNetwork.Models;
 using SocialNetwork.Web.Utilities;
 using Utilities;
 using Xunit;
+using static Utilities.CollectionUtils;
 
 namespace SocialNetwork.UnitTests
 {
@@ -74,7 +76,7 @@ namespace SocialNetwork.UnitTests
             long lastGeneratedId = 0;
             var usersToSave = _testDataContainer.Users.Values;
             IEnumerable<Post> postsWithIds =
-                CollectionUtils.NewArray(() => Generator.GeneratePost(id: ++lastGeneratedId), 10);
+                NewArray(() => Generator.GeneratePost(id: ++lastGeneratedId), 10);
             var postsWithoutIds = _testDataContainer.Posts;
 
             // act
@@ -213,6 +215,64 @@ namespace SocialNetwork.UnitTests
             // prepare assert
             IList<Post> posts = await _postsRepo.GetMany(propsToInclude: "Author");
             posts.Select(it => it.Author).ForEach(Assert.NotNull);
+        }
+
+        [Fact]
+        public async Task TestPostRatings()
+        {
+            long lastGeneratedPostId = 0;
+            int lastGeneratedUserId = 0;
+
+            // arange
+            var usersToSave = _testDataContainer.Users.Values.ToArray();
+            var postsToSave = _testDataContainer.Posts;
+            
+            usersToSave.ForEach(it => it.Id = (++lastGeneratedUserId).ToString());
+            postsToSave.ForEach(it => it.Id = ++lastGeneratedPostId);
+
+            PostRating NewPostRating(long postId, string userId) => new PostRating()
+            {
+                PostId = postId,
+                UserId = userId,
+                RatingType = Generator.RandomEnumValue<PostRating.Type>()
+            };
+
+            var ratingsToSave = new []
+            {
+                NewPostRating(1, "1"),
+                NewPostRating(2, "1"),
+                NewPostRating(1, "4"),
+                NewPostRating(3, "1"),
+                NewPostRating(4, "1"),
+                NewPostRating(2, "4"),
+                NewPostRating(3, "2"),
+                NewPostRating(4, "3"),
+                NewPostRating(4, "2"),
+            };
+
+            await SaveData(usersToSave, postsToSave);
+            ratingsToSave.ForEach(_dbContext.PostRatings.Add);
+
+            await _dbContext.SaveChangesAsync();
+
+            async Task AssertThatPostWasRatedByUsers(long postId, params string[] userIds)
+            {
+                var post = await _postsRepo.GetOne(postId);
+                var post1RaterIds = post.Ratings.Select(it => it.UserId);
+                Assert.True(post1RaterIds.ContainsAll(userIds));
+            }
+
+            async Task AssertThatPostWasntRatedByUsers(long postId, params string[] userIds)
+            {
+                var post = await _postsRepo.GetOne(postId);
+                var post1RatersIds = post.Ratings.Select(it => it.UserId);
+                Assert.True(post1RatersIds.All(it => !userIds.Contains(it)));
+            }
+
+            await AssertThatPostWasRatedByUsers(1, "1", "4");
+            await AssertThatPostWasRatedByUsers(4, "2", "3", "1");
+
+            await AssertThatPostWasntRatedByUsers(3, "3", "4");
         }
     }
 }

@@ -16,7 +16,6 @@ namespace SocialNetwork.UnitTests
                 .Also(Assert.True);
 
             IEnumerable<Post> posts = CollectionUtils.NewArray(() => new Post(), 10);
-            IEnumerable<Post> posts_ = posts;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace SocialNetwork.DevelopmentUtilities
         private static readonly Random Rand = new Random();
         private static readonly Faker _faker = new Faker();
 
-        public static User GenerateUser(string id = null, string userName = null, string email = null, 
+        public static User GenerateUser(string id = null, string userName = null, string email = null,
             string profileImgUrl = null)
         {
             return new User
@@ -21,8 +21,9 @@ namespace SocialNetwork.DevelopmentUtilities
             };
         }
 
-        public static Post GeneratePost(long id = 0, string heading = null, DateTime? createdAt = null, string text = null,
-                                      User author = null, int? likesCount = null, int? dislikesCount = null)
+        public static Post GeneratePost(long id = 0, string heading = null, DateTime? createdAt = null,
+            string text = null,
+            User author = null, int? likesCount = null, int? dislikesCount = null)
         {
             author = author ?? GenerateUser();
 
@@ -32,7 +33,7 @@ namespace SocialNetwork.DevelopmentUtilities
                 Text = text ?? _faker.Lorem.Paragraph(),
                 Author = author,
                 AuthorId = author.Id,
-                LikesCount = likesCount?? Rand.Next(10),
+                LikesCount = likesCount ?? Rand.Next(10),
                 DislikesCount = dislikesCount ?? Rand.Next(10),
                 CreatedAt = createdAt ?? DateTime.Today.AddDays(-1 * Rand.Next(100)),
                 Heading = heading ?? _faker.Lorem.Sentence(Rand.Next(1, 4))
@@ -40,5 +41,7 @@ namespace SocialNetwork.DevelopmentUtilities
 
             return post;
         }
+
+        public static T RandomEnumValue<T>() where T : struct => _faker.PickRandom<T>();
     }
 }

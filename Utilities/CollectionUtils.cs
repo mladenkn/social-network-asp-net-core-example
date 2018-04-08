@@ -40,6 +40,25 @@ namespace Utilities
                 .Next(array.Count)
                 .Let(i => array[i]);
 
+        public static T RandomElement<T>(this IList<T> col) =>
+            Utils.Random
+                .Next(col.Count)
+                .Let(i => col[i]);
+
+        // Gets thr next random element that satisfyies the condition
+        public static T RandomElement<T>(this IList<T> col, Func<T, bool> condition)
+        {
+            if(!col.Any(condition))
+                throw new Exception();
+
+            while (true)
+            {
+                T generated = col.RandomElement();
+                if (condition(generated))
+                    return generated;
+            }
+        }
+
         public static TCollection AddMany<TCollection, TElement>(this TCollection collection, Func<TElement> supplier, int count)
             where TCollection : ICollection<TElement>
         {
