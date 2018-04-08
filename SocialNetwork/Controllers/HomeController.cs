@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using SocialNetwork.Web.ServiceInterfaces;
 using SocialNetwork.Web.ViewModels;
 using SocialNetwork.Web.Constants;
 using Utilities;
+using SocialNetwork.Web.Utilities;
 
 namespace SocialNetwork.Web.Controllers
 {
@@ -99,9 +101,10 @@ namespace SocialNetwork.Web.Controllers
                 skip: skip
             );
 
-            var renderingTasks = posts
+            IEnumerable<Task<string>> renderingTasks =
+                posts
                 .Select(it => CreatePostViewModel(it, currentUserId))
-                .Let(it => _renderer.RenderPartialView("_Post", it));
+                .Select(it => _renderer.RenderPartialView("_Post", it));
 
             var rendered = await Task.WhenAll(renderingTasks);
             return Ok(rendered);
@@ -114,8 +117,21 @@ namespace SocialNetwork.Web.Controllers
             var currentUserId = await GetCurrentUser().Map(it => it.Id);
             Post post = await _posts.GetOne(it => it.Id == id, "Author");
 
-            post.Text = text ?? post.Text;
-            post.Heading = heading ?? post.Heading;
+            if (text != null)
+            {
+                if (post.AuthorId == currentUserId)
+                    post.Text = text;
+                else
+                    return Forbid();
+            }
+
+            if (heading != null)
+            {
+                if (post.AuthorId == currentUserId)
+                    post.Heading = heading;
+                else
+                    return Forbid();
+            }
 
             if (addLike)
                 post.LikesCount++;
@@ -136,7 +152,13 @@ namespace SocialNetwork.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> DeletePost(long postId)
         {
-            await _posts.Delete(it => it.Id == postId);
+            var post = await _posts.GetOne(postId);
+            var currentUserId = await GetCurrentUser().Map(it => it.Id);
+
+            if (post.AuthorId == currentUserId)
+                _posts.Delete(post);
+            else
+                return Forbid();
 
             await _dbOps.SaveChangesAsync();
             await _hub.Emit(PostsEvents.PostDeleted, postId);
