@@ -94,5 +94,7 @@ namespace SocialNetwork.DAL
             TEntity item = await GetOne(filter);
             _wrapedContainer.Remove(item);
         }
+
+        public void Delete(TEntity entity) => _wrapedContainer.Remove(entity);
     }
 }

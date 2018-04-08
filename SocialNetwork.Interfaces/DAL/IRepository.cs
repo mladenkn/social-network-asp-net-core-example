@@ -21,5 +21,7 @@ namespace SocialNetwork.Interfaces.DAL
         TEntity Update(TEntity post);
         TEntity Insert(TEntity entity);
         Task Delete(Expression<Func<TEntity, bool>> filter);
+
+        void Delete(TEntity entity);
     }
 }
