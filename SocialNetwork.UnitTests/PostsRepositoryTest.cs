@@ -212,7 +212,7 @@ namespace SocialNetwork.UnitTests
 
             // prepare assert
             IList<Post> posts = await _postsRepo.GetMany(propsToInclude: "Author");
-            posts.ForEach(it => it.Author);
+            posts.Select(it => it.Author).ForEach(Assert.NotNull);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SocialNetwork.Models
 {
@@ -19,7 +18,6 @@ namespace SocialNetwork.Models
 
         public DateTime CreatedAt { get; set; }
 
-        [ForeignKey("AuthorId")]
         public User Author { get; set; }
     }
 }
