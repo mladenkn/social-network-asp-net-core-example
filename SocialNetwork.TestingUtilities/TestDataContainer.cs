@@ -17,7 +17,7 @@ namespace SocialNetwork.DevelopmentUtilities
         {
             Users = 
                 new[] {"Frane", "Mate", "Ante", "Mladen"}
-                    .Select(it => Generator.RandomUser(userName: it))
+                    .Select(it => Generator.User(userName: it))
                     .Select(it => new KeyValuePair<string, User>(it.UserName, it))
                     .Let(it => new Dictionary<string, User>(it));
 
@@ -33,7 +33,7 @@ namespace SocialNetwork.DevelopmentUtilities
                     (new DateTime(2018, 1, 18), "Ante"),
                     (new DateTime(2018, 1, 17), "Mladen"),
                 }
-                .Select(it => Generator.RandomPost(createdAt: it.Item1, author: Users[it.Item2]))
+                .Select(it => Generator.Post(createdAt: it.Item1, author: Users[it.Item2]))
                 .ToList();
         }
     }

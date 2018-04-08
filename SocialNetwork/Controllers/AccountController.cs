@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SocialNetwork.DevelopmentUtilities;
 using SocialNetwork.Interfaces.Models;
 using SocialNetwork.Interfaces.Services;
 using SocialNetwork.Models;
@@ -52,7 +53,7 @@ namespace SocialNetwork.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.UserName, Email = "user@mail.com" };
+                var user = Generator.User(userName: model.UserName, email: "someone@mailservice.com");
                 RegistrationResult result = await _authenticator.Register(user, model.Password);
                 if (result.HasSucceeded)
                 {

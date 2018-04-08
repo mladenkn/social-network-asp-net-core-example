@@ -74,7 +74,7 @@ namespace SocialNetwork.UnitTests
             long lastGeneratedId = 0;
             var usersToSave = _testDataContainer.Users.Values;
             IEnumerable<Post> postsWithIds =
-                CollectionUtils.NewArray(() => Generator.RandomPost(id: ++lastGeneratedId), 10);
+                CollectionUtils.NewArray(() => Generator.Post(id: ++lastGeneratedId), 10);
             var postsWithoutIds = _testDataContainer.Posts;
 
             // act
@@ -96,10 +96,10 @@ namespace SocialNetwork.UnitTests
             usersToSave.ForEach(_usersRepo.Insert);
             await _dbContext.SaveChangesAsync();
 
-            _postsRepo.Insert(Generator.RandomPost(id: 1));
-            _postsRepo.Insert(Generator.RandomPost());
-            _postsRepo.Insert(Generator.RandomPost(id: 3));
-            _postsRepo.Insert(Generator.RandomPost());
+            _postsRepo.Insert(Generator.Post(id: 1));
+            _postsRepo.Insert(Generator.Post());
+            _postsRepo.Insert(Generator.Post(id: 3));
+            _postsRepo.Insert(Generator.Post());
             await _dbContext.SaveChangesAsync();
 
             var savedPosts =

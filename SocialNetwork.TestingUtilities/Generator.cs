@@ -9,21 +9,22 @@ namespace SocialNetwork.DevelopmentUtilities
         private static readonly Random Rand = new Random();
         private static readonly Faker _faker = new Faker();
 
-        public static User RandomUser(string id = null, string userName = null, string email = null)
+        public static User User(string id = null, string userName = null, string email = null, 
+            string profileImgUrl = null)
         {
             return new User
             {
                 Id = id,
-                ProfileImageUrl = _faker.Internet.Avatar(),
+                ProfileImageUrl = profileImgUrl ?? _faker.Internet.Avatar(),
                 UserName = userName ?? _faker.Internet.UserName(),
                 Email = email ?? _faker.Internet.Email()
             };
         }
 
-        public static Post RandomPost(long id = 0, string heading = null, DateTime? createdAt = null, string text = null,
+        public static Post Post(long id = 0, string heading = null, DateTime? createdAt = null, string text = null,
                                       User author = null, int? likesCount = null, int? dislikesCount = null)
         {
-            author = author ?? RandomUser();
+            author = author ?? User();
 
             var post = new Post
             {

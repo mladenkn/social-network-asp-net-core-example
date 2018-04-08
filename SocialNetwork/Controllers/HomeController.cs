@@ -51,7 +51,7 @@ namespace SocialNetwork.Web.Controllers
         public async Task<IActionResult> CreatePost(string postText)
         {
             User author = await _users.GetOne(it => it.UserName == User.Identity.Name);
-            Post post = Generator.RandomPost(text: postText, createdAt: DateTime.Today, author: author, likesCount: 0, dislikesCount: 0);
+            Post post = Generator.Post(text: postText, createdAt: DateTime.Today, author: author, likesCount: 0, dislikesCount: 0);
             Post storedPost = _posts.Insert(post);
 
             Task saveChangesTask = _dbOps.SaveChangesAsync();
