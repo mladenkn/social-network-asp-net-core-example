@@ -37,7 +37,7 @@ namespace SocialNetwork.Web.Controllers
 
         private PostViewModel CreatePostViewModel(Post post, string currentUserId)
         {
-            bool isCurrentUserAuthor = post.AuthorId != currentUserId;
+            bool isCurrentUserAuthor = post.AuthorId == currentUserId;
 
             return new PostViewModel
             {
@@ -48,8 +48,8 @@ namespace SocialNetwork.Web.Controllers
                 PublishedAt = post.CreatedAt,
                 Text = post.Text,
 
-                CanEdit = !isCurrentUserAuthor,
-                CanDelete = !isCurrentUserAuthor,
+                CanEdit = isCurrentUserAuthor,
+                CanDelete = isCurrentUserAuthor,
                 CanLike = !isCurrentUserAuthor,
                 CanDislike = !isCurrentUserAuthor,
 
