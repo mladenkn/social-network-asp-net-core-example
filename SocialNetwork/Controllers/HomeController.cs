@@ -11,6 +11,7 @@ using SocialNetwork.Interface.Services;
 using SocialNetwork.Web.ServiceInterfaces;
 using SocialNetwork.Web.ViewModels;
 using SocialNetwork.Web.Constants;
+using SocialNetwork.Web.Models;
 using Utilities;
 using SocialNetwork.Web.Utilities;
 
@@ -125,29 +126,28 @@ namespace SocialNetwork.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdatePost(long id, string text = null, string heading = null,
-                                                    bool addLike = false, bool addDislike = false)
+        public async Task<IActionResult> UpdatePost(UpdatePostModel model)
         {
             var currentUserId = await GetCurrentUser().Map(it => it.Id);
-            Post post = await _posts.GetOne(it => it.Id == id, "Author");
+            Post post = await _posts.GetOne(it => it.Id == model.Id, "Author");
 
-            if (text != null)
+            if (model.Text != null)
             {
                 if (post.AuthorId == currentUserId)
-                    post.Text = text;
+                    post.Text = model.Text;
                 else
                     return Forbid();
             }
 
-            if (heading != null)
+            if (model.Heading != null)
             {
                 if (post.AuthorId == currentUserId)
-                    post.Heading = heading;
+                    post.Heading = model.Heading;
                 else
                     return Forbid();
             }
 
-            if (addLike)
+            if (model.AddLike)
             {
                 if (post.AuthorId != currentUserId  &&  !post.IsRatedByUser(currentUserId))
                 {
@@ -158,7 +158,7 @@ namespace SocialNetwork.Web.Controllers
                     return Forbid();
             }
             
-            if (addDislike)
+            if (model.AddDislike)
             {
                 if (post.AuthorId != currentUserId && !post.IsRatedByUser(currentUserId))
                 {
