@@ -5,14 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.DevelopmentUtilities;
 using SocialNetwork.Interface.DAL;
-using SocialNetwork.Interface.Models;
 using SocialNetwork.Interface.Models.Entities;
 using SocialNetwork.Interface.Services;
 using SocialNetwork.Web.ServiceInterfaces;
 using SocialNetwork.Web.ViewModels;
 using SocialNetwork.Web.Constants;
 using SocialNetwork.Web.Models;
-using Utilities;
 using SocialNetwork.Web.Utilities;
 
 namespace SocialNetwork.Web.Controllers

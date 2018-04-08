@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using SocialNetwork.Interface.Models;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SocialNetwork.Web.Models
 {
