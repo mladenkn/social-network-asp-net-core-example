@@ -46,8 +46,8 @@ namespace SocialNetwork.Web.Controllers
 
                 CanDelete = post.AuthorId == currentUserId,
                 CanEdit = post.AuthorId == currentUserId,
-                CanDislike = true,
-                CanLike = true,
+                CanDislike = post.AuthorId != currentUserId,
+                CanLike = post.AuthorId != currentUserId,
 
                 Author = (post.Author.ProfileImageUrl, post.Author.UserName)
             };
@@ -134,9 +134,20 @@ namespace SocialNetwork.Web.Controllers
             }
 
             if (addLike)
-                post.LikesCount++;
+            {
+                if (post.AuthorId != currentUserId)
+                    post.LikesCount++;
+                else
+                    return Forbid();
+            }
+            
             if (addDislike)
-                post.DislikesCount++;
+            {
+                if (post.AuthorId != currentUserId)
+                    post.DislikesCount++;
+                else
+                    return Forbid();
+            }
 
             _posts.Update(post);
     
