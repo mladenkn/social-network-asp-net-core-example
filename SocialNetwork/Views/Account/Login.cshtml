@@ -9,8 +9,11 @@
 <h2>Login</h2>
 
 <style>
-    #btn-submit {
-        float: right;
+    #btn-login {
+        float: left;
+        margin-left: 14px;
+    }
+    #checkbox-remamber-me {
         margin-right: 15px;
     }
 </style>
@@ -35,9 +38,14 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-group" id="btn-submit">
-                <button type="submit" class="btn btn-primary">Login</button>
+            <div class="checkbox pull-right" id="checkbox-remamber-me">
+                <label>
+                    <input type="checkbox">
+                    Remember me </label>
             </div>
+            <button type="submit" id="btn-login" class="btn btn btn-primary">
+                Log In
+            </button>
         </div>
     </form>
 </div>
