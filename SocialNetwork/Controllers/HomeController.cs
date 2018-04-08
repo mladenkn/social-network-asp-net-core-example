@@ -35,6 +35,14 @@ namespace SocialNetwork.Web.Controllers
 
         private PostViewModel CreatePostViewModel(Post post, string currentUserId)
         {
+            bool isUserPostAuthor = post.AuthorId == currentUserId;
+
+            var rateActionsArgs = new PostViewModel.RateActionArgs
+            {
+                ShowBtn = !isUserPostAuthor,
+                Enabled = !isUserPostAuthor && !post.IsRatedByUser(currentUserId)
+            };
+
             return new PostViewModel
             {
                 PostId = post.Id,
@@ -44,10 +52,11 @@ namespace SocialNetwork.Web.Controllers
                 PublishedAt = post.CreatedAt,
                 Text = post.Text,
 
-                CanDelete = post.AuthorId == currentUserId,
-                CanEdit = post.AuthorId == currentUserId,
-                CanDislike = post.AuthorId != currentUserId,
-                CanLike = post.AuthorId != currentUserId,
+                LikeActionArgs = rateActionsArgs,
+                DislikeActionArgs = rateActionsArgs,
+
+                CanEdit = isUserPostAuthor,
+                CanDelete = isUserPostAuthor,
 
                 Author = (post.Author.ProfileImageUrl, post.Author.UserName)
             };
@@ -135,16 +144,22 @@ namespace SocialNetwork.Web.Controllers
 
             if (addLike)
             {
-                if (post.AuthorId != currentUserId)
+                if (post.AuthorId != currentUserId  &&  !post.IsRatedByUser(currentUserId))
+                {
                     post.LikesCount++;
+                    post.AddRating(currentUserId, PostRating.Type.Like);
+                }
                 else
                     return Forbid();
             }
             
             if (addDislike)
             {
-                if (post.AuthorId != currentUserId)
+                if (post.AuthorId != currentUserId && !post.IsRatedByUser(currentUserId))
+                {
                     post.DislikesCount++;
+                    post.AddRating(currentUserId, PostRating.Type.Dislike);
+                }
                 else
                     return Forbid();
             }
