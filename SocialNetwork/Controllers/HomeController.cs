@@ -58,7 +58,7 @@ namespace SocialNetwork.Web.Controllers
         public async Task<IActionResult> Index()
         {
             User currentUser = await GetCurrentUser();
-            var posts = await _posts.GetMany(count: 5, order: PostsOrder.CreatedAt_Descending, propsToInclude: "Author");
+            var posts = await _posts.GetMany(count: 5, order: PostsOrder.CreatedAtDescending, propsToInclude: "Author");
             var postsViewModels = posts
                 .Select(it => CreatePostViewModel(it, currentUser.Id))
                 .ToList().AsReadOnly();
@@ -95,7 +95,7 @@ namespace SocialNetwork.Web.Controllers
             string currentUserId = await GetCurrentUser().Map(it => it.Id);
 
             var posts = await _posts.GetMany(
-                order: PostsOrder.CreatedAt_Descending,
+                order: PostsOrder.CreatedAtDescending,
                 propsToInclude: propsToInclude,
                 count: count,
                 skip: skip

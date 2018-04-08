@@ -23,7 +23,7 @@ namespace SocialNetwork.DAL
                     ? _wrapedContainer.Include(propsToInclude[0])
                     : _wrapedContainer;
 
-            if(order == PostsOrder.CreatedAt_Descending)
+            if(order == PostsOrder.CreatedAtDescending)
                 query = query.OrderByDescending(it => it.CreatedAt);
 
             if (filter != null)
