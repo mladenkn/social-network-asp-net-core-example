@@ -1,8 +1,9 @@
 ﻿@model SocialNetwork.Web.ViewModels.RegisterViewModel
+@using SocialNetwork.Web.ViewModels
 
 @{
     ViewData["Title"] = "Register";
-    ViewData["ActivePage"] = "Account/Register";
+    ViewData["ActivePage"] = Page.Account_Register;
 }
 
 <h2>Register</h2>
@@ -15,7 +16,7 @@
 </style>
 
 <div class="col-md-offset-2 col-md-9">
-    <form  asp-action="Register">
+    <form asp-action="Register">
         <div class="col-md-6">
             <div class="form-group col-md-12">
                 <label for="input-username">Username</label>

@@ -1,7 +1,10 @@
-﻿@{
-    string GetClassForNavItem(string viewPath)
+﻿@using SocialNetwork.Web.ViewModels
+@model SocialNetwork.Web.ViewModels.BaseViewModel
+
+@{
+    string GetClassForNavItem(Page viewPath)
     {
-        return viewPath == (string) ViewData["ActivePage"] ? "active" : "";
+        return viewPath == (Page) ViewData["ActivePage"] ? "active" : "";
     }
 
     bool isUserAuthenticated = ViewData["Username"] != null;
@@ -43,7 +46,7 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="@GetClassForNavItem("Home/Index")"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="@GetClassForNavItem(Page.Home)"><a asp-controller="Home" asp-action="Index">Home</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @if(isUserAuthenticated)
@@ -58,8 +61,8 @@
                     }
                     else
                     {
-                        <li class="@GetClassForNavItem("Account/Login")"><a asp-controller="Account" asp-action="Login">Login</a></li>
-                        <li class="@GetClassForNavItem("Account/Register")"><a asp-controller="Account" asp-action="Register">Register</a></li>
+                        <li class="@GetClassForNavItem(Page.Account_Login)"><a asp-controller="Account" asp-action="Login">Login</a></li>
+                        <li class="@GetClassForNavItem(Page.Account_Register)"><a asp-controller="Account" asp-action="Register">Register</a></li>
                     }
                 </ul>
             </div>
