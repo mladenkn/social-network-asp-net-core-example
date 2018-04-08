@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Utilities;
 
 namespace SocialNetwork.Models
 {
@@ -25,5 +26,19 @@ namespace SocialNetwork.Models
         public User Author { get; set; }
 
         public ICollection<PostRating> Ratings { get; } = new HashSet<PostRating>();
+
+        public bool IsRatedByUser(string userId) => Ratings.Any(it => it.UserId == userId);
+
+        public void AddRating(string userId, PostRating.Type type)
+        {
+            new PostRating()
+            {
+                Post = this,
+                PostId = Id,
+                RatingType = type,
+                UserId = userId
+            }
+            .Also(Ratings.Add);
+        }
     }
 }
