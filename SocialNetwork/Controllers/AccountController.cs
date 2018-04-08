@@ -31,9 +31,9 @@ namespace SocialNetwork.Web.Controllers
         private ViewResult CreateLoginView(LoginFormViewModel formModel) =>
             new LoginViewModel
             {
-                ActivePage = Page.Account_Register,
+                ActivePage = Page.Account_Login,
                 Form = formModel,
-                Title = "Register"
+                Title = "Login"
             }
             .Let(View);
 
