@@ -8,7 +8,8 @@ namespace SocialNetwork.Interface.Models
         None = 0,
         Like = 1,
         Dislike = 2,
-        Edit = 4,
-        Delete = 8
+        EditContent = 4,
+        EditHeading = 8,
+        Delete = 16
     }
 }

@@ -14,11 +14,11 @@ namespace SocialNetwork.Interface.Services
 
             if (isUserPostAuthor)
             {
-                ret = ret | PostActions.Edit | PostActions.Delete;
+                ret = ret | PostActions.EditContent | PostActions.EditHeading | PostActions.Delete;
             }
             else
             {
-                if (!post.IsLikedByUser(userId))
+                if(!post.IsLikedByUser(userId))
                     ret = ret | PostActions.Like;
                 else
                     ret = ret | PostActions.Dislike;
