@@ -8,7 +8,23 @@ namespace SocialNetwork.Interface.Services
     {
         public PostActions Calculate(string userId, Post post)
         {
-            throw new NotImplementedException();
+            bool isUserPostAuthor = post.AuthorId == userId;
+
+            PostActions ret = PostActions.None;
+
+            if (isUserPostAuthor)
+            {
+                ret = ret | PostActions.Edit | PostActions.Delete;
+            }
+            else
+            {
+                if (!post.IsLikedByUser(userId))
+                    ret = ret | PostActions.Like;
+                else
+                    ret = ret | PostActions.Dislike;
+            }
+
+            return ret;
         }
     }
 }

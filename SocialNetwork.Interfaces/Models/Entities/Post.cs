@@ -29,6 +29,12 @@ namespace SocialNetwork.Interface.Models.Entities
 
         public bool IsRatedByUser(string userId) => Ratings.Any(it => it.UserId == userId);
 
+        public bool IsLikedByUser(string userId) =>
+            Ratings.Any(it => it.UserId == userId && it.RatingType == PostRating.Type.Like);
+
+        public bool IsDislikedByUser(string userId) =>
+            Ratings.Any(it => it.UserId == userId && it.RatingType == PostRating.Type.Dislike);
+
         public void AddRating(string userId, PostRating.Type type)
         {
             new PostRating
