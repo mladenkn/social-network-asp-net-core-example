@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using SocialNetwork.Interface.DAL;
-using SocialNetwork.Models;
+using SocialNetwork.Interface.Models.Entities;
 
 namespace SocialNetwork.Web.Utilities
 {

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using SocialNetwork.Models;
+using SocialNetwork.Interface.Models.Entities;
 using Utilities;
 using Xunit;
 

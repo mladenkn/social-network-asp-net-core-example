@@ -1,4 +1,6 @@
-﻿namespace SocialNetwork.Models
+﻿using SocialNetwork.Interface.Models.Entities;
+
+namespace SocialNetwork.Interface.Models
 {
     public class PostRating
     {

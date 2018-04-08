@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using SocialNetwork.Models;
+using SocialNetwork.Interface.Models;
+using SocialNetwork.Interface.Models.Entities;
 
 namespace SocialNetwork.DAL
 {

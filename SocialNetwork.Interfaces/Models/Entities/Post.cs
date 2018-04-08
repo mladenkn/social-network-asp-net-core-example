@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using Utilities;
 
-namespace SocialNetwork.Models
+namespace SocialNetwork.Interface.Models.Entities
 {
     public class Post : IEntity<long>
     {

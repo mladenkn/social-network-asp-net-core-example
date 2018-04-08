@@ -1,6 +1,6 @@
 ﻿using System;
 using SocialNetwork.Interface.Models;
-using SocialNetwork.Models;
+using SocialNetwork.Interface.Models.Entities;
 
 namespace SocialNetwork.Interface.Services
 {

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.DevelopmentUtilities;
 using SocialNetwork.Interface.Models;
 using SocialNetwork.Interface.Services;
-using SocialNetwork.Models;
 using SocialNetwork.Web.ViewModels;
 using Utilities;
 using SignInResult = SocialNetwork.Interface.Models.SignInResult;

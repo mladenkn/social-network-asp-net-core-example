@@ -1,6 +1,6 @@
 ﻿using System;
 using Bogus;
-using SocialNetwork.Models;
+using SocialNetwork.Interface.Models.Entities;
 
 namespace SocialNetwork.DevelopmentUtilities
 {

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SocialNetwork.Interface.DAL;
-using SocialNetwork.Models;
+using SocialNetwork.Interface.Models.Entities;
 
 namespace SocialNetwork.DAL
 {

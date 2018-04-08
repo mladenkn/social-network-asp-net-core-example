@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using SocialNetwork.DevelopmentUtilities;
 using SocialNetwork.Interface.DAL;
+using SocialNetwork.Interface.Models.Entities;
 using SocialNetwork.Interface.Services;
-using SocialNetwork.Models;
 using Utilities;
 
 namespace SocialNetwork.Web

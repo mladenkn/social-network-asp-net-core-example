@@ -1,4 +1,4 @@
-﻿namespace SocialNetwork.Models
+﻿namespace SocialNetwork.Interface.Models.Entities
 {
     public interface IEntity<TId>
     {

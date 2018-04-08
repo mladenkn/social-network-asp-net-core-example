@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using SocialNetwork.Interface.Models;
-using SocialNetwork.Models;
+using SocialNetwork.Interface.Models.Entities;
 using SignInResult = SocialNetwork.Interface.Models.SignInResult;
 
 namespace SocialNetwork.Interface.Services

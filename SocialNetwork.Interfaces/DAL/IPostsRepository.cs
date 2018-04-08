@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using SocialNetwork.Models;
+using SocialNetwork.Interface.Models.Entities;
 
 namespace SocialNetwork.Interface.DAL
 {

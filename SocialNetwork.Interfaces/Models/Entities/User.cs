@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
-namespace SocialNetwork.Models
+namespace SocialNetwork.Interface.Models.Entities
 {
     public class User : IdentityUser, IEntity<string>
     {

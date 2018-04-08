@@ -5,7 +5,7 @@ using Microsoft.Data.Sqlite;
 using SocialNetwork.DAL;
 using SocialNetwork.DevelopmentUtilities;
 using SocialNetwork.Interface.DAL;
-using SocialNetwork.Models;
+using SocialNetwork.Interface.Models.Entities;
 using SocialNetwork.Web.Utilities;
 using Utilities;
 using Xunit;

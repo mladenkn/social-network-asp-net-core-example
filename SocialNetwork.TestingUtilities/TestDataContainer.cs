@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SocialNetwork.Models;
+using SocialNetwork.Interface.Models.Entities;
 using Utilities;
 
 namespace SocialNetwork.DevelopmentUtilities
