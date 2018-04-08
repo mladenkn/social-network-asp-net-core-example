@@ -16,6 +16,10 @@ namespace SocialNetwork.DAL
 
             builder.Entity<PostRating>()
                 .HasKey(it => new {it.PostId, it.UserId});
+
+            builder.Entity<Post>()
+                .Ignore(it => it.LikesBy)
+                .Ignore(it => it.DislikesBy);
         }
 
         public DbSet<Post> Posts { get; set; }
