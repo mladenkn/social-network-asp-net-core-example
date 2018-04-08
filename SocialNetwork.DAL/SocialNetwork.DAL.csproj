@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SocialNetwork.Interfaces\SocialNetwork.Interface.csproj" />
-    <ProjectReference Include="..\SocialNetwork.Models\SocialNetwork.Models.csproj" />
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
 
