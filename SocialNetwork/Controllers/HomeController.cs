@@ -23,6 +23,7 @@ namespace SocialNetwork.Web.Controllers
         private readonly IPostsRepository _posts;
         private readonly IDatabaseOperations _dbOps;
         private readonly IRepository<User> _users;
+        private readonly PermissionsCalculator _permissionsCalculator = new PermissionsCalculator();
 
         public HomeController(IViewRendererService renderer, IHub hub, IRepository<User> users,
                               IPostsRepository posts, IDatabaseOperations dbOps)
@@ -37,12 +38,7 @@ namespace SocialNetwork.Web.Controllers
         private PostViewModel CreatePostViewModel(Post post, string currentUserId)
         {
             bool isUserPostAuthor = post.AuthorId == currentUserId;
-
-            var rateActionsArgs = new PostViewModel.RateActionArgs
-            {
-                ShowBtn = !isUserPostAuthor,
-                Enabled = !isUserPostAuthor && !post.IsRatedByUser(currentUserId)
-            };
+            PostActions permissions = _permissionsCalculator.Calculate(currentUserId, post);
 
             return new PostViewModel
             {
@@ -53,11 +49,19 @@ namespace SocialNetwork.Web.Controllers
                 PublishedAt = post.CreatedAt,
                 Text = post.Text,
 
-                LikeActionArgs = rateActionsArgs,
-                DislikeActionArgs = rateActionsArgs,
+                LikeActionArgs = new PostViewModel.RateActionArgs
+                {
+                    Enabled = permissions.HasFlag(PostActions.Like),
+                    ShowBtn = !isUserPostAuthor,
+                },
+                DislikeActionArgs = new PostViewModel.RateActionArgs
+                {
+                    Enabled = permissions.HasFlag(PostActions.Dislike),
+                    ShowBtn = !isUserPostAuthor,
+                },
 
-                CanEdit = isUserPostAuthor,
-                CanDelete = isUserPostAuthor,
+                CanEdit = permissions.HasFlag(PostActions.EditContent),
+                CanDelete = permissions.HasFlag(PostActions.Delete),
 
                 Author = (post.Author.ProfileImageUrl, post.Author.UserName)
             };
