@@ -69,7 +69,7 @@ namespace SocialNetwork.UnitTests
             var usersToSave = _testDataContainer.Users.Values.ToList();
             var postsToSave = _testDataContainer.Posts;
             const string userName = "mate";
-            Generator.User(userName, userName).Also(usersToSave.Add);
+            Generator.GenerateUser(userName, userName).Also(usersToSave.Add);
 
             // act
             await SaveData(usersToSave, postsToSave);

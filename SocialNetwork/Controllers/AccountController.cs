@@ -53,7 +53,7 @@ namespace SocialNetwork.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = Generator.User(userName: model.UserName, email: "someone@mailservice.com");
+                var user = Generator.GenerateUser(userName: model.UserName, email: "someone@mailservice.com");
                 RegistrationResult result = await _authenticator.Register(user, model.Password);
                 if (result.HasSucceeded)
                 {
