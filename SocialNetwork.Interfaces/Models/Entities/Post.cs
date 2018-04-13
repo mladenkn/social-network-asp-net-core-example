@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace SocialNetwork.Interface.Models.Entities
 {
@@ -19,5 +21,7 @@ namespace SocialNetwork.Interface.Models.Entities
         public DateTime CreatedAt { get; set; }
 
         public User Author { get; set; }
+
+        public ICollection<_Rating> _Ratings { get; } = new ObservableCollection<_Rating>();
     }
 }
