@@ -96,7 +96,7 @@ namespace SocialNetwork.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await _authenticator.SignOut();
-            return RedirectToAction(nameof(Register));
+            return RedirectToAction(nameof(Login));
         }
     }
 }
