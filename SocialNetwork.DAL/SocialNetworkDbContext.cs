@@ -19,6 +19,10 @@ namespace SocialNetwork.DAL
             builder.Entity<_Rating>()
                 .Ignore(it => it.RatingType)
                 .HasKey(it => new {it.PostId, it.UserId});
+
+            builder.Entity<Post>()
+                .Ignore(it => it.LikedBy)
+                .Ignore(it => it.DislikedBy);
         }
     }
 }

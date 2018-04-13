@@ -256,6 +256,18 @@ namespace SocialNetwork.UnitTests
             await _dbContext.SaveChangesAsync();
 
             var allRatings = savedPosts.Select(it => it._Ratings).Let(Concatenate);
+
+            foreach (var post in savedPosts)
+            {
+                var userThatLikedIds =
+                    post._Ratings
+                        .Where(it => it.RatingType == _Rating.Type.Like)
+                        .Select(it => it.UserId);
+
+                var usersThatLikedIds2 = post.LikedBy.Select(it => it.Id);
+
+                usersThatLikedIds2.ContainsAll(userThatLikedIds);
+            }
         }
     }
 }
