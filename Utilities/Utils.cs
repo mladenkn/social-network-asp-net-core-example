@@ -75,5 +75,11 @@ namespace Utilities
             foreach (var i in Enumerable.Range(0, times))
                 action();
         }
+
+        public static T PickOne<T>(this Random random, params T[] args)
+        {
+            var index = random.Next(args.Length);
+            return args[index];
+        }
     }
 }
