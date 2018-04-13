@@ -15,7 +15,7 @@ namespace SocialNetwork.Web.ViewModels
 
         [Required]
         [DataType(DataType.Password)]
-        [MinLength(8)]
+        [MinLength(length: 8, ErrorMessage = "Password must be atleast 8 characters long")]
         public string Password { get; set; }
 
         public bool RememberMe { get; set; }
