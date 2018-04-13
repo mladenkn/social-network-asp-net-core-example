@@ -56,12 +56,6 @@ namespace SocialNetwork.Web.Controllers
                 RegistrationResult result = await _authenticator.Register(user, model.Password);
                 if (result.HasSucceeded)
                 {
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
-                    // Send an email with this link
-                    //var code = await _authenticator.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
                     await _authenticator.SignIn(user.UserName, model.Password, isPersistent: false);
                     return RedirectToAction(nameof(HomeController.Index), "Home");
                 }
@@ -79,8 +73,6 @@ namespace SocialNetwork.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 SignInResult result = await _authenticator.SignIn(model.UserName, model.Password, 
                     isPersistent: model.RememberMe);
                 if (result.HasSucceeded)
@@ -98,7 +90,7 @@ namespace SocialNetwork.Web.Controllers
         }
 
         //
-        // POST: /Account/LogOut
+        // POST: /Account/Logout
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
