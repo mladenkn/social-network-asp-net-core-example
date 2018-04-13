@@ -69,5 +69,11 @@ namespace Utilities
             stringBuilder.Length--;
             return stringBuilder;
         }
+
+        public static void Loop(int times, Action action)
+        {
+            foreach (var i in Enumerable.Range(0, times))
+                action();
+        }
     }
 }
