@@ -14,6 +14,7 @@ namespace SocialNetwork.UnitTests
 {
     public class UsersRepositoryTest
     {
+        private readonly DatabaseType _databaseType = DatabaseType.InMemory;
         private readonly SqliteConnection _dbConnection;
         private readonly SocialNetworkDbContext _dbContext;
         private readonly IRepository<User> _usersRepo;
@@ -22,10 +23,11 @@ namespace SocialNetwork.UnitTests
 
         public UsersRepositoryTest()
         {
-            // arange
-            var (dbContext, connection) = TestUtils.InitDbInMemory().Result;
-            _dbConnection = connection;
-            _dbContext = dbContext;
+            if (_databaseType == DatabaseType.Persistant)
+                _dbContext = TestUtils.ConnectToPersistentDatabase().Result;
+            else
+                (_dbContext, _dbConnection) = TestUtils.InitDbInMemory().Result;
+
             _usersRepo = new Repository<User>(_dbContext.Users);
             _postsRepo = new Repository<Post>(_dbContext.Posts);
 

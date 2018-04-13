@@ -8,7 +8,7 @@ namespace SocialNetwork.UnitTests
     public class GeneralTest
     {
         [Fact]
-        public void Start()
+        public void Something()
         {
             "mate"
                 .Capitalize()

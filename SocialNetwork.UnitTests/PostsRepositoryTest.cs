@@ -18,6 +18,7 @@ namespace SocialNetwork.UnitTests
 {
     public class PostsRepositoryTest
     {
+        private readonly DatabaseType _databaseType = DatabaseType.InMemory;
         private readonly SqliteConnection _dbConnection;
         private readonly SocialNetworkDbContext _dbContext;
         private readonly IPostsRepository _postsRepo;
@@ -26,10 +27,11 @@ namespace SocialNetwork.UnitTests
 
         public PostsRepositoryTest()
         {
-            // arange
-            var (dbContext, connection) = TestUtils.InitDbInMemory().Result;
-            _dbConnection = connection;
-            _dbContext = dbContext;
+            if (_databaseType == DatabaseType.Persistant)
+                _dbContext = TestUtils.ConnectToPersistentDatabase().Result;
+            else
+                (_dbContext, _dbConnection) = TestUtils.InitDbInMemory().Result;
+
             _postsRepo = new PostsRepository(_dbContext.Posts);
             _usersRepo = new Repository<User>(_dbContext.Users);
 
@@ -99,9 +101,10 @@ namespace SocialNetwork.UnitTests
             usersToSave.ForEach(_usersRepo.Insert);
             await _dbContext.SaveChangesAsync();
 
-            _postsRepo.Insert(Generator.GeneratePost(id: 1));
             _postsRepo.Insert(Generator.GeneratePost());
-            _postsRepo.Insert(Generator.GeneratePost(id: 3));
+            _postsRepo.Insert(Generator.GeneratePost(id: 2));
+            _postsRepo.Insert(Generator.GeneratePost());
+            _postsRepo.Insert(Generator.GeneratePost(id: 4));
             _postsRepo.Insert(Generator.GeneratePost());
             await _dbContext.SaveChangesAsync();
 

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using SocialNetwork.DAL;
 
 namespace SocialNetwork.UnitTests
@@ -23,14 +24,18 @@ namespace SocialNetwork.UnitTests
             return (dbContext, connection);
         }
 
-        public static async Task<SocialNetworkDbContext> ConnectToTestDb()
+        public static async Task<SocialNetworkDbContext> ConnectToPersistentDatabase()
         {
             var options = new DbContextOptionsBuilder<SocialNetworkDbContext>()
-                .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SocialNetwork;Trusted_Connection=True;")
+                .UseSqlServer("Server=(localdb)\\mssqllocaldb;" +
+                              "Database=SocialNetwork;" +
+                              "Trusted_Connection=True;" +
+                              "MultipleActiveResultSets=true")
                 .Options;
 
             var dbContext = new SocialNetworkDbContext(options);
 
+            await dbContext.Database.EnsureDeletedAsync();
             await dbContext.Database.EnsureCreatedAsync();
 
             return dbContext;
