@@ -11,13 +11,28 @@ namespace SocialNetwork.Interface.Models.Entities
         {
             _Ratings.CollectionChanged += (sender, args) =>
             {
-                foreach (_Rating newItem in args.NewItems)
+                if(args.NewItems != null)
                 {
-                    if(newItem.RatingType == _Rating.Type.Like)
-                        LikedBy.Add(newItem.User);
+                    foreach (_Rating newItem in args.NewItems)
+                    {
+                        if (newItem.RatingType == _Rating.Type.Like)
+                            LikedBy.Add(newItem.User);
 
-                    if (newItem.RatingType == _Rating.Type.Dislike)
-                        DislikedBy.Add(newItem.User);
+                        if (newItem.RatingType == _Rating.Type.Dislike)
+                            DislikedBy.Add(newItem.User);
+                    }
+                }
+
+                if (args.OldItems != null)
+                {
+                    foreach (_Rating oldItem in args.OldItems)
+                    {
+                        if (oldItem.RatingType == _Rating.Type.Like)
+                            LikedBy.RemoveIf(it => it.Id == oldItem.UserId);
+
+                        if (oldItem.RatingType == _Rating.Type.Dislike)
+                            DislikedBy.RemoveIf(it => it.Id == oldItem.UserId);
+                    }
                 }
             };
         }

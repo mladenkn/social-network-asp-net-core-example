@@ -228,12 +228,10 @@ namespace SocialNetwork.UnitTests
 
             var savedPosts = await _postsRepo.GetMany(propsToInclude: "Author");
             var savedUsers = await _usersRepo.GetMany();
-
-            var usedUsers = new HashSet<User>();
-
+            
             foreach (var post in savedPosts)
             {
-                usedUsers.Clear();
+                var usedUsers = new HashSet<User>();
 
                 Loop(Random.Next(5), delegate
                 {
@@ -253,9 +251,9 @@ namespace SocialNetwork.UnitTests
 
             savedPosts.ForEach(_postsRepo.Update);
 
-            await _dbContext.SaveChangesAsync();
+            savedPosts.ForEach(post => post._Ratings.RemoveIf(it => it.User.UserName == "Mladen"));
 
-            var allRatings = savedPosts.Select(it => it._Ratings).Let(Concatenate);
+            await _dbContext.SaveChangesAsync();
 
             foreach (var post in savedPosts)
             {
@@ -266,7 +264,42 @@ namespace SocialNetwork.UnitTests
 
                 var usersThatLikedIds2 = post.LikedBy.Select(it => it.Id);
 
-                usersThatLikedIds2.ContainsAll(userThatLikedIds);
+                usersThatLikedIds2.HasSameContentAs(userThatLikedIds).Also(Assert.True);
+            }
+        }
+
+        [Fact]
+        public async Task LikesAndDislikes()
+        {
+            var usersToSave = _testDataContainer.Users.Values.ToArray();
+            var postsToSave = _testDataContainer.Posts;
+
+            foreach (var post in postsToSave)
+            {
+                var usedUsers = new HashSet<User>();
+
+                Loop(Random.Next(5), delegate
+                {
+                    var user = usersToSave
+                        .RandomElement(it => !usedUsers.Contains(it))
+                        .Also(usedUsers.Add);
+
+                    Random
+                        .PickOne(post.LikedBy, post.DislikedBy)
+                        .Add(user);
+                });
+            }
+
+            await SaveData(usersToSave, postsToSave);
+
+            var savedPosts = await _postsRepo.GetMany(propsToInclude: nameof(Post._Ratings));
+
+            foreach (var post in savedPosts)
+            {
+                var anotherInstance = postsToSave.First(it => it.Id == post.Id);
+
+                anotherInstance.LikedBy.HasSameContentAs(post.LikedBy);
+                anotherInstance.DislikedBy.HasSameContentAs(post.DislikedBy);
             }
         }
     }
