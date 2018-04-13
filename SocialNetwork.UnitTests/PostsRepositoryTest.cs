@@ -11,6 +11,8 @@ using SocialNetwork.Web.Utilities;
 using Utilities;
 using Xunit;
 using static Utilities.CollectionUtils;
+using static Utilities.Utils;
+using Assert = Xunit.Assert;
 
 namespace SocialNetwork.UnitTests
 {
@@ -215,6 +217,45 @@ namespace SocialNetwork.UnitTests
             IList<Post> posts = await _postsRepo.GetMany(propsToInclude: "Author");
             posts.Select(it => it.Author).ForEach(Assert.NotNull);
         }
-        
+
+        [Fact]
+        public async Task Ratings()
+        {
+            var usersToSave = _testDataContainer.Users.Values;
+            var postsToSave = _testDataContainer.Posts;
+
+            await SaveData(usersToSave, postsToSave);
+
+            var savedPosts = await _postsRepo.GetMany(propsToInclude: "Author");
+            var savedUsers = await _usersRepo.GetMany();
+
+            var usedUsers = new HashSet<User>();
+
+            foreach (var post in savedPosts)
+            {
+                usedUsers.Clear();
+
+                Loop(Random.Next(5), delegate
+                {
+                    var user = savedUsers.RandomElement(it => !usedUsers.Contains(it));
+                    usedUsers.Add(user);
+
+                    post._Ratings.Add(new _Rating
+                    {
+                        Post = post,
+                        User = user,
+                        PostId = post.Id,
+                        UserId = user.Id,
+                        RatingType = Generator.RandomEnumValue<_Rating.Type>()
+                    });
+                });
+            }
+
+            savedPosts.ForEach(_postsRepo.Update);
+
+            await _dbContext.SaveChangesAsync();
+
+            var allRatings = savedPosts.Select(it => it._Ratings).Let(Concatenate);
+        }
     }
 }
