@@ -22,6 +22,6 @@ namespace SocialNetwork.Interface.Models.Entities
 
         public User Author { get; set; }
 
-        public ICollection<_Rating> _Ratings { get; } = new ObservableCollection<_Rating>();
+        public ObservableCollection<_Rating> _Ratings { get; } = new ObservableCollection<_Rating>();
     }
 }
