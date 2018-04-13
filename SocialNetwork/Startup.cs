@@ -74,6 +74,7 @@ namespace SocialNetwork.Web
             services.AddTransient<UserManager<User>>();
 
             services.AddSingleton<TestDataContainer>();
+            services.AddTransient<ViewModelFactory>();
             services.AddTransient<IHub, Hub>();
             services.AddTransient<IDatabaseOperations, DatabaseOperations>();
             services.AddTransient<IViewRendererService, ViewRendererService>();
