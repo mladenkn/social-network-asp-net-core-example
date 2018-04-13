@@ -24,16 +24,15 @@ namespace SocialNetwork.DevelopmentUtilities
             Posts = 
                 new []
                 {
-                    (new DateTime(2018, 3, 18), "Mladen"),
-                    (new DateTime(2018, 3, 17), "Frane"),
-                    (new DateTime(2018, 3, 20), "Ante"),
-                    (new DateTime(2018, 2, 10), "Mate"),
-                    (new DateTime(2018, 2, 8), "Mladen"),
-                    (new DateTime(2018, 2, 7), "Frane"),
-                    (new DateTime(2018, 1, 18), "Ante"),
-                    (new DateTime(2018, 1, 17), "Mladen"),
+                    Generator.GeneratePost(createdAt: new DateTime(2018, 3, 18), author: Users["Mladen"]),
+                    Generator.GeneratePost(createdAt: new DateTime(2018, 3, 17), author: Users["Frane"]),
+                    Generator.GeneratePost(createdAt: new DateTime(2018, 3, 20), author: Users["Ante"]),
+                    Generator.GeneratePost(createdAt: new DateTime(2018, 2, 10), author: Users["Mate"]),
+                    Generator.GeneratePost(createdAt: new DateTime(2018, 2, 8), author: Users["Frane"]),
+                    Generator.GeneratePost(createdAt: new DateTime(2018, 2, 7), author: Users["Ante"]),
+                    Generator.GeneratePost(createdAt: new DateTime(2018, 1, 18), author: Users["Mladen"]),
+                    Generator.GeneratePost(createdAt: new DateTime(2018, 1, 17), author: Users["Mladen"]),
                 }
-                .Select(it => Generator.GeneratePost(createdAt: it.Item1, author: Users[it.Item2]))
                 .ToList();
         }
     }
