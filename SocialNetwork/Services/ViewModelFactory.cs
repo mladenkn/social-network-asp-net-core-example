@@ -7,19 +7,19 @@ namespace SocialNetwork.Web.Services
 {
     public class ViewModelFactory
     {
-        public RegisterViewModel CreateRegisterViewModel(RegisterFormViewModel formModel) =>
+        public RegisterViewModel CreateRegisterViewModel(RegisterFormViewModel formModel = null) =>
             new RegisterViewModel
                 {
                     ActivePage = Page.Account_Register,
-                    Form = formModel,
+                    Form = formModel ?? new RegisterFormViewModel(),
                     Title = "Register"
                 };
 
-        public LoginViewModel CreateLoginViewModel(LoginFormViewModel formModel) =>
+        public LoginViewModel CreateLoginViewModel(LoginFormViewModel formModel = null) =>
             new LoginViewModel
                 {
                     ActivePage = Page.Account_Login,
-                    Form = formModel,
+                    Form = formModel ?? new LoginFormViewModel(),
                     Title = "Login"
                 };
 

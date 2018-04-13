@@ -24,14 +24,12 @@ namespace SocialNetwork.Web.Controllers
 
         [AllowAnonymous]
         public ViewResult Register() =>
-            new RegisterFormViewModel()
-                .Let(_viewModelFactory.CreateRegisterViewModel)
+                _viewModelFactory.CreateRegisterViewModel()
                 .Let(View);
 
         [AllowAnonymous]
         public ViewResult Login() =>
-            new LoginFormViewModel()
-                .Let(_viewModelFactory.CreateLoginViewModel)
+                _viewModelFactory.CreateLoginViewModel()
                 .Let(View);
 
         //
