@@ -5,23 +5,21 @@ using System.Text;
 
 namespace Utilities
 {
-    public class IEnumerableWrapper<T, U> : IEnumerable<U>
+    public class EnumerableWrapper<T, U, TEnumerable> : IEnumerable<U>
+        where TEnumerable : IEnumerable<T>
     {
-        private readonly IEnumerable<T> _wrapee;
+        private readonly TEnumerable _wrapee;
         private readonly Func<T, bool> _filter;
         private readonly Func<T, U> _mapper;
 
-        public IEnumerableWrapper(IEnumerable<T> wrapee, Func<T, U> mapper, Func<T, bool> filter = null)
+        public EnumerableWrapper(TEnumerable wrapee, Func<T, U> mapper, Func<T, bool> filter = null)
         {
             _wrapee = wrapee;
             _filter = filter ?? (it => true);
             _mapper = mapper;
         }
 
-        public IEnumerator<U> GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerator<U> GetEnumerator() => new Enumerator(_wrapee.GetEnumerator(), _mapper, _filter);
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
