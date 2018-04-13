@@ -1,40 +1,50 @@
 ﻿@model SocialNetwork.Web.ViewModels.LoginViewModel
 
-<h2>Login</h2>
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}
 
 <style>
     #btn-login {
         float: left;
         margin-left: 14px;
     }
+
     #checkbox-remember-me {
         margin-right: 15px;
     }
 </style>
 
+<h2>Login</h2>
+
 
 <div class="col-md-offset-2 col-md-4">
     <form asp-action="Login">
+        <div asp-validation-summary="ModelOnly"></div>
         <div class="row">
             <div>
                 <div class="form-group col-md-12">
-                    <label for="input-username">Username</label>
-                    <input name="username" class="form-control" id="input-username" type="text">
+                    <label asp-for="Form.UserName"></label>
+                    <input asp-for="Form.UserName" class="form-control">
+                    <span asp-validation-for="Form.UserName" class="text-danger"></span>
                 </div>
             </div>
         </div>
         <div class="row">
             <div>
                 <div class="form-group col-md-12">
-                    <label for="input-password">Password</label>
-                    <input name="password" class="form-control" id="input-password" type="password">
+                    <label asp-for="Form.Password"></label>
+                    <input asp-for="Form.Password" class="form-control">
+                    <span asp-validation-for="Form.Password" class="text-danger"></span>
                 </div>
             </div>
         </div>
+        <div asp-validation-></div>
         <div class="row">
             <div class="checkbox pull-right" id="checkbox-remember-me">
                 <label>
-                    <input type="checkbox" name="rememberMe" value="true">
+                    <input asp-for="Form.RememberMe" />
                     Remember me
                 </label>
             </div>

@@ -48,7 +48,7 @@ namespace SocialNetwork.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterFormViewModel model)
+        public async Task<IActionResult> Register([Bind(Prefix = "Form")]RegisterFormViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +75,7 @@ namespace SocialNetwork.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginFormViewModel model)
+        public async Task<IActionResult> Login([Bind(Prefix = "Form")]LoginFormViewModel model)
         {
             if (ModelState.IsValid)
             {
