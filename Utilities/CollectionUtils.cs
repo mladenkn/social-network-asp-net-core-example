@@ -107,5 +107,14 @@ namespace Utilities
         {
             return lists.SelectMany(x => x);
         }
+
+        public static void RemoveIf<T>(this ICollection<T> collection, Func<T, bool> predicate)
+        {
+            foreach (var item in collection)
+            {
+                if (predicate(item))
+                    collection.Remove(item);
+            }
+        }
     }
 }
