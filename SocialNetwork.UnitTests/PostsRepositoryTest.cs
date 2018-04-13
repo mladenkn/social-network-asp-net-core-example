@@ -280,9 +280,8 @@ namespace SocialNetwork.UnitTests
 
                 Loop(Random.Next(5), delegate
                 {
-                    var user = usersToSave
-                        .RandomElement(it => !usedUsers.Contains(it))
-                        .Also(usedUsers.Add);
+                    var user = usersToSave.RandomElement(it => !usedUsers.Contains(it));
+                    usedUsers.Add(user);
 
                     Random
                         .PickOne(post.LikedBy, post.DislikedBy)
@@ -298,8 +297,13 @@ namespace SocialNetwork.UnitTests
             {
                 var anotherInstance = postsToSave.First(it => it.Id == post.Id);
 
-                anotherInstance.LikedBy.HasSameContentAs(post.LikedBy);
-                anotherInstance.DislikedBy.HasSameContentAs(post.DislikedBy);
+                anotherInstance.LikedBy
+                    .HasSameContentAs(post.LikedBy)
+                    .Also(Assert.True);
+
+                anotherInstance.DislikedBy.
+                    HasSameContentAs(post.DislikedBy)
+                    .Also(Assert.True);
             }
         }
     }
