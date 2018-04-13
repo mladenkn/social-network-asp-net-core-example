@@ -11,6 +11,7 @@ using SocialNetwork.Web.ServiceInterfaces;
 using SocialNetwork.Web.ViewModels;
 using SocialNetwork.Web.Constants;
 using SocialNetwork.Web.Models;
+using SocialNetwork.Web.Services;
 using SocialNetwork.Web.Utilities;
 
 namespace SocialNetwork.Web.Controllers
@@ -21,38 +22,18 @@ namespace SocialNetwork.Web.Controllers
         private readonly IHub _hub;
         private readonly IPostsRepository _posts;
         private readonly IDatabaseOperations _dbOps;
+        private readonly ViewModelFactory _viewModelFactory;
         private readonly IRepository<User> _users;
 
         public HomeController(IViewRendererService renderer, IHub hub, IRepository<User> users,
-                              IPostsRepository posts, IDatabaseOperations dbOps)
+                              IPostsRepository posts, IDatabaseOperations dbOps, ViewModelFactory viewModelFactory)
         {
             _renderer = renderer;
             _hub = hub;
             _posts = posts;
             _dbOps = dbOps;
+            _viewModelFactory = viewModelFactory;
             _users = users;
-        }
-
-        private PostViewModel CreatePostViewModel(Post post, string currentUserId)
-        {
-            bool isCurrentUserAuthor = post.AuthorId == currentUserId;
-
-            return new PostViewModel
-            {
-                PostId = post.Id,
-                DislikesCount = post.DislikesCount,
-                LikesCount = post.LikesCount,
-                Heading = post.Heading,
-                PublishedAt = post.CreatedAt,
-                Text = post.Text,
-
-                CanEdit = isCurrentUserAuthor,
-                CanDelete = isCurrentUserAuthor,
-                CanLike = !isCurrentUserAuthor,
-                CanDislike = !isCurrentUserAuthor,
-
-                Author = (post.Author.ProfileImageUrl, post.Author.UserName)
-            };
         }
 
         private Task<User> GetCurrentUser() => _users.GetOne(it => it.UserName == User.Identity.Name);
@@ -62,7 +43,7 @@ namespace SocialNetwork.Web.Controllers
             User currentUser = await GetCurrentUser();
             var posts = await _posts.GetMany(count: 5, order: PostsOrder.CreatedAtDescending, propsToInclude: "Author");
             var postsViewModels = posts
-                .Select(it => CreatePostViewModel(it, currentUser.Id))
+                .Select(it => _viewModelFactory.CreatePostViewModel(it, currentUser.Id))
                 .ToList().AsReadOnly();
 
             var vm = new HomeViewModel
@@ -83,7 +64,7 @@ namespace SocialNetwork.Web.Controllers
             Post storedPost = _posts.Insert(post);
 
             Task saveChangesTask = _dbOps.SaveChangesAsync();
-            var postVm = CreatePostViewModel(storedPost, author.Id);
+            var postVm = _viewModelFactory.CreatePostViewModel(storedPost, author.Id);
             string postHtml = await _renderer.RenderPartialView("_Post", postVm);
             await saveChangesTask;
             await _hub.Emit(PostsEvents.PostPublished, postHtml);
@@ -105,7 +86,7 @@ namespace SocialNetwork.Web.Controllers
 
             IEnumerable<Task<string>> renderingTasks =
                 posts
-                .Select(it => CreatePostViewModel(it, currentUserId))
+                .Select(it => _viewModelFactory.CreatePostViewModel(it, currentUserId))
                 .Select(it => _renderer.RenderPartialView("_Post", it));
 
             var rendered = await Task.WhenAll(renderingTasks);
@@ -156,7 +137,7 @@ namespace SocialNetwork.Web.Controllers
             _posts.Update(post);
     
             Task saveChangesTask = _dbOps.SaveChangesAsync();
-            var postVm = CreatePostViewModel(post, currentUserId);
+            var postVm = _viewModelFactory.CreatePostViewModel(post, currentUserId);
             string postHtml = await _renderer.RenderPartialView("_Post", postVm);
             await saveChangesTask;
             await _hub.Emit(PostsEvents.PostChanged, postHtml);

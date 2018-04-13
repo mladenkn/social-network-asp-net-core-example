@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.DevelopmentUtilities;
 using SocialNetwork.Interface.Models;
 using SocialNetwork.Interface.Services;
+using SocialNetwork.Web.Services;
 using SocialNetwork.Web.ViewModels;
 using Utilities;
 using SignInResult = SocialNetwork.Interface.Models.SignInResult;
@@ -13,35 +14,25 @@ namespace SocialNetwork.Web.Controllers
     public class AccountController : Controller
     {
         private readonly IAuthenticator _authenticator;
+        private readonly ViewModelFactory _viewModelFactory;
 
-        public AccountController(IAuthenticator authenticator)
+        public AccountController(IAuthenticator authenticator, ViewModelFactory viewModelFactory)
         {
             _authenticator = authenticator;
+            _viewModelFactory = viewModelFactory;
         }
 
-        private ViewResult CreateRegisterView(RegisterFormViewModel formModel) =>
-                new RegisterViewModel
-                {
-                    ActivePage = Page.Account_Register,
-                    Form = formModel,
-                    Title = "Register"
-                }
+        [AllowAnonymous]
+        public ViewResult Register() =>
+            new RegisterFormViewModel()
+                .Let(_viewModelFactory.CreateRegisterViewModel)
                 .Let(View);
 
-        private ViewResult CreateLoginView(LoginFormViewModel formModel) =>
-            new LoginViewModel
-            {
-                ActivePage = Page.Account_Login,
-                Form = formModel,
-                Title = "Login"
-            }
-            .Let(View);
-
         [AllowAnonymous]
-        public ViewResult Register() => CreateRegisterView(new RegisterFormViewModel());
-
-        [AllowAnonymous]
-        public ViewResult Login() => CreateLoginView(new LoginFormViewModel());
+        public ViewResult Login() =>
+            new LoginFormViewModel()
+                .Let(_viewModelFactory.CreateLoginViewModel)
+                .Let(View);
 
         //
         // POST: /Account/Register
@@ -61,7 +52,7 @@ namespace SocialNetwork.Web.Controllers
                 }
             }
 
-            return CreateRegisterView(model);
+            return model.Let(_viewModelFactory.CreateRegisterViewModel).Let(View);
         }
 
         //
@@ -82,11 +73,16 @@ namespace SocialNetwork.Web.Controllers
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return CreateLoginView(model);
+
+                    return model
+                        .Let(_viewModelFactory.CreateLoginViewModel)
+                        .Let(View);
                 }
             }
             else
-                return CreateLoginView(model);
+                return model
+                    .Let(_viewModelFactory.CreateLoginViewModel)
+                    .Let(View);
         }
 
         //
