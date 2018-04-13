@@ -97,5 +97,15 @@ namespace Utilities
         {
             return list.OrderBy(it => it, Comparer<T>.Create((_, __) => Utils.Random.Next(-1, 1)));
         }
+
+        public static IEnumerable<T> Concatenate<T>(params IEnumerable<T>[] lists)
+        {
+            return lists.SelectMany(x => x);
+        }
+
+        public static IEnumerable<T> Concatenate<T>(IEnumerable<IEnumerable<T>> lists)
+        {
+            return lists.SelectMany(x => x);
+        }
     }
 }
