@@ -19,6 +19,7 @@ namespace SocialNetwork.UnitTests
             var post = Generator.GeneratePost();
 
             DevelopmentUtilities.DevelopmentUtilities.AddRandomRatings(post, users, 500);
+            DevelopmentUtilities.DevelopmentUtilities.RemoveRandomRatings(post);
 
             CheckRatingsLikesAndDislikes(post);
         }
