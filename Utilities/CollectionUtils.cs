@@ -59,6 +59,20 @@ namespace Utilities
             }
         }
 
+        // Gets thr next random element that satisfyies the condition
+        public static T RandomElement<T>(this IReadOnlyList<T> col, Func<T, bool> condition)
+        {
+            if (!col.Any(condition))
+                throw new Exception();
+
+            while (true)
+            {
+                T generated = col.RandomElement();
+                if (condition(generated))
+                    return generated;
+            }
+        }
+
         public static TCollection AddMany<TCollection, TElement>(this TCollection collection, Func<TElement> supplier, int count)
             where TCollection : ICollection<TElement>
         {
