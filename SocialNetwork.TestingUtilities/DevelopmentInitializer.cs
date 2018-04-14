@@ -34,7 +34,7 @@ namespace SocialNetwork.DevelopmentUtilities
             await _dbOps.SaveChangesAsync();
 
             foreach (var post in _data.Posts)
-                DevelopmentUtilities.AddRandomRatings(post, _data.Users.Values.ToList(), 3);
+                DevelopmentUtilities.AddRandomRatings(post, _data.Users.Values.ToList(), 7);
         }
     }
 }
