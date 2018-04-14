@@ -17,18 +17,8 @@ namespace SocialNetwork.UnitTests
         {
             var users = CollectionUtils.NewArray(() => Generator.GenerateUser(), 1000);
             var post = Generator.GeneratePost();
-            
-            var usedUsers = new HashSet<User>();
 
-            Loop(Random.Next(500), delegate
-            {
-                var user = users.RandomElement(it => !usedUsers.Contains(it));
-                usedUsers.Add(user);
-
-                Random
-                    .PickOne(post.LikedBy, post.DislikedBy)
-                    .Add(user);
-            });
+            DevelopmentUtilities.DevelopmentUtilities.AddRandomRatings(post, users, 500);
 
             CheckRatingsLikesAndDislikes(post);
         }
@@ -36,7 +26,7 @@ namespace SocialNetwork.UnitTests
         [Fact]
         public void RatingsToLikesAndDislikes()
         {
-            var users = CollectionUtils.NewArray(() => Generator.GenerateUser(), 1000);
+            IReadOnlyList<User> users = CollectionUtils.NewArray(() => Generator.GenerateUser(), 1000);
             var post = Generator.GeneratePost();
 
             var usedUsers = new HashSet<User>();
