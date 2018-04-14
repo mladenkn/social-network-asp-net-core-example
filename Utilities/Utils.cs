@@ -35,6 +35,8 @@ namespace Utilities
             return o;
         }
 
+        public static T[] IntoArray<T>(this T o) => new[] {o};
+
         public static void Assert(bool boolean, Exception e)
         {
             if (!boolean)
