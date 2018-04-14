@@ -27,14 +27,9 @@ namespace SocialNetwork.DAL
         public Task<IList<Post>> GetMany(Expression<Func<Post, bool>> filter = null, int? count = null, int skip = 0,
                                          PostsOrder? order = null, params string[] propsToInclude)
         {
-            var mappedProps = MapPropertyNames(propsToInclude);
+            IQueryable<Post> query = IncludeProperties(_wrapedContainer, propsToInclude);
 
-            IQueryable<Post> query =
-                propsToInclude.Any()
-                    ? _wrapedContainer.Include(mappedProps)
-                    : _wrapedContainer;
-
-            if(order == PostsOrder.CreatedAtDescending)
+            if (order == PostsOrder.CreatedAtDescending)
                 query = query.OrderByDescending(it => it.CreatedAt);
 
             if (filter != null)

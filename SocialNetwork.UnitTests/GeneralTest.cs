@@ -21,6 +21,15 @@ namespace SocialNetwork.UnitTests
         }
 
         [Fact]
+        public void Distinct()
+        {
+            new[] {"_Ratings", "_Ratings"}
+                .Distinct()
+                .Let(it => it.Single() == "_Ratings")
+                .Also(Assert.True);
+        }
+
+        [Fact]
         public void EnumerableWrapper()
         {
             var ints = new[] {23, 34, 456, 12, 56, 67, 23, 45};

@@ -20,24 +20,26 @@ namespace SocialNetwork.DAL
             _mapPropertyName = mapPropertyNames ?? (it => new []{it});
         }
 
-        protected string MapPropertyNames(IEnumerable<string> propertyNames)
+        protected IEnumerable<string> MapPropertyNames(IEnumerable<string> propertyNames)
         {
-            return
-                propertyNames
-                    .Select(_mapPropertyName)
-                    .Concatenate()
-                    .Let(it => string.Join(",", it));
+            return propertyNames
+                .Select(_mapPropertyName)
+                .Distinct()
+                .Concatenate();
+        }
+
+        protected IQueryable<TEntity> IncludeProperties(IQueryable<TEntity> queryable, IEnumerable<string> propertyNames)
+        {
+            var mappedPropertyNames = MapPropertyNames(propertyNames);
+            foreach (var propName in mappedPropertyNames)
+                queryable = queryable.Include(propName);
+            return queryable;
         }
 
         public Task<IList<TEntity>> GetMany(Expression<Func<TEntity, bool>> filter = null,
                                             int? count = null, int skip = 0, params string[] propsToInclude)
         {
-            var mappedProps = MapPropertyNames(propsToInclude);
-
-            IQueryable<TEntity> query =
-                propsToInclude.Any() 
-                    ? _wrapedContainer.Include(mappedProps)
-                    : _wrapedContainer;
+            IQueryable<TEntity> query = IncludeProperties(_wrapedContainer, propsToInclude);
 
             if (filter != null)
                 query = query.Where(filter);
@@ -75,12 +77,7 @@ namespace SocialNetwork.DAL
 
         public Task<TEntity> GetOne(Expression<Func<TEntity, bool>> selector = null, params string[] propsToInclude)
         {
-            var mappedProps = MapPropertyNames(propsToInclude);
-
-            IQueryable<TEntity> query = 
-                propsToInclude.Any()
-                    ? _wrapedContainer.Include(mappedProps)
-                    : _wrapedContainer;
+            IQueryable<TEntity> query = IncludeProperties(_wrapedContainer, propsToInclude);
 
             if (selector != null)
                 return query.SingleAsync(selector);

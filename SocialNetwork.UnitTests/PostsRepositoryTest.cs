@@ -217,7 +217,7 @@ namespace SocialNetwork.UnitTests
             await SaveData(usersToSave, postsToSave);
 
             // prepare assert
-            IList<Post> posts = await _postsRepo.GetMany(propsToInclude: "Author");
+            IList<Post> posts = await _postsRepo.GetMany(propsToInclude: nameof(Post.Author));
             posts.Select(it => it.Author).ForEach(Assert.NotNull);
         }
 
@@ -229,7 +229,7 @@ namespace SocialNetwork.UnitTests
 
             await SaveData(usersToSave, postsToSave);
 
-            var savedPosts = await _postsRepo.GetMany(propsToInclude: "Author");
+            var savedPosts = await _postsRepo.GetMany(propsToInclude: nameof(Post.Author));
             var savedUsers = await _usersRepo.GetMany();
             
             foreach (var post in savedPosts)
@@ -294,7 +294,9 @@ namespace SocialNetwork.UnitTests
 
             await SaveData(usersToSave, postsToSave);
 
-            var savedPosts = await _postsRepo.GetMany(propsToInclude: nameof(Post._Ratings));
+            var savedPosts = await _postsRepo.GetMany(
+                propsToInclude: new []{ nameof(Post.LikedBy), nameof(Post.DislikedBy) }
+            );
 
             foreach (var post in savedPosts)
             {
