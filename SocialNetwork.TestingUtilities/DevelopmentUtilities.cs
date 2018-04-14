@@ -30,5 +30,21 @@ namespace SocialNetwork.DevelopmentUtilities
             IEnumerable<User> allRatingsDistinct = allRatings.Distinct();
             allRatings.SequenceEqual(allRatingsDistinct).Also(Utils.Assert);
         }
+
+        public static void RemoveRandomRatings(Post post)
+        {
+            var likersToRemoveIds =
+                post.LikedBy
+                    .Where(it => Utils.Random.NextBool())
+                    .Select(it => it.Id);
+
+            var dislikersToRemoveIds =
+                post.DislikedBy
+                    .Where(it => Utils.Random.NextBool())
+                    .Select(it => it.Id);
+
+            post.LikedBy.RemoveIf(it => likersToRemoveIds.Contains(it.Id));
+            post.DislikedBy.RemoveIf(it => dislikersToRemoveIds.Contains(it.Id));
+        }
     }
 }
