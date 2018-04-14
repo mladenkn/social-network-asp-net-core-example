@@ -110,7 +110,7 @@ namespace SocialNetwork.Web.Controllers
             var currentUser = await GetCurrentUser();
             Post post = await _posts.GetOne(
                 it => it.Id == model.Id, 
-                new[] { nameof(Post.Author), nameof(Post.LikedBy), nameof(Post.DislikedBy)}
+                nameof(Post.Author), nameof(Post.LikedBy), nameof(Post.DislikedBy)
             );
 
             bool hasCurrentUserLikedPost = post.LikedBy.Any(it => it.Id == currentUser.Id);
