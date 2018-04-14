@@ -25,10 +25,21 @@
 
 </div>
 
+@Html.Partial("JS/AjaxCalls")
+
 @section scripts {
     <script src="~/lib/signalr.js"></script>
 
     <script>
+
+        var ajaxCalls = ajaxCalls(
+            function() {
+                return postsCount
+            },
+            function() {
+                postsCount++
+            }
+        )
 
         var connection = new signalR.HubConnection('/posts');
         var postsCount = $('.post').length
@@ -54,17 +65,6 @@
         })
 
         connection.start()
-
-        function updatePost(data) {
-            $.ajax({
-                url: '@Url.Action("UpdatePost")',
-                type: 'POST',
-                data: data,
-                error: function(err) {
-                    console.log(err)
-                }
-            })
-        }
         
         var userEventHandlers = {
             formSubmit: function () {
@@ -75,33 +75,14 @@
                 if (postText == '' || postText == null)
                     return;
 
-                $.ajax({
-                    url: '@Url.Action("CreatePost")',
-                    type: 'POST',
-                    data: {
-                        postText: postText
-                    },
-                    success: function() {
-                        $textArea.val('')
-                    },
-                    error: function(err) {
-                        console.error(err)
-                    }
+                ajaxCalls.publishPostAjax(postText, function() {
+                    $textArea.val('')
                 })
             },
             delete: function(e) {
                 var $postRoot = $(e.currentTarget).parents().eq(3)
                 var postId = $postRoot.attr('id').replace('post-', '')
-                $.ajax({
-                    url: '@Url.Action("DeletePost")',
-                    type: 'POST',
-                    data: {
-                        postId: postId
-                    },
-                    error: function(err) {
-                        console.error(err)
-                    }
-                })
+                ajaxCalls.deletePostAjax(postId)
             },
             edit: function (e) {
 
@@ -123,17 +104,18 @@
                 var doneBtnHtml =
                     '<li class="control-btn control-btn-done-editing">' + 
                         '<span>' + 
-                            '<button class="btn btn-primary">Done</button>' + 
+                        '<button class="btn btn-primary">Done</button>' + 
                         '</span>' + 
-                    '</li>';
+                        '</li>';
 
                 $list.append(doneBtnHtml)
+
                 var $doneBtn = $list.find('.control-btn-done-editing');
                 $doneBtn.click(function () {
                     var newText = $postTextArea.val()
                     if (newText == "")
                         return;
-                    updatePost({
+                    ajaxCalls.updatePostAjax({
                         id: postId,
                         text: newText
                     })
@@ -143,7 +125,7 @@
                 var $postRoot = $(e.currentTarget).parents().eq(3)
                 var postId = $postRoot.attr('id').replace('post-', '')
                 console.log("oćeš lajkat" + postId)
-                updatePost({
+                ajaxCalls.updatePostAjax({
                     id: postId,
                     addLike: true
                 })
@@ -152,33 +134,12 @@
                 var $postRoot = $(e.currentTarget).parents().eq(3)
                 var postId = $postRoot.attr('id').replace('post-', '')
                 console.log("oćeš dislajkat" + postId)
-                updatePost({
+                ajaxCalls.updatePostAjax({
                     id: postId,
                     addDislike: true
                 })
             },
-            reachedPageBottom: function () {
-                $.ajax({
-                    url: '@Url.Action("LoadPostsAjax")',
-                    type: 'POST',
-                    data: {
-                        count: 5,
-                        skip: postsCount,
-                        propsToInclude : ["Author"]
-                    },
-                    success: function(data) {
-                        data.forEach(function(postHtml) {
-                            var id = $(postHtml).attr('id')
-                            $('#posts-list').append(postHtml)
-                            setHandlersForPost($('#' + id))
-                            postsCount++;
-                        })
-                    },
-                    error: function(err) {
-                        console.error(err)
-                    }
-                })
-            }
+            reachedPageBottom: ajaxCalls.loadMorePostsAjax
         }
 
         var allPosts = $('.post')

@@ -1,0 +1,68 @@
+﻿<script>
+
+    function ajaxCalls(getPostsCount, incrementPostsCount) {
+
+        return {
+            updatePostAjax: function (data) {
+                $.ajax({
+                    url: '@Url.Action("UpdatePost", "Home")',
+                    type: 'POST',
+                    data: data,
+                    error: function(err) {
+                        console.log(err)
+                    }
+                })
+            },
+
+            deletePostAjax: function(postId) {
+                $.ajax({
+                    url: '@Url.Action("DeletePost", "Home")',
+                    type: 'POST',
+                    data: {
+                        postId: postId
+                    },
+                    error: function(err) {
+                        console.error(err)
+                    }
+                })
+            },
+
+            publishPostAjax: function (text) {
+                $.ajax({
+                    url: '@Url.Action("CreatePost", "Home")',
+                    type: 'POST',
+                    data: {
+                        postText: text
+                    },
+                    error: function(err) {
+                        console.error(err)
+                    }
+                })
+            },
+
+            loadMorePostsAjax: function() {
+                $.ajax({
+                    url: '@Url.Action("LoadPostsAjax", "Home")',
+                    type: 'POST',
+                    data: {
+                        count: 5,
+                        skip: getPostsCount(),
+                        propsToInclude : ["Author"]
+                    },
+                    success: function(data) {
+                        data.forEach(function(postHtml) {
+                            var id = $(postHtml).attr('id')
+                            $('#posts-list').append(postHtml)
+                            setHandlersForPost($('#' + id))
+                            incrementPostsCount()
+                        })
+                    },
+                    error: function(err) {
+                        console.error(err)
+                    }
+                })
+            }
+        }
+    }
+
+</script>
