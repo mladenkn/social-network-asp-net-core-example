@@ -9,8 +9,6 @@ namespace SocialNetwork.Web.ViewModels
         public long PostId { get; set; }
         public string Text { get; set; }
         public DateTime PublishedAt { get; set; }
-        public int LikesCount { get; set; }
-        public int DislikesCount { get; set; }
         public string Heading { get; set; }
         public IReadOnlyCollection<User> LikedBy { get; set; }
         public IReadOnlyCollection<User> DislikedBy { get; set; }
@@ -21,5 +19,9 @@ namespace SocialNetwork.Web.ViewModels
         public bool CanDelete { get; set; }
         public bool CanLike { get; set; }
         public bool CanDislike { get; set; }
+        public bool CanUnLike { get; set; }
+        public bool CanUnDislike { get; set; }
+
+        public IReadOnlyCollection<string> AllowedActions { get; set; }
     }
 }

@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.Interface.Models.Entities;
+using SocialNetwork.Web.Constants;
 using SocialNetwork.Web.ViewModels;
 using Utilities;
 
@@ -27,11 +30,28 @@ namespace SocialNetwork.Web.Services
         {
             bool isCurrentUserAuthor = post.AuthorId == currentUserId;
 
+            bool hasUserLikedPost = post.LikedBy.Any(it => it.Id == currentUserId);
+            bool hasUserDislikePost = post.DislikedBy.Any(it => it.Id == currentUserId);
+
+            var allowedActions =
+                new HashSet<string>()
+                    .Also(it =>
+                    {
+                        if (isCurrentUserAuthor)
+                        {
+                            it.Add(PostActions.Edit);
+                            it.Add(PostActions.Delete);
+                        }
+                        else
+                        {
+                            it.Add(!hasUserLikedPost ? PostActions.Like : PostActions.UnLike);
+                            it.Add(!hasUserDislikePost ? PostActions.Dislike : PostActions.UnDislike);
+                        }
+                    });
+
             return new PostViewModel
             {
                 PostId = post.Id,
-                DislikesCount = post.DislikesCount,
-                LikesCount = post.LikesCount,
                 Heading = post.Heading,
                 PublishedAt = post.CreatedAt,
                 Text = post.Text,
@@ -42,6 +62,9 @@ namespace SocialNetwork.Web.Services
                 CanDelete = isCurrentUserAuthor,
                 CanLike = !isCurrentUserAuthor,
                 CanDislike = !isCurrentUserAuthor,
+                CanUnLike = hasUserLikedPost,
+                CanUnDislike = hasUserDislikePost,
+                AllowedActions = allowedActions,
 
                 Author = (post.Author.ProfileImageUrl, post.Author.UserName)
             };

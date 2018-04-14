@@ -13,6 +13,7 @@ using SocialNetwork.Web.Constants;
 using SocialNetwork.Web.Models;
 using SocialNetwork.Web.Services;
 using SocialNetwork.Web.Utilities;
+using Utilities;
 
 namespace SocialNetwork.Web.Controllers
 {
@@ -59,6 +60,7 @@ namespace SocialNetwork.Web.Controllers
                 ActivePage = Page.Home,
                 Username = currentUser.UserName
             };
+
             return View(vm);
         }
 
@@ -81,7 +83,7 @@ namespace SocialNetwork.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> LoadPostsAjax(int count, int skip, string[] propsToInclude)
         {
-            string currentUserId = await GetCurrentUser().Map(it => it.Id);
+            User currentUser = await GetCurrentUser();
 
             var posts = await _posts.GetMany(
                 order: PostsOrder.CreatedAtDescending,
@@ -92,7 +94,7 @@ namespace SocialNetwork.Web.Controllers
 
             IEnumerable<Task<string>> renderingTasks =
                 posts
-                .Select(it => _viewModelFactory.CreatePostViewModel(it, currentUserId))
+                .Select(it => _viewModelFactory.CreatePostViewModel(it, currentUser.Id))
                 .Select(it => _renderer.RenderPartialView("_Post", it));
 
             var rendered = await Task.WhenAll(renderingTasks);
@@ -110,6 +112,9 @@ namespace SocialNetwork.Web.Controllers
                 it => it.Id == model.Id, 
                 new[] { nameof(Post.Author), nameof(Post.LikedBy), nameof(Post.DislikedBy)}
             );
+
+            bool hasCurrentUserLikedPost = post.LikedBy.Any(it => it.Id == currentUser.Id);
+            bool hasCurrentUserDislikedPost = post.DislikedBy.Any(it => it.Id == currentUser.Id);
 
             if (model.Text != null)
             {
@@ -129,9 +134,15 @@ namespace SocialNetwork.Web.Controllers
 
             if (model.AddLike)
             {
-                if (post.AuthorId != currentUser.Id  &&  !post.LikedBy.Contains(currentUser))
+                if (post.AuthorId != currentUser.Id  &&  !hasCurrentUserLikedPost)
                 {
-                    post.LikesCount++;
+                    if (hasCurrentUserDislikedPost)
+                    {
+                        post.DislikedBy.RemoveIf(it => it.Id == currentUser.Id);
+                        _posts.Update(post);
+                        await _dbOps.SaveChangesAsync();
+                    }
+
                     post.LikedBy.Add(currentUser);
                 }
                 else
@@ -140,9 +151,15 @@ namespace SocialNetwork.Web.Controllers
             
             if (model.AddDislike)
             {
-                if (post.AuthorId != currentUser.Id && !post.DislikedBy.Contains(currentUser))
+                if (post.AuthorId != currentUser.Id  &&  !hasCurrentUserDislikedPost)
                 {
-                    post.DislikesCount++;
+                    if (hasCurrentUserLikedPost)
+                    {
+                        post.LikedBy.RemoveIf(it => it.Id == currentUser.Id);
+                        _posts.Update(post);
+                        await _dbOps.SaveChangesAsync();
+                    }
+
                     post.DislikedBy.Add(currentUser);
                 }
                 else

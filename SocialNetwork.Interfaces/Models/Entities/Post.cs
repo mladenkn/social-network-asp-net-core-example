@@ -48,10 +48,6 @@ namespace SocialNetwork.Interface.Models.Entities
 
         public string AuthorId { get; set; }
 
-        public int LikesCount { get; set; }
-
-        public int DislikesCount { get; set; }
-
         public DateTime CreatedAt { get; set; }
 
         public User Author { get; set; }

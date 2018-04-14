@@ -43,8 +43,6 @@ namespace SocialNetwork.DevelopmentUtilities
                 Text = text ?? _faker.Lorem.Paragraph(),
                 Author = author,
                 AuthorId = author.Id,
-                LikesCount = likesCount ?? Rand.Next(10),
-                DislikesCount = dislikesCount ?? Rand.Next(10),
                 CreatedAt = createdAt ?? DateTime.Today.AddDays(-1 * Rand.Next(100)),
                 Heading = heading ?? _faker.Lorem.Sentence(Rand.Next(1, 4))
             };

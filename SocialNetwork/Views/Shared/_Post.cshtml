@@ -1,4 +1,5 @@
-﻿@model SocialNetwork.Web.ViewModels.PostViewModel
+﻿@using SocialNetwork.Web.Constants
+@model SocialNetwork.Web.ViewModels.PostViewModel
 
 @{
 
@@ -19,7 +20,7 @@
                 <li><span><i class="glyphicon glyphicon-thumbs-up"></i> @Model.LikedBy.Count likes</span></li>
                 <li>|</li>
                 <li><span><i class="glyphicon glyphicon-thumbs-down"></i> @Model.DislikedBy.Count dislikes</span></li>
-                @if(Model.CanDelete)
+                @if (Model.AllowedActions.Contains(PostActions.Delete))
                 {
                     <li class="control-btn control-btn-delete">
                         <span>
@@ -27,7 +28,7 @@
                         </span>
                     </li>
                 }
-                @if(Model.CanEdit)
+                @if (Model.AllowedActions.Contains(PostActions.Edit))
                 {
                     <li class="control-btn control-btn-edit">
                         <span>
@@ -35,7 +36,7 @@
                         </span>
                     </li>
                 }
-                @if(Model.CanLike)
+                @if (Model.AllowedActions.Contains(PostActions.Dislike))
                 {
                     <li class="control-btn control-btn-dislike">
                         <button type="button" class="btn btn-primary">
@@ -43,10 +44,26 @@
                         </button>
                     </li>
                 }
-                @if(Model.CanDislike)
+                else if (Model.AllowedActions.Contains(PostActions.UnDislike))
+                {
+                    <li class="control-btn control-btn-undislike">
+                        <button type="button" class="btn btn-success">
+                            <span class="glyphicon glyphicon-thumbs-down"></span>
+                        </button>
+                    </li>
+                }
+                @if (Model.AllowedActions.Contains(PostActions.Like))
                 {
                     <li class="control-btn control-btn-like">
                         <button type="button" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-thumbs-up"></span>
+                        </button>
+                    </li>
+                }
+                else if (Model.AllowedActions.Contains(PostActions.UnLike))
+                {
+                    <li class="control-btn control-btn-unlike">
+                        <button type="button" class="btn btn-success">
                             <span class="glyphicon glyphicon-thumbs-up"></span>
                         </button>
                     </li>
