@@ -83,5 +83,7 @@ namespace Utilities
             var index = random.Next(args.Length);
             return args[index];
         }
+
+        public static bool NextBool(this Random random) => random.Next(0, 1) == 1;
     }
 }
