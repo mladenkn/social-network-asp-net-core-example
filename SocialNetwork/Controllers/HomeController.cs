@@ -129,7 +129,7 @@ namespace SocialNetwork.Web.Controllers
 
             if (model.AddLike)
             {
-                if (post.AuthorId != currentUser.Id)
+                if (post.AuthorId != currentUser.Id  &&  !post.LikedBy.Contains(currentUser))
                 {
                     post.LikesCount++;
                     post.LikedBy.Add(currentUser);
@@ -140,7 +140,7 @@ namespace SocialNetwork.Web.Controllers
             
             if (model.AddDislike)
             {
-                if (post.AuthorId != currentUser.Id)
+                if (post.AuthorId != currentUser.Id && !post.DislikedBy.Contains(currentUser))
                 {
                     post.DislikesCount++;
                     post.DislikedBy.Add(currentUser);
