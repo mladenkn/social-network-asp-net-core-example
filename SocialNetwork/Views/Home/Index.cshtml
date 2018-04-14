@@ -26,6 +26,7 @@
 </div>
 
 @Html.Partial("JS/AjaxCalls")
+@Html.Partial("JS/postActionHandlers")
 
 @section scripts {
     <script src="~/lib/signalr.js"></script>
@@ -33,6 +34,7 @@
     <script>
 
         var ajaxCalls = ajaxCalls()
+        var postActionHandlers = postActionHandlers(ajaxCalls, setPostViewIntoEditingState)
 
         var connection = new signalR.HubConnection('/posts');
         var postsCount = $('.post').length
@@ -58,105 +60,93 @@
         })
 
         connection.start()
-        
-        var userEventHandlers = {
-            publish: function () {
 
-                var $form = $('#new-post-form')
-                var $textArea = $form.find('#form-text')
-                var postText = $textArea.val()
-                if (postText == '' || postText == null)
-                    return;
+        function setPostViewIntoEditingState(postId) {
+            var $post = $('#post-' + postId)
 
-                ajaxCalls.publishPost(postText, function() {
-                    $textArea.val('')
-                })
-            },
-            delete: function(e) {
-                var $postRoot = $(e.currentTarget).parents().eq(3)
-                var postId = $postRoot.attr('id').replace('post-', '')
-                ajaxCalls.deletePost(postId)
-            },
-            edit: function (e) {
+            // replaceParagraphWithTextArea
+            var $postParagraph = $post.find('.post-text')
+            var postParagraphWidth = $postParagraph.css('width')
+            var postText = $postParagraph.text();
+            $postParagraph.replaceWith('<textarea>' + postText + "</textarea>")
+            var $postTextArea = $post.find('textarea')
+            $postTextArea.css('width', postParagraphWidth)
 
-                var $postRoot = $(e.currentTarget).parents().eq(3)
-                var postId = $postRoot.attr('id').replace('post-', '')
+            // setEditingButtons
+            var $list = $post.find('ul');
+            $list.find('.control-btn').remove()
 
-                // replaceParagraphWithTextArea
-                var $postParagraph = $postRoot.find('.post-text')
-                var postParagraphWidth = $postParagraph.css('width')
-                var postText = $postParagraph.text();
-                $postParagraph.replaceWith('<textarea>' + postText + "</textarea>")
-                var $postTextArea = $postRoot.find('textarea')
-                $postTextArea.css('width', postParagraphWidth)
+            var doneBtnHtml =
+                '<li class="control-btn control-btn-done-editing">' + 
+                    '<span>' + 
+                    '<button class="btn btn-primary">Done</button>' + 
+                    '</span>' + 
+                 '</li>';
 
-                // setEditingButtons
-                var $list = $postRoot.find('ul');
-                $list.find('.control-btn').remove()
+            $list.append(doneBtnHtml)
+            var $doneBtn = $list.find('.control-btn-done-editing');
 
-                var doneBtnHtml =
-                    '<li class="control-btn control-btn-done-editing">' + 
-                        '<span>' + 
-                        '<button class="btn btn-primary">Done</button>' + 
-                        '</span>' + 
-                    '</li>';
-
-                $list.append(doneBtnHtml)
-
-                var $doneBtn = $list.find('.control-btn-done-editing');
-                $doneBtn.click(function () {
-                    var newText = $postTextArea.val()
-                    if (newText == "")
-                        return;
-                    ajaxCalls.updatePost({
-                        id: postId,
-                        text: newText
-                    })
-                })
-            },
-            like: function (e) {
-                var $postRoot = $(e.currentTarget).parents().eq(3)
-                var postId = $postRoot.attr('id').replace('post-', '')
-                console.log("oćeš lajkat" + postId)
-                ajaxCalls.updatePost({
-                    id: postId,
-                    addLike: true
-                })
-            },
-            disLike: function (e) {
-                var $postRoot = $(e.currentTarget).parents().eq(3)
-                var postId = $postRoot.attr('id').replace('post-', '')
-                console.log("oćeš dislajkat" + postId)
-                ajaxCalls.updatePost({
-                    id: postId,
-                    addDislike: true
-                })
-            },
-            reachedPageBottom: function() {
-                ajaxCalls.loadMorePosts(5, postsCount, function(data) {
-                    data.forEach(function(postHtml) {
-                        var id = $(postHtml).attr('id')
-                        $('#posts-list').append(postHtml)
-                        setHandlersForPost($('#' + id))
-                        postsCount++
-                    })
+            return function(callback) {
+                $doneBtn.click(function() {
+                    callback($postTextArea.val())
                 })
             }
         }
 
+        onScrollToBottom(function() {
+            ajaxCalls.loadMorePosts(5, postsCount, function(data) {
+                data.forEach(function(postHtml) {
+                    var id = $(postHtml).attr('id')
+                    $('#posts-list').append(postHtml)
+                    setHandlersForPost($('#' + id))
+                    postsCount++
+                })
+            })
+        })
+
+        $("#new-post-form .btn-submit").click(function() {
+            var $form = $('#new-post-form')
+            var $textArea = $form.find('#form-text')
+            var postText = $textArea.val()
+
+            postActionHandlers.onPublish(postText, function() {
+                $textArea.val('')
+            })
+        })
+
         var allPosts = $('.post')
-        allPosts.each(function(i) {
+        allPosts.each(function (i) {
             var $post = $(allPosts[i])
             setHandlersForPost($post)
         })
-        $("#new-post-form .btn-submit").click(userEventHandlers.publish)
-        onScrollToBottom(userEventHandlers.reachedPageBottom)
 
         function setHandlersForPost($post) {
-            $post.find('.control-btn-delete').click(userEventHandlers.delete)
-            $post.find('.control-btn-edit').click(userEventHandlers.edit)
-            $post.find('.control-btn-like').click(userEventHandlers.like)
-            $post.find('.control-btn-dislike').click(userEventHandlers.disLike)
+
+            $post.find('.control-btn-edit').click(function (e) {
+                var $postRoot = $(e.currentTarget).parents().eq(3)
+                var postId = $postRoot.attr('id').replace('post-', '')
+                postActionHandlers.onEdit(postId)
+            })
+
+            $post.find('.control-btn-delete').click(function (e) {
+                var $postRoot = $(e.currentTarget).parents().eq(3)
+                var postId = $postRoot.attr('id').replace('post-', '')
+                postActionHandlers.onDelete(postId)
+            })
+
+            $post.find('.control-btn-like').click(function (e) {
+                var $postRoot = $(e.currentTarget).parents().eq(3)
+                var postId = $postRoot.attr('id').replace('post-', '')
+                console.log("oćeš lajkat" + postId)
+                postActionHandlers.onLike(postId)
+            })
+
+            $post.find('.control-btn-dislike').click(function (e) {
+                var $postRoot = $(e.currentTarget).parents().eq(3)
+                var postId = $postRoot.attr('id').replace('post-', '')
+                console.log("oćeš dislajkat" + postId)
+                postActionHandlers.onDislike(postId)
+            })
         }
 
     </script>

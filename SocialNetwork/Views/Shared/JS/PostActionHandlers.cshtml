@@ -1,0 +1,53 @@
+﻿<script>
+    
+    function postActionHandlers(ajaxCalls, setPostViewIntoEditingState) {
+        return {
+
+            onPublish: function (inputedText, emptyOldInput) {
+                if (inputedText == '' || inputedText == null)
+                    return;
+                ajaxCalls.publishPost(inputedText, emptyOldInput)
+            },
+
+            onEdit: function(postId) {
+                var subscribeToNewInput = setPostViewIntoEditingState(postId)
+
+                subscribeToNewInput(
+                    function (newInput) {
+                        if (newInput == '' || newInput == null)
+                            return;
+                        ajaxCalls.updatePost({
+                            id: postId,
+                            text: newInput
+                        })
+                    })
+            },
+
+            onDelete: function(postId) {
+                ajaxCalls.deletePost(postId)
+            },
+
+            onLike: function(postId) {
+                ajaxCalls.updatePost({
+                    id: postId,
+                    addLike: true
+                })
+            },
+
+            onDislike: function (postId) {
+                ajaxCalls.updatePost({
+                    id: postId,
+                    addDislike: true
+                })
+            },
+
+            onRemoveLike: function (postId) {
+
+            },
+
+            onRemoveDislike: function (postId) {
+
+            }
+        }
+    }
+</script>

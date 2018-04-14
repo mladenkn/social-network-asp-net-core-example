@@ -27,13 +27,14 @@
                 })
             },
 
-            publishPost: function (text) {
+            publishPost: function (text, onSuccess) {
                 $.ajax({
                     url: '@Url.Action("CreatePost", "Home")',
                     type: 'POST',
                     data: {
                         postText: text
                     },
+                    success: onSuccess,
                     error: function(err) {
                         console.error(err)
                     }
