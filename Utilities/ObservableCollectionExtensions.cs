@@ -6,9 +6,9 @@ namespace Utilities
 {
     public static class ObservableCollectionExtensions
     {
-        public static void SyncWith<T, U>(this ObservableCollection<T> c1, ObservableCollection<U> c2,
-                                          Func<T, U> c1Map, Func<U, T> c2Map,
-                                          Func<T, bool> c1Filter = null, Func<U, bool> c2Filter = null)
+        public static void SyncWith<T1, T2>(this ObservableCollection<T1> c1, ObservableCollection<T2> c2,
+                                          Func<T1, T2> c1Map, Func<T2, T1> c2Map, Func<T1, T2, bool> compareItems,
+                                          Func<T1, bool> c1Filter = null, Func<T2, bool> c2Filter = null)
         {
             c1Filter = c1Filter ?? (it => true);
             c2Filter = c2Filter ?? (it => true);
@@ -22,7 +22,7 @@ namespace Utilities
 
                 if (args.NewItems != null)
                 {
-                    foreach (T newItem in args.NewItems)
+                    foreach (T1 newItem in args.NewItems)
                     {
                         if (c1Filter(newItem))
                             c1Map(newItem).Also(c2.Add);
@@ -31,10 +31,10 @@ namespace Utilities
 
                 if (args.OldItems != null)
                 {
-                    foreach (T oldItem in args.OldItems)
+                    foreach (T1 oldItem in args.OldItems)
                     {
                         if (c1Filter(oldItem))
-                            c1Map(oldItem).Also(c2.Remove);
+                            c2.RemoveIf(it => compareItems(oldItem, it));
                     }
                 }
 
@@ -47,7 +47,7 @@ namespace Utilities
 
                 if (args.NewItems != null)
                 {
-                    foreach (U newItem in args.NewItems)
+                    foreach (T2 newItem in args.NewItems)
                     {
                         if (c2Filter(newItem))
                             c2Map(newItem).Also(c1.Add);
@@ -56,10 +56,10 @@ namespace Utilities
 
                 if (args.OldItems != null)
                 {
-                    foreach (U oldItem in args.OldItems)
+                    foreach (T2 oldItem in args.OldItems)
                     {
                         if (c2Filter(oldItem))
-                            c2Map(oldItem).Also(c1.Remove);
+                            c1.RemoveIf(it => compareItems(it, oldItem));
                     }
                 }
 
