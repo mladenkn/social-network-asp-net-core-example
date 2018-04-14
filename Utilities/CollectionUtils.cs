@@ -98,9 +98,8 @@ namespace Utilities
             return list.OrderBy(it => it, Comparer<T>.Create((_, __) => Utils.Random.Next(-1, 1)));
         }
 
-        public static IEnumerable<T> Concatenate<T>(params IEnumerable<T>[] lists) => lists.SelectMany(x => x);
-
-        public static IEnumerable<T> Concatenate<T>(IEnumerable<IEnumerable<T>> lists) => lists.SelectMany(x => x);
+        public static IEnumerable<T> Concatenate<T>(this IEnumerable<IEnumerable<T>> enumerables) =>
+            enumerables.SelectMany(it => it);
 
         public static void RemoveIf<T>(this ICollection<T> collection, Func<T, bool> predicate)
         {
