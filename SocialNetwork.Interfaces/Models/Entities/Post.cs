@@ -20,6 +20,7 @@ namespace SocialNetwork.Interface.Models.Entities
                     UserId = it.Id,
                     RatingType = _Rating.Type.Like
                 },
+                compareItems: (i1, i2) => i1.UserId == i2.Id,
                 c1Filter: it => it.RatingType == _Rating.Type.Like
             );
 
@@ -34,6 +35,7 @@ namespace SocialNetwork.Interface.Models.Entities
                     UserId = it.Id,
                     RatingType = _Rating.Type.Dislike
                 },
+                compareItems: (i1, i2) => i1.UserId == i2.Id,
                 c1Filter: it => it.RatingType == _Rating.Type.Dislike
             );
         }
