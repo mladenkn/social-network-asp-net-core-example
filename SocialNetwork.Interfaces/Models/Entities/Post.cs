@@ -9,32 +9,33 @@ namespace SocialNetwork.Interface.Models.Entities
     {
         public Post()
         {
-            _Ratings.CollectionChanged += (sender, args) =>
-            {
-                if(args.NewItems != null)
+            _Ratings.SyncWith(
+                c2: ((ObservableCollection<User>)LikedBy), 
+                c1Map: it => it.User, 
+                c2Map: it => new _Rating
                 {
-                    foreach (_Rating newItem in args.NewItems)
-                    {
-                        if (newItem.RatingType == _Rating.Type.Like)
-                            LikedBy.Add(newItem.User);
+                    Post = this,
+                    PostId = Id,
+                    User = it,
+                    UserId = it.Id,
+                    RatingType = _Rating.Type.Like
+                },
+                c1Filter: it => it.RatingType == _Rating.Type.Like
+            );
 
-                        if (newItem.RatingType == _Rating.Type.Dislike)
-                            DislikedBy.Add(newItem.User);
-                    }
-                }
-
-                if (args.OldItems != null)
+            _Ratings.SyncWith(
+                c2: ((ObservableCollection<User>)DislikedBy),
+                c1Map: it => it.User,
+                c2Map: it => new _Rating
                 {
-                    foreach (_Rating oldItem in args.OldItems)
-                    {
-                        if (oldItem.RatingType == _Rating.Type.Like)
-                            LikedBy.RemoveIf(it => it.Id == oldItem.UserId);
-
-                        if (oldItem.RatingType == _Rating.Type.Dislike)
-                            DislikedBy.RemoveIf(it => it.Id == oldItem.UserId);
-                    }
-                }
-            };
+                    Post = this,
+                    PostId = Id,
+                    User = it,
+                    UserId = it.Id,
+                    RatingType = _Rating.Type.Dislike
+                },
+                c1Filter: it => it.RatingType == _Rating.Type.Dislike
+            );
         }
 
         public long Id { get; set; }
