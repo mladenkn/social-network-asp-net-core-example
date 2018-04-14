@@ -13,7 +13,7 @@ namespace SocialNetwork.DevelopmentUtilities
         {
             var usedUsers = new HashSet<User>();
 
-            Utils.Loop(maxRatingsCount, delegate
+            Utils.Loop(Utils.Random.Next(0, maxRatingsCount), delegate
             {
                 var user = users.RandomElement(it => !usedUsers.Contains(it));
                 usedUsers.Add(user);

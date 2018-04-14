@@ -1,6 +1,7 @@
 ﻿using System;
 using Bogus;
 using SocialNetwork.Interface.Models.Entities;
+using Utilities;
 using Utils = Utilities.Utils;
 
 namespace SocialNetwork.DevelopmentUtilities
@@ -12,9 +13,10 @@ namespace SocialNetwork.DevelopmentUtilities
 
         public static DateTime DateBefore(DateTime time, int minDaysBefore = 1)
         {
-            int daysBefore = Rand.Next(minDaysBefore, 1000);
-            var ret = time.AddDays(1 * daysBefore);
-            return ret;
+            return Rand
+                .Next(minDaysBefore, 1000)
+                .Let(it => -1 * it)
+                .Let(it => time.AddDays(it));
         }
 
         public static User GenerateUser(string id = null, string userName = null, string email = null,
