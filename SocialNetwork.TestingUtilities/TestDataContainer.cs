@@ -25,45 +25,24 @@ namespace SocialNetwork.DevelopmentUtilities
             UsersList = Users.Values.ToList();
 
             DateTime lastKnowDate = new DateTime(2018, 1, 18);
-            DateTime GenerateDate() => Generator.DateBefore(lastKnowDate);
+
+            Post GeneratePost() =>
+                Generator.GeneratePost(createdAt: Generator.DateBefore(lastKnowDate),
+                                       author: UsersList.RandomElement());
 
             Posts = 
                 new []
                 {
+                    Generator.GeneratePost(createdAt: new DateTime(2018, 3, 20), author: Users["Ante"]),
                     Generator.GeneratePost(createdAt: new DateTime(2018, 3, 18), author: Users["Mladen"]),
                     Generator.GeneratePost(createdAt: new DateTime(2018, 3, 17), author: Users["Frane"]),
-                    Generator.GeneratePost(createdAt: new DateTime(2018, 3, 20), author: Users["Ante"]),
                     Generator.GeneratePost(createdAt: new DateTime(2018, 2, 10), author: Users["Mate"]),
                     Generator.GeneratePost(createdAt: new DateTime(2018, 2, 8), author: Users["Frane"]),
                     Generator.GeneratePost(createdAt: new DateTime(2018, 2, 7), author: Users["Ante"]),
                     Generator.GeneratePost(createdAt: lastKnowDate, author: Users["Mladen"]),
-
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
-                    Generator.GeneratePost(createdAt: GenerateDate(), author: UsersList.RandomElement()),
                 }
-                .ToList();
+                .ToList()
+                .Also(it => CollectionUtils.NewList(GeneratePost, 20).Also(it.AddRange));
         }
     }
 }
