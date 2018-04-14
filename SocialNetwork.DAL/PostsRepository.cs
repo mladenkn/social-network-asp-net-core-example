@@ -6,21 +6,32 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SocialNetwork.Interface.DAL;
 using SocialNetwork.Interface.Models.Entities;
+using Utilities;
 
 namespace SocialNetwork.DAL
 {
     public class PostsRepository : Repository<Post>, IPostsRepository
     {
-        public PostsRepository(DbSet<Post> wrapedContainer) : base(wrapedContainer)
+        public PostsRepository(DbSet<Post> wrapedContainer) : base(wrapedContainer, MapPropertyNames)
         {
+        }
+
+        private static IEnumerable<string> MapPropertyNames(string propertyName)
+        {
+            if (propertyName == nameof(Post.LikedBy) || propertyName == nameof(Post.DislikedBy))
+                return new[] {nameof(Post._Ratings)};
+            else
+                return new []{propertyName};
         }
 
         public Task<IList<Post>> GetMany(Expression<Func<Post, bool>> filter = null, int? count = null, int skip = 0,
                                          PostsOrder? order = null, params string[] propsToInclude)
         {
+            var mappedProps = MapPropertyNames(propsToInclude);
+
             IQueryable<Post> query =
                 propsToInclude.Any()
-                    ? _wrapedContainer.Include(propsToInclude[0])
+                    ? _wrapedContainer.Include(mappedProps)
                     : _wrapedContainer;
 
             if(order == PostsOrder.CreatedAtDescending)

@@ -5,24 +5,38 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SocialNetwork.Interface.DAL;
+using Utilities;
 
 namespace SocialNetwork.DAL
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected readonly DbSet<TEntity> _wrapedContainer;
+        private readonly Func<string, IEnumerable<string>> _mapPropertyName;
 
-        public Repository(DbSet<TEntity> wrapedContainer)
+        public Repository(DbSet<TEntity> wrapedContainer, Func<string, IEnumerable<string>> mapPropertyNames = null)
         {
             _wrapedContainer = wrapedContainer;
+            _mapPropertyName = mapPropertyNames ?? (it => new []{it});
+        }
+
+        protected string MapPropertyNames(IEnumerable<string> propertyNames)
+        {
+            return
+                propertyNames
+                    .Select(_mapPropertyName)
+                    .Concatenate()
+                    .Let(it => string.Join(",", it));
         }
 
         public Task<IList<TEntity>> GetMany(Expression<Func<TEntity, bool>> filter = null,
                                             int? count = null, int skip = 0, params string[] propsToInclude)
         {
+            var mappedProps = MapPropertyNames(propsToInclude);
+
             IQueryable<TEntity> query =
                 propsToInclude.Any() 
-                    ? _wrapedContainer.Include(propsToInclude[0])
+                    ? _wrapedContainer.Include(mappedProps)
                     : _wrapedContainer;
 
             if (filter != null)
@@ -61,9 +75,11 @@ namespace SocialNetwork.DAL
 
         public Task<TEntity> GetOne(Expression<Func<TEntity, bool>> selector = null, params string[] propsToInclude)
         {
+            var mappedProps = MapPropertyNames(propsToInclude);
+
             IQueryable<TEntity> query = 
                 propsToInclude.Any()
-                    ? _wrapedContainer.Include(propsToInclude[0])
+                    ? _wrapedContainer.Include(mappedProps)
                     : _wrapedContainer;
 
             if (selector != null)
