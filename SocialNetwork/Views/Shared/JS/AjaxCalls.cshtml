@@ -1,9 +1,9 @@
 ﻿<script>
 
-    function ajaxCalls(getPostsCount, incrementPostsCount) {
+    function ajaxCalls() {
 
         return {
-            updatePostAjax: function (data) {
+            updatePost: function (data) {
                 $.ajax({
                     url: '@Url.Action("UpdatePost", "Home")',
                     type: 'POST',
@@ -14,7 +14,7 @@
                 })
             },
 
-            deletePostAjax: function(postId) {
+            deletePost: function(postId) {
                 $.ajax({
                     url: '@Url.Action("DeletePost", "Home")',
                     type: 'POST',
@@ -27,7 +27,7 @@
                 })
             },
 
-            publishPostAjax: function (text) {
+            publishPost: function (text) {
                 $.ajax({
                     url: '@Url.Action("CreatePost", "Home")',
                     type: 'POST',
@@ -40,23 +40,16 @@
                 })
             },
 
-            loadMorePostsAjax: function() {
+            loadMorePosts: function(count, skip, onSuccess) {
                 $.ajax({
                     url: '@Url.Action("LoadPostsAjax", "Home")',
                     type: 'POST',
                     data: {
-                        count: 5,
-                        skip: getPostsCount(),
+                        count: count,
+                        skip: skip,
                         propsToInclude : ["Author"]
                     },
-                    success: function(data) {
-                        data.forEach(function(postHtml) {
-                            var id = $(postHtml).attr('id')
-                            $('#posts-list').append(postHtml)
-                            setHandlersForPost($('#' + id))
-                            incrementPostsCount()
-                        })
-                    },
+                    success: onSuccess,
                     error: function(err) {
                         console.error(err)
                     }
