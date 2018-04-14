@@ -1,5 +1,9 @@
 ﻿@model SocialNetwork.Web.ViewModels.PostViewModel
 
+@{
+
+}
+
 <div class="well post" id="post-@Model.PostId">
     <div class="media">
         <a class="pull-left" href="#">
@@ -12,9 +16,9 @@
             <ul class="list-inline list-unstyled">
                 <li><span><i class="glyphicon glyphicon-calendar"></i> @Model.PublishedAt.ToShortDateString() </span></li>
                 <li>|</li>
-                <li><span><i class="glyphicon glyphicon-thumbs-up"></i> @Model.LikesCount likes</span></li>
+                <li><span><i class="glyphicon glyphicon-thumbs-up"></i> @Model.LikedBy.Count likes</span></li>
                 <li>|</li>
-                <li><span><i class="glyphicon glyphicon-thumbs-down"></i> @Model.DislikesCount dislikes</span></li>
+                <li><span><i class="glyphicon glyphicon-thumbs-down"></i> @Model.DislikedBy.Count dislikes</span></li>
                 @if(Model.CanDelete)
                 {
                     <li class="control-btn control-btn-delete">

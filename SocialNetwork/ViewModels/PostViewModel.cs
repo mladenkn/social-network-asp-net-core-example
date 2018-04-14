@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using SocialNetwork.Interface.Models.Entities;
 
 namespace SocialNetwork.Web.ViewModels
 {
@@ -10,6 +12,8 @@ namespace SocialNetwork.Web.ViewModels
         public int LikesCount { get; set; }
         public int DislikesCount { get; set; }
         public string Heading { get; set; }
+        public IReadOnlyCollection<User> LikedBy { get; set; }
+        public IReadOnlyCollection<User> DislikedBy { get; set; }
 
         public (string ProfileImgUrl, string Username) Author { get; set; }
 

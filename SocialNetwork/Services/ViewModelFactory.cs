@@ -35,6 +35,8 @@ namespace SocialNetwork.Web.Services
                 Heading = post.Heading,
                 PublishedAt = post.CreatedAt,
                 Text = post.Text,
+                LikedBy = post.LikedBy.AsReadOnly(),
+                DislikedBy = post.DislikedBy.AsReadOnly(),
 
                 CanEdit = isCurrentUserAuthor,
                 CanDelete = isCurrentUserAuthor,
