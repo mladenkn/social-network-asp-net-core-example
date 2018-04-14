@@ -1,21 +1,20 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using SocialNetwork.DevelopmentUtilities;
 using SocialNetwork.Interface.DAL;
 using SocialNetwork.Interface.Models.Entities;
 using SocialNetwork.Interface.Services;
 using Utilities;
 
-namespace SocialNetwork.Web
+namespace SocialNetwork.DevelopmentUtilities
 {
-    public class Initializer
+    public class DevelopmentInitializer
     {
         private readonly IRepository<Post> _postsRepository;
         private readonly TestDataContainer _data;
         private readonly IDatabaseOperations _dbOps;
         private readonly IAuthenticator _authenticator;
 
-        public Initializer(IRepository<Post> postsRepository, TestDataContainer data,
+        public DevelopmentInitializer(IRepository<Post> postsRepository, TestDataContainer data,
                            IDatabaseOperations dbOps, IAuthenticator authenticator)
         {
             _postsRepository = postsRepository;

@@ -78,7 +78,7 @@ namespace SocialNetwork.Web
             services.AddTransient<IHub, Hub>();
             services.AddTransient<IDatabaseOperations, DatabaseOperations>();
             services.AddTransient<IViewRendererService, ViewRendererService>();
-            services.AddTransient<Initializer>();
+            services.AddTransient<DevelopmentInitializer>();
             services.AddTransient<IAuthenticator, Authenticator>();
 
             services.AddMvc(config =>
@@ -120,7 +120,7 @@ namespace SocialNetwork.Web
             if (env.IsDevelopment())
             {
                 serviceProvider
-                    .GetService<Initializer>()
+                    .GetService<DevelopmentInitializer>()
                     .Initialize().Wait();
             }
         }
