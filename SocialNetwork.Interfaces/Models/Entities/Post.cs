@@ -10,7 +10,7 @@ namespace SocialNetwork.Interface.Models.Entities
         public Post()
         {
             _Ratings.SyncWith(
-                c2: ((ObservableCollection<User>)LikedBy), 
+                c2: (ObservableCollection<User>)LikedBy, 
                 c1Map: it => it.User, 
                 c2Map: it => new _Rating
                 {
@@ -24,7 +24,7 @@ namespace SocialNetwork.Interface.Models.Entities
             );
 
             _Ratings.SyncWith(
-                c2: ((ObservableCollection<User>)DislikedBy),
+                c2: (ObservableCollection<User>)DislikedBy,
                 c1Map: it => it.User,
                 c2Map: it => new _Rating
                 {

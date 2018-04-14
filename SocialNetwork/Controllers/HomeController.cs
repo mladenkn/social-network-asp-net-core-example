@@ -41,7 +41,13 @@ namespace SocialNetwork.Web.Controllers
         public async Task<IActionResult> Index()
         {
             User currentUser = await GetCurrentUser();
-            var posts = await _posts.GetMany(count: 5, order: PostsOrder.CreatedAtDescending, propsToInclude: "Author");
+
+            var posts = await _posts.GetMany(
+                count: 5,
+                order: PostsOrder.CreatedAtDescending, 
+                propsToInclude: new []{ nameof(Post.Author), nameof(Post.LikedBy), nameof(Post.DislikedBy) }
+            );
+
             var postsViewModels = posts
                 .Select(it => _viewModelFactory.CreatePostViewModel(it, currentUser.Id))
                 .ToList().AsReadOnly();
@@ -99,12 +105,15 @@ namespace SocialNetwork.Web.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var currentUserId = await GetCurrentUser().Map(it => it.Id);
-            Post post = await _posts.GetOne(it => it.Id == model.Id, "Author");
+            var currentUser = await GetCurrentUser();
+            Post post = await _posts.GetOne(
+                it => it.Id == model.Id, 
+                new[] { nameof(Post.Author), nameof(Post.LikedBy), nameof(Post.DislikedBy)}
+            );
 
             if (model.Text != null)
             {
-                if (post.AuthorId == currentUserId)
+                if (post.AuthorId == currentUser.Id)
                     post.Text = model.Text;
                 else
                     return Forbid();
@@ -112,7 +121,7 @@ namespace SocialNetwork.Web.Controllers
 
             if (model.Heading != null)
             {
-                if (post.AuthorId == currentUserId)
+                if (post.AuthorId == currentUser.Id)
                     post.Heading = model.Heading;
                 else
                     return Forbid();
@@ -120,16 +129,22 @@ namespace SocialNetwork.Web.Controllers
 
             if (model.AddLike)
             {
-                if (post.AuthorId != currentUserId)
+                if (post.AuthorId != currentUser.Id)
+                {
                     post.LikesCount++;
+                    post.LikedBy.Add(currentUser);
+                }
                 else
                     return Forbid();
             }
             
             if (model.AddDislike)
             {
-                if (post.AuthorId != currentUserId)
+                if (post.AuthorId != currentUser.Id)
+                {
                     post.DislikesCount++;
+                    post.DislikedBy.Add(currentUser);
+                }
                 else
                     return Forbid();
             }
@@ -137,7 +152,7 @@ namespace SocialNetwork.Web.Controllers
             _posts.Update(post);
     
             Task saveChangesTask = _dbOps.SaveChangesAsync();
-            var postVm = _viewModelFactory.CreatePostViewModel(post, currentUserId);
+            var postVm = _viewModelFactory.CreatePostViewModel(post, currentUser.Id);
             string postHtml = await _renderer.RenderPartialView("_Post", postVm);
             await saveChangesTask;
             await _hub.Emit(PostsEvents.PostChanged, postHtml);
