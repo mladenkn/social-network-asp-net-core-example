@@ -9,6 +9,12 @@ namespace SocialNetwork.DevelopmentUtilities
         private static readonly Random Rand = new Random();
         private static readonly Faker _faker = new Faker();
 
+        public static DateTime DateBefore(DateTime time, int minDaysBefore = 1)
+        {
+            int daysBefore = Rand.Next(minDaysBefore, 1000);
+            return DateTime.Today.AddDays(-1 * daysBefore);
+        }
+
         public static User GenerateUser(string id = null, string userName = null, string email = null,
             string profileImgUrl = null)
         {
