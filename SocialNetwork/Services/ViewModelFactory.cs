@@ -58,14 +58,6 @@ namespace SocialNetwork.Web.Services
                 LikedBy = post.LikedBy.AsReadOnly(),
                 DislikedBy = post.DislikedBy.AsReadOnly(),
 
-                CanEdit = isCurrentUserAuthor,
-                CanDelete = isCurrentUserAuthor,
-                CanLike = !isCurrentUserAuthor,
-                CanDislike = !isCurrentUserAuthor,
-                CanUnLike = hasUserLikedPost,
-                CanUnDislike = hasUserDislikePost,
-                AllowedActions = allowedActions,
-
                 Author = (post.Author.ProfileImageUrl, post.Author.UserName)
             };
         }

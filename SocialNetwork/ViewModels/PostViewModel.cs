@@ -15,13 +15,6 @@ namespace SocialNetwork.Web.ViewModels
 
         public (string ProfileImgUrl, string Username) Author { get; set; }
 
-        public bool CanEdit { get; set; }
-        public bool CanDelete { get; set; }
-        public bool CanLike { get; set; }
-        public bool CanDislike { get; set; }
-        public bool CanUnLike { get; set; }
-        public bool CanUnDislike { get; set; }
-
         public IReadOnlyCollection<string> AllowedActions { get; set; }
     }
 }
