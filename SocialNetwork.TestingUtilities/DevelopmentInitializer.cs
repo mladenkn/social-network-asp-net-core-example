@@ -30,7 +30,11 @@ namespace SocialNetwork.DevelopmentUtilities
                 .Let(Task.WhenAll);
 
             _data.Posts.ForEach(_postsRepository.Insert);
+
             await _dbOps.SaveChangesAsync();
+
+            foreach (var post in _data.Posts)
+                DevelopmentUtilities.AddRandomRatings(post, _data.Users.Values.ToList(), 3);
         }
     }
 }
