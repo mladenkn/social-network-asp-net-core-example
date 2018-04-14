@@ -11,7 +11,6 @@ using SocialNetwork.Web.Utilities;
 using Utilities;
 using Xunit;
 using static Utilities.CollectionUtils;
-using static Utilities.Utils;
 using Assert = Xunit.Assert;
 
 namespace SocialNetwork.UnitTests
@@ -219,97 +218,6 @@ namespace SocialNetwork.UnitTests
             // prepare assert
             IList<Post> posts = await _postsRepo.GetMany(propsToInclude: nameof(Post.Author));
             posts.Select(it => it.Author).ForEach(Assert.NotNull);
-        }
-
-        [Fact]
-        public async Task Ratings()
-        {
-            var usersToSave = _testDataContainer.Users.Values;
-            var postsToSave = _testDataContainer.Posts;
-
-            await SaveData(usersToSave, postsToSave);
-
-            var savedPosts = await _postsRepo.GetMany(propsToInclude: nameof(Post.Author));
-            var savedUsers = await _usersRepo.GetMany();
-            
-            foreach (var post in savedPosts)
-            {
-                var usedUsers = new HashSet<User>();
-
-                Loop(Random.Next(5), delegate
-                {
-                    var user = savedUsers.RandomElement(it => !usedUsers.Contains(it));
-                    usedUsers.Add(user);
-
-                    post._Ratings.Add(new _Rating
-                    {
-                        Post = post,
-                        User = user,
-                        PostId = post.Id,
-                        UserId = user.Id,
-                        RatingType = Generator.RandomEnumValue<_Rating.Type>()
-                    });
-                });
-            }
-
-            savedPosts.ForEach(_postsRepo.Update);
-
-            savedPosts.ForEach(post => post._Ratings.RemoveIf(it => it.User.UserName == "Mladen"));
-
-            await _dbContext.SaveChangesAsync();
-
-            foreach (var post in savedPosts)
-            {
-                var userThatLikedIds =
-                    post._Ratings
-                        .Where(it => it.RatingType == _Rating.Type.Like)
-                        .Select(it => it.UserId);
-
-                var usersThatLikedIds2 = post.LikedBy.Select(it => it.Id);
-
-                usersThatLikedIds2.HasSameContentAs(userThatLikedIds).Also(Assert.True);
-            }
-        }
-
-        [Fact]
-        public async Task LikesAndDislikes()
-        {
-            var usersToSave = _testDataContainer.Users.Values.ToArray();
-            var postsToSave = _testDataContainer.Posts;
-
-            foreach (var post in postsToSave)
-            {
-                var usedUsers = new HashSet<User>();
-
-                Loop(Random.Next(5), delegate
-                {
-                    var user = usersToSave.RandomElement(it => !usedUsers.Contains(it));
-                    usedUsers.Add(user);
-
-                    Random
-                        .PickOne(post.LikedBy, post.DislikedBy)
-                        .Add(user);
-                });
-            }
-
-            await SaveData(usersToSave, postsToSave);
-
-            var savedPosts = await _postsRepo.GetMany(
-                propsToInclude: new []{ nameof(Post.LikedBy), nameof(Post.DislikedBy) }
-            );
-
-            foreach (var post in savedPosts)
-            {
-                var anotherInstance = postsToSave.First(it => it.Id == post.Id);
-
-                anotherInstance.LikedBy
-                    .HasSameContentAs(post.LikedBy)
-                    .Also(Assert.True);
-
-                anotherInstance.DislikedBy.
-                    HasSameContentAs(post.DislikedBy)
-                    .Also(Assert.True);
-            }
         }
     }
 }
