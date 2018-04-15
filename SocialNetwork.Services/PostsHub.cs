@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
+using SocialNetwork.Interface.Constants;
 using SocialNetwork.Interface.Services;
 
 namespace SocialNetwork.Services
@@ -13,6 +14,6 @@ namespace SocialNetwork.Services
             _wrapee = wrapee;
         }
 
-        public Task Emit(string name, object data) => _wrapee.Clients.All.SendAsync(name, data);
+        public Task Emit(PostEvent e, object data) => _wrapee.Clients.All.SendAsync(e.ToString(), data);
     }
 }

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.DevelopmentUtilities;
+using SocialNetwork.Interface.Constants;
 using SocialNetwork.Interface.DAL;
 using SocialNetwork.Interface.Models.Entities;
 using SocialNetwork.Interface.Services;
 using SocialNetwork.Services;
-using SocialNetwork.Services.SocialNetwork.Services;
 using SocialNetwork.Web.ServiceInterfaces;
 using SocialNetwork.Web.ViewModels;
 using SocialNetwork.Web.Constants;
@@ -77,7 +77,7 @@ namespace SocialNetwork.Web.Controllers
             var postVm = _viewModelFactory.CreatePostViewModel(storedPost, author.Id);
             string postHtml = await _renderer.RenderPartialView("_Post", postVm);
             await saveChangesTask;
-            await _postsHub.Emit(PostEvent.PostPublished.ToString(), postHtml);
+            await _postsHub.Emit(PostEvent.PostPublished, postHtml);
 
             return Ok("");
         }
@@ -190,7 +190,7 @@ namespace SocialNetwork.Web.Controllers
             var postVm = _viewModelFactory.CreatePostViewModel(post, currentUser.Id);
             string postHtml = await _renderer.RenderPartialView("_Post", postVm);
             await saveChangesTask;
-            await _postsHub.Emit(PostEvent.PostChanged.ToString(), postHtml);
+            await _postsHub.Emit(PostEvent.PostChanged, postHtml);
 
             return Ok("");
         }
@@ -207,7 +207,7 @@ namespace SocialNetwork.Web.Controllers
                 return Forbid();
 
             await _dbOps.SaveChangesAsync();
-            await _postsHub.Emit(PostEvent.PostDeleted.ToString(), postId);
+            await _postsHub.Emit(PostEvent.PostDeleted, postId);
 
             return Ok("");
         }
