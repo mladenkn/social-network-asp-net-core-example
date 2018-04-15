@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
+using SocialNetwork.Web.Controllers;
 
 namespace SocialNetwork.Web.ViewModels
 {
@@ -11,6 +13,8 @@ namespace SocialNetwork.Web.ViewModels
     {
         [Required]
         [Display(Name = "Username")]
+        //[Remote(action: nameof(AccountController.CheckUserNameAvailability), controller: "Account",
+        //        ErrorMessage = "Provided username is not available")]
         public string UserName { get; set; }
 
         [Required]

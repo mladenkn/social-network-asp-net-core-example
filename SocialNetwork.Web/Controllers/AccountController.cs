@@ -1,8 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.DevelopmentUtilities;
+using SocialNetwork.Interface.DAL;
 using SocialNetwork.Interface.Models;
+using SocialNetwork.Interface.Models.Entities;
 using SocialNetwork.Interface.Services;
 using SocialNetwork.Web.Services;
 using SocialNetwork.Web.ViewModels;
@@ -15,11 +18,14 @@ namespace SocialNetwork.Web.Controllers
     {
         private readonly IAuthenticator _authenticator;
         private readonly ViewModelFactory _viewModelFactory;
+        private readonly IRepository<User> _usersRepository;
 
-        public AccountController(IAuthenticator authenticator, ViewModelFactory viewModelFactory)
+        public AccountController(IAuthenticator authenticator, ViewModelFactory viewModelFactory,
+                                IRepository<User> usersRepository)
         {
             _authenticator = authenticator;
             _viewModelFactory = viewModelFactory;
+            _usersRepository = usersRepository;
         }
 
         [AllowAnonymous]
@@ -91,6 +97,14 @@ namespace SocialNetwork.Web.Controllers
         {
             await _authenticator.SignOut();
             return RedirectToAction(nameof(Login));
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult CheckUserNameAvailability([Bind(Prefix = "Form.UserName")]string userName)
+        {
+            var usersOrNull = _usersRepository.GetMany(filter: it => it.UserName == userName).Result;
+            return Json(usersOrNull.Count == 0);
         }
     }
 }
