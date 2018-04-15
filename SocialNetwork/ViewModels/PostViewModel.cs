@@ -16,6 +16,6 @@ namespace SocialNetwork.Web.ViewModels
 
         public (string ProfileImgUrl, string Username) Author { get; set; }
 
-        public IReadOnlyCollection<PostAction> AllowedActions_ { get; set; }
+        public IReadOnlyCollection<PostAction> AllowedActions { get; set; }
     }
 }

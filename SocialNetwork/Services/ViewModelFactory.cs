@@ -57,7 +57,7 @@ namespace SocialNetwork.Web.Services
                 Text = post.Text,
                 LikedBy = post.LikedBy.AsReadOnly(),
                 DislikedBy = post.DislikedBy.AsReadOnly(),
-                AllowedActions_ = allowedActions_,
+                AllowedActions = allowedActions_,
                 Author = (post.Author.ProfileImageUrl, post.Author.UserName)
             };
         }
