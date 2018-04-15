@@ -85,5 +85,7 @@ namespace Utilities
         }
 
         public static bool NextBool(this Random random) => random.Next(0, 1) == 1;
+
+        public static bool EqualsAny<T>(this T o, params T[] objects) => objects.Any(it => o.Equals(it));
     }
 }
