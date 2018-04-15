@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -49,14 +51,24 @@ namespace SocialNetwork.Web.Controllers
             {
                 var user = Generator.GenerateUser(userName: model.UserName, email: "someone@mailservice.com");
                 RegistrationResult result = await _authenticator.Register(user, model.Password);
-                if (result.HasSucceeded)
+
+                switch (result)
                 {
-                    await _authenticator.SignIn(user.UserName, model.Password, isPersistent: false);
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
+                    case RegistrationSuccess _:
+                        await _authenticator.SignIn(user.UserName, model.Password, isPersistent: false);
+                        return RedirectToAction(nameof(HomeController.Index), "Home");
+
+                    case RegistrationFailure r:
+                        ModelState.AddModelError("", "Invalid registration attempt");
+                        if (r.Errors.Contains(RegistrationError.DuplicateUserName))
+                            ModelState.AddModelError(nameof(RegisterFormViewModel.UserName), "Provided username allready exists");
+                        break;
                 }
             }
 
-            return model.Let(_viewModelFactory.CreateRegisterViewModel).Let(View);
+            return model
+                .Let(_viewModelFactory.CreateRegisterViewModel)
+                .Let(View);
         }
 
         //
@@ -70,23 +82,21 @@ namespace SocialNetwork.Web.Controllers
             {
                 SignInResult result = await _authenticator.SignIn(model.UserName, model.Password, 
                     isPersistent: model.RememberMe);
-                if (result.HasSucceeded)
-                {
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
 
-                    return model
-                        .Let(_viewModelFactory.CreateLoginViewModel)
-                        .Let(View);
+                switch (result)
+                {
+                    case SignInSuccess _:
+                        return RedirectToAction(nameof(HomeController.Index), "Home");
+
+                    case SignInFailure _:
+                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                        break;
                 }
             }
-            else
-                return model
-                    .Let(_viewModelFactory.CreateLoginViewModel)
-                    .Let(View);
+
+            return model
+                .Let(_viewModelFactory.CreateLoginViewModel)
+                .Let(View);
         }
 
         //

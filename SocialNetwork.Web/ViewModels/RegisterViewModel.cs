@@ -13,8 +13,8 @@ namespace SocialNetwork.Web.ViewModels
     {
         [Required]
         [Display(Name = "Username")]
-        //[Remote(action: nameof(AccountController.CheckUserNameAvailability), controller: "Account",
-        //        ErrorMessage = "Provided username is not available")]
+        [Remote(nameof(AccountController.CheckUserNameAvailability), "Account",
+                ErrorMessage = "Provided username allready exists")]
         public string UserName { get; set; }
 
         [Required]

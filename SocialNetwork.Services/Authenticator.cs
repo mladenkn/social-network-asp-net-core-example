@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using SocialNetwork.Interface.Models;
 using SocialNetwork.Interface.Models.Entities;
 using SocialNetwork.Interface.Services;
+using Utilities;
 using SignInResult = SocialNetwork.Interface.Models.SignInResult;
 
 namespace SocialNetwork.Services
@@ -24,14 +25,25 @@ namespace SocialNetwork.Services
         {
             return _manager
                 .CreateAsync(user, password)
-                .Map(it => new RegistrationResult(it.Succeeded));
+                .Map(it =>
+                {
+                    if (it.Succeeded)
+                        return (RegistrationResult) new RegistrationSuccess();
+                    else
+                    {
+                        if (it.Errors.Any(e => e.Code == "DuplicateUserName"))
+                            return new RegistrationFailure(RegistrationError.DuplicateUserName);
+                        else
+                            return new RegistrationFailure();
+                    }
+                });
         }
 
         public Task<SignInResult> SignIn(string username, string password, bool isPersistent = true)
         {
             return _signInManager
                 .PasswordSignInAsync(username, password, isPersistent: isPersistent, lockoutOnFailure: false)
-                .Map(it => new SignInResult(it.Succeeded));
+                .Map(it => it.Succeeded ? (SignInResult) new SignInSuccess() : new SignInFailure());
         }
 
         public Task SignOut() => _signInManager.SignOutAsync();
