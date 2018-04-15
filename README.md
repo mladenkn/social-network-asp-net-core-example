@@ -11,4 +11,5 @@ almost any method calls. Why? Because there is no need to save some value into v
 
 Application is using the in memory database, so it should be easier for you to check it out.
 
-And about the functionalities, it is a social network that enables registered users to create, edit, and rate posts.
+And about the functionalities, it is a social network that enables registered users to create, edit, delete, and rate posts.
+Users can edit and delete only their own posts, and like/dislike posts from other users.
