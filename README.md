@@ -1,5 +1,7 @@
 # social-network
 
+This is a social network application built with ASP.NET Core.
+
 Besides just ASP.NET Core, I have also used Entity Framework Core 2, Identity, and plain JavaScript. 
 Solution is split into many projects, as in Clean/Onion architecture.
 
