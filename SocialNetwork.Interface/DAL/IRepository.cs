@@ -16,6 +16,8 @@ namespace SocialNetwork.Interface.DAL
 
         Task<TEntity> GetOne(Expression<Func<TEntity, bool>> selector = null, params string[] propsToInclude);
 
+        Task<bool> Contains(Expression<Func<TEntity, bool>> filter);
+
         Task<TEntity> Update(Expression<Func<TEntity, bool>> selector, Action<TEntity> consumeItem, params string[] propsToInclude);
         TEntity Update(TEntity post);
         TEntity Insert(TEntity entity);

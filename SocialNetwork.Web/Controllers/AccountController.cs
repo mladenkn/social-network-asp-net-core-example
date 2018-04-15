@@ -111,10 +111,10 @@ namespace SocialNetwork.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult CheckUserNameAvailability([Bind(Prefix = "Form.UserName")]string userName)
+        public async Task<IActionResult> CheckUserNameAvailability([Bind(Prefix = "Form.UserName")]string userName)
         {
-            var usersOrNull = _usersRepository.GetMany(filter: it => it.UserName == userName).Result;
-            return Json(usersOrNull.Count == 0);
+            var contains = await _usersRepository.Contains(filter: it => it.UserName == userName);
+            return Json(!contains);
         }
     }
 }

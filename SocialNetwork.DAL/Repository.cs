@@ -85,6 +85,8 @@ namespace SocialNetwork.DAL
                 return query.SingleAsync();
         }
 
+        public Task<bool> Contains(Expression<Func<TEntity, bool>> filter) => _wrapedContainer.AnyAsync(filter);
+
         public async Task<TEntity> Update(Expression<Func<TEntity, bool>> selector, Action<TEntity> consumeItem, params string[] propsToInclude)
         {
             TEntity item = await GetOne(selector, propsToInclude);
