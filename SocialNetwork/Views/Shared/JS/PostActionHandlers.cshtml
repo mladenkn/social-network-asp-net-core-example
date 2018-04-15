@@ -30,22 +30,22 @@
             onLike: function(postId) {
                 ajaxCalls.updatePost({
                     id: postId,
-                    addLike: true
+                    like: true
                 })
             },
 
             onDislike: function (postId) {
                 ajaxCalls.updatePost({
                     id: postId,
-                    addDislike: true
+                    dislike: true
                 })
             },
 
-            onRemoveLike: function (postId) {
+            onUnLike: function (postId) {
 
             },
 
-            onRemoveDislike: function (postId) {
+            onUnDislike: function (postId) {
 
             }
         }

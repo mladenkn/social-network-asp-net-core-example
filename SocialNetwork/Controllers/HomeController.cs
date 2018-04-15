@@ -132,7 +132,7 @@ namespace SocialNetwork.Web.Controllers
                     return Forbid();
             }
 
-            if (model.AddLike)
+            if (model.Like)
             {
                 if (post.AuthorId != currentUser.Id  &&  !hasCurrentUserLikedPost)
                 {
@@ -149,7 +149,7 @@ namespace SocialNetwork.Web.Controllers
                     return Forbid();
             }
             
-            if (model.AddDislike)
+            if (model.Dislike)
             {
                 if (post.AuthorId != currentUser.Id  &&  !hasCurrentUserDislikedPost)
                 {

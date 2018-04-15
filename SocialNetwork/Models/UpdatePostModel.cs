@@ -11,8 +11,8 @@ namespace SocialNetwork.Web.Models
 
         public string Heading { get; set; }
 
-        public bool AddLike { get; set; } = false;
+        public bool Like { get; set; } = false;
 
-        public bool AddDislike { get; set; } = false;
+        public bool Dislike { get; set; } = false;
     }
 }
