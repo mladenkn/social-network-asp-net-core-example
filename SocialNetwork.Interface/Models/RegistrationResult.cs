@@ -1,12 +1,27 @@
-﻿namespace SocialNetwork.Interface.Models
+﻿using System.Collections.Generic;
+
+namespace SocialNetwork.Interface.Models
 {
-    public class RegistrationResult
+    public abstract class RegistrationResult
     {
-        public RegistrationResult(bool hasSucceeded)
+    }
+
+    public class RegistrationSuccess : RegistrationResult
+    {
+    }
+
+    public class RegistrationFailure : RegistrationResult
+    {
+        public RegistrationFailure(params RegistrationError[] errors) 
         {
-            HasSucceeded = hasSucceeded;
+            Errors = errors;
         }
 
-        public bool HasSucceeded { get; }
+        public IReadOnlyCollection<RegistrationError> Errors { get; }
+    }
+
+    public enum RegistrationError
+    {
+        DuplicateUserName
     }
 }

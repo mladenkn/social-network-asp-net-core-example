@@ -1,12 +1,14 @@
 ﻿namespace SocialNetwork.Interface.Models
 {
-    public class SignInResult
+    public abstract class SignInResult
     {
-        public SignInResult(bool hasSucceeded)
-        {
-            HasSucceeded = hasSucceeded;
-        }
+    }
 
-        public bool HasSucceeded { get; }
+    public class SignInSuccess : SignInResult
+    {
+    }
+
+    public class SignInFailure : SignInResult
+    {
     }
 }
