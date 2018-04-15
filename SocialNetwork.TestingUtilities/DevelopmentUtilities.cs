@@ -20,13 +20,6 @@ namespace SocialNetwork.DevelopmentUtilities
                     .PickOne(post.LikedBy, post.DislikedBy)
                     .Add(user);
             });
-
-            Utils.Assert(users.ContainsAll(post.LikedBy));
-            Utils.Assert(users.ContainsAll(post.DislikedBy));
-
-            IEnumerable<User> allRatings = post.LikedBy.Concat(post.DislikedBy);
-            IEnumerable<User> allRatingsDistinct = allRatings.Distinct();
-            allRatings.SequenceEqual(allRatingsDistinct).Also(Utils.Assert);
         }
 
         public static void RemoveRandomRatings(Post post)
