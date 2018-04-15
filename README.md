@@ -9,4 +9,6 @@ Project is using some practices from functional programming such as pure methods
 To accomplish better method chaining I have used some of my generic extension methods like Let and Also, which enables me to chain
 almost any method calls. Why? Because there is no need to save some value into variable before sending it to another method.
 
+Application is using the in memory database, so it should be easier for you to check it out.
+
 And about the functionalities, it is a social network that enables registered users to create, edit, and rate posts.
