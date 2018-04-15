@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using SocialNetwork.Interface.Constants;
 using SocialNetwork.Interface.Models.Entities;
 using SocialNetwork.Web.Constants;
 using SocialNetwork.Web.ViewModels;
@@ -32,19 +33,19 @@ namespace SocialNetwork.Web.Services
             bool hasUserLikedPost = post.LikedBy.Any(it => it.Id == currentUserId);
             bool hasUserDislikePost = post.DislikedBy.Any(it => it.Id == currentUserId);
 
-            var allowedActions =
-                new HashSet<string>()
+            var allowedActions_ =
+                new HashSet<PostAction>()
                     .Also(it =>
                     {
                         if (isCurrentUserAuthor)
                         {
-                            it.Add(PostActions.Edit);
-                            it.Add(PostActions.Delete);
+                            it.Add(PostAction.Edit);
+                            it.Add(PostAction.Delete);
                         }
                         else
                         {
-                            it.Add(!hasUserLikedPost ? PostActions.Like : PostActions.UnLike);
-                            it.Add(!hasUserDislikePost ? PostActions.Dislike : PostActions.UnDislike);
+                            it.Add(!hasUserLikedPost ? PostAction.Like : PostAction.UnLike);
+                            it.Add(!hasUserDislikePost ? PostAction.Dislike : PostAction.UnDislike);
                         }
                     });
 
@@ -56,7 +57,7 @@ namespace SocialNetwork.Web.Services
                 Text = post.Text,
                 LikedBy = post.LikedBy.AsReadOnly(),
                 DislikedBy = post.DislikedBy.AsReadOnly(),
-                AllowedActions = allowedActions,
+                AllowedActions_ = allowedActions_,
                 Author = (post.Author.ProfileImageUrl, post.Author.UserName)
             };
         }

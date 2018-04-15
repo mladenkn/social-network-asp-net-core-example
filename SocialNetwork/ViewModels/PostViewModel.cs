@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SocialNetwork.Interface.Models.Entities;
+using SocialNetwork.Web.Constants;
 
 namespace SocialNetwork.Web.ViewModels
 {
@@ -15,6 +16,6 @@ namespace SocialNetwork.Web.ViewModels
 
         public (string ProfileImgUrl, string Username) Author { get; set; }
 
-        public IReadOnlyCollection<string> AllowedActions { get; set; }
+        public IReadOnlyCollection<PostAction> AllowedActions_ { get; set; }
     }
 }
