@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities", "Utilities\Util
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.UnitTests", "SocialNetwork.UnitTests\SocialNetwork.UnitTests.csproj", "{5AE6BAC7-633F-4B22-8E9C-809778224481}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.Interface", "SocialNetwork.Interfaces\SocialNetwork.Interface.csproj", "{A46DAF61-78CB-4098-8EB8-1A4427FDACF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.Interface", "SocialNetwork.Interface\SocialNetwork.Interface.csproj", "{A46DAF61-78CB-4098-8EB8-1A4427FDACF0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.DAL", "SocialNetwork.DAL\SocialNetwork.DAL.csproj", "{7726EACE-4DD8-46D9-BA23-D9233807D4B8}"
 EndProject
@@ -43,6 +43,7 @@ Global
 		{7726EACE-4DD8-46D9-BA23-D9233807D4B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7726EACE-4DD8-46D9-BA23-D9233807D4B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7726EACE-4DD8-46D9-BA23-D9233807D4B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93767AB2-2407-4EDE-961F-4CAF4D749427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{93767AB2-2407-4EDE-961F-4CAF4D749427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{93767AB2-2407-4EDE-961F-4CAF4D749427}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93767AB2-2407-4EDE-961F-4CAF4D749427}.Release|Any CPU.ActiveCfg = Release|Any CPU
