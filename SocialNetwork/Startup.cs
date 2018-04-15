@@ -75,7 +75,7 @@ namespace SocialNetwork.Web
 
             services.AddSingleton<TestDataContainer>();
             services.AddTransient<ViewModelFactory>();
-            services.AddTransient<IHub, Hub>();
+            services.AddTransient<IPostsHub, PostsHub>();
             services.AddTransient<IDatabaseOperations, DatabaseOperations>();
             services.AddTransient<IViewRendererService, ViewRendererService>();
             services.AddTransient<DevelopmentInitializer>();

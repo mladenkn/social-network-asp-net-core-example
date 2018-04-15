@@ -7,6 +7,8 @@ using SocialNetwork.DevelopmentUtilities;
 using SocialNetwork.Interface.DAL;
 using SocialNetwork.Interface.Models.Entities;
 using SocialNetwork.Interface.Services;
+using SocialNetwork.Services;
+using SocialNetwork.Services.SocialNetwork.Services;
 using SocialNetwork.Web.ServiceInterfaces;
 using SocialNetwork.Web.ViewModels;
 using SocialNetwork.Web.Constants;
@@ -20,17 +22,17 @@ namespace SocialNetwork.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IViewRendererService _renderer;
-        private readonly IHub _hub;
+        private readonly IPostsHub _postsHub;
         private readonly IPostsRepository _posts;
         private readonly IDatabaseOperations _dbOps;
         private readonly ViewModelFactory _viewModelFactory;
         private readonly IRepository<User> _users;
 
-        public HomeController(IViewRendererService renderer, IHub hub, IRepository<User> users,
+        public HomeController(IViewRendererService renderer, IPostsHub postsHub, IRepository<User> users,
                               IPostsRepository posts, IDatabaseOperations dbOps, ViewModelFactory viewModelFactory)
         {
             _renderer = renderer;
-            _hub = hub;
+            _postsHub = postsHub;
             _posts = posts;
             _dbOps = dbOps;
             _viewModelFactory = viewModelFactory;
@@ -75,7 +77,7 @@ namespace SocialNetwork.Web.Controllers
             var postVm = _viewModelFactory.CreatePostViewModel(storedPost, author.Id);
             string postHtml = await _renderer.RenderPartialView("_Post", postVm);
             await saveChangesTask;
-            await _hub.Emit(PostsEvents.PostPublished.ToString(), postHtml);
+            await _postsHub.Emit(PostEvent.PostPublished.ToString(), postHtml);
 
             return Ok("");
         }
@@ -188,7 +190,7 @@ namespace SocialNetwork.Web.Controllers
             var postVm = _viewModelFactory.CreatePostViewModel(post, currentUser.Id);
             string postHtml = await _renderer.RenderPartialView("_Post", postVm);
             await saveChangesTask;
-            await _hub.Emit(PostsEvents.PostChanged.ToString(), postHtml);
+            await _postsHub.Emit(PostEvent.PostChanged.ToString(), postHtml);
 
             return Ok("");
         }
@@ -205,7 +207,7 @@ namespace SocialNetwork.Web.Controllers
                 return Forbid();
 
             await _dbOps.SaveChangesAsync();
-            await _hub.Emit(PostsEvents.PostDeleted.ToString(), postId);
+            await _postsHub.Emit(PostEvent.PostDeleted.ToString(), postId);
 
             return Ok("");
         }

@@ -10,9 +10,4 @@
         public const string UnLike = nameof(UnLike);
         public const string UnDislike = nameof(UnDislike);
     }
-
-    public enum PostsEvents
-    {
-        PostPublished, PostChanged, PostDeleted
-    }
 }

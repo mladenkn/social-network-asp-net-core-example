@@ -4,11 +4,11 @@ using SocialNetwork.Interface.Services;
 
 namespace SocialNetwork.Services
 {
-    public class Hub : IHub
+    public class PostsHub : IPostsHub
     {
         private readonly IHubContext<Microsoft.AspNetCore.SignalR.Hub> _wrapee;
 
-        public Hub(IHubContext<Microsoft.AspNetCore.SignalR.Hub> wrapee)
+        public PostsHub(IHubContext<Microsoft.AspNetCore.SignalR.Hub> wrapee)
         {
             _wrapee = wrapee;
         }

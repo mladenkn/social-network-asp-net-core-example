@@ -1,4 +1,6 @@
-﻿@using SocialNetwork.Web.Constants
+﻿@using SocialNetwork.Services
+@using SocialNetwork.Services.SocialNetwork.Services
+@using SocialNetwork.Web.Constants
 @model SocialNetwork.Web.ViewModels.HomeViewModel
 
 <div class="col-md-offset-2 col-md-7">
@@ -39,21 +41,21 @@
         var connection = new signalR.HubConnection('/posts');
         var postsCount = $('.post').length
         
-        connection.on('@PostsEvents.PostPublished.ToString()', function (postHtml){
+        connection.on('@PostEvent.PostPublished.ToString()', function (postHtml){
             var id = $(postHtml).attr('id')
             $('#posts-list').prepend(postHtml)
             setHandlersForPost($('#' + id))
             postsCount++;
         })
 
-        connection.on('@PostsEvents.PostChanged.ToString()', function (newPostHtml){
+        connection.on('@PostEvent.PostChanged.ToString()', function (newPostHtml){
             var postId = $(newPostHtml).attr('id')
             var oldPostHtml = $('#' + postId)
             oldPostHtml.replaceWith(newPostHtml)
             setHandlersForPost($('#' + postId))
         })
 
-        connection.on('@PostsEvents.PostDeleted.ToString()', function (postId){
+        connection.on('@PostEvent.PostDeleted.ToString()', function (postId){
             var postHtml = $('#posts-list ' + ' #post-' + postId)
             postHtml.remove()
             postsCount--;

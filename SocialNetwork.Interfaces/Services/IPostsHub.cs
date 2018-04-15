@@ -2,7 +2,7 @@
 
 namespace SocialNetwork.Interface.Services
 {
-    public interface IHub
+    public interface IPostsHub
     {
         Task Emit(string name, object data);
     }
