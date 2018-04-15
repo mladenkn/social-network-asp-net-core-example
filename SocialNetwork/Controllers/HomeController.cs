@@ -8,6 +8,7 @@ using SocialNetwork.Interface.Constants;
 using SocialNetwork.Interface.DAL;
 using SocialNetwork.Interface.Models.Entities;
 using SocialNetwork.Interface.Services;
+using SocialNetwork.Web.Constants;
 using SocialNetwork.Web.ServiceInterfaces;
 using SocialNetwork.Web.ViewModels;
 using SocialNetwork.Web.Models;
@@ -108,6 +109,7 @@ namespace SocialNetwork.Web.Controllers
                 return BadRequest();
 
             var currentUser = await GetCurrentUser();
+
             Post post = await _posts.GetOne(
                 it => it.Id == model.Id, 
                 nameof(Post.Author), nameof(Post.LikedBy), nameof(Post.DislikedBy)
@@ -124,62 +126,62 @@ namespace SocialNetwork.Web.Controllers
                     return Forbid();
             }
 
-            if (model.Heading != null)
+            switch (model.RateAction)
             {
-                if (post.AuthorId == currentUser.Id)
-                    post.Heading = model.Heading;
-                else
-                    return Forbid();
-            }
+                case PostAction.Like:
 
-            if (model.Like)
-            {
-                if (post.AuthorId != currentUser.Id  &&  !hasCurrentUserLikedPost)
-                {
-                    if (hasCurrentUserDislikedPost)
+                    if (post.AuthorId != currentUser.Id  &&  !hasCurrentUserLikedPost)
                     {
-                        post.DislikedBy.RemoveIf(it => it.Id == currentUser.Id);
-                        _posts.Update(post);
-                        await _dbOps.SaveChangesAsync();
+                        if (hasCurrentUserDislikedPost)
+                        {
+                            post.DislikedBy.RemoveIf(it => it.Id == currentUser.Id);
+                            _posts.Update(post);
+                            await _dbOps.SaveChangesAsync();
+                        }
+
+                        post.LikedBy.Add(currentUser);
                     }
+                    else
+                        return Forbid();
 
-                    post.LikedBy.Add(currentUser);
-                }
-                else
-                    return Forbid();
-            }
-            
-            if (model.Dislike)
-            {
-                if (post.AuthorId != currentUser.Id  &&  !hasCurrentUserDislikedPost)
-                {
-                    if (hasCurrentUserLikedPost)
+                    break;
+
+
+                case PostAction.Dislike:
+
+                    if (post.AuthorId != currentUser.Id  &&  !hasCurrentUserDislikedPost)
                     {
+                        if (hasCurrentUserLikedPost)
+                        {
+                            post.LikedBy.RemoveIf(it => it.Id == currentUser.Id);
+                            _posts.Update(post);
+                            await _dbOps.SaveChangesAsync();
+                        }
+
+                        post.DislikedBy.Add(currentUser);
+                    }
+                    else
+                        return Forbid();
+
+                    break;
+
+
+                case PostAction.UnLike:
+
+                    if (post.AuthorId != currentUser.Id && hasCurrentUserLikedPost)
                         post.LikedBy.RemoveIf(it => it.Id == currentUser.Id);
-                        _posts.Update(post);
-                        await _dbOps.SaveChangesAsync();
-                    }
+                    else
+                        return Forbid();
+                    break;
 
-                    post.DislikedBy.Add(currentUser);
-                }
-                else
-                    return Forbid();
-            }
 
-            if (model.UnLike)
-            {
-                if (post.AuthorId != currentUser.Id && hasCurrentUserLikedPost)
-                    post.LikedBy.RemoveIf(it => it.Id == currentUser.Id);
-                else
-                    return Forbid();
-            }
+                case PostAction.UnDislike:
 
-            if (model.UnDislike)
-            {
-                if (post.AuthorId != currentUser.Id && hasCurrentUserDislikedPost)
-                    post.DislikedBy.RemoveIf(it => it.Id == currentUser.Id);
-                else
-                    return Forbid();
+                    if (post.AuthorId != currentUser.Id && hasCurrentUserDislikedPost)
+                        post.DislikedBy.RemoveIf(it => it.Id == currentUser.Id);
+                    else
+                        return Forbid();
+                    break;
             }
 
             _posts.Update(post);

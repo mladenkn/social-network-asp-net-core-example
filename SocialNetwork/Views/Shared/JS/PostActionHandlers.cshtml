@@ -1,4 +1,5 @@
-﻿<script>
+﻿@using SocialNetwork.Web.Constants
+<script>
     
     function postActionHandlers(ajaxCalls, setPostViewIntoEditingState) {
         return {
@@ -18,7 +19,8 @@
                             return;
                         ajaxCalls.updatePost({
                             id: postId,
-                            text: newInput
+                            text: newInput,
+                            rateActionId: -100
                         })
                     })
             },
@@ -30,28 +32,28 @@
             onLike: function(postId) {
                 ajaxCalls.updatePost({
                     id: postId,
-                    like: true
+                    rateActionId: @((int) PostAction.Like)
                 })
             },
 
             onDislike: function (postId) {
                 ajaxCalls.updatePost({
                     id: postId,
-                    dislike: true
+                    rateActionId: @((int) PostAction.Dislike)
                 })
             },
 
             onUnLike: function (postId) {
                 ajaxCalls.updatePost({
                     id: postId,
-                    unLike: true
+                    rateActionId: @((int) PostAction.UnLike)
                 })
             },
 
             onUnDislike: function (postId) {
                 ajaxCalls.updatePost({
                     id: postId,
-                    unDislike: true
+                    rateActionId: @((int) PostAction.UnDislike)
                 })
             }
         }

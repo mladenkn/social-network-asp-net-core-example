@@ -1,4 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using SocialNetwork.Web.Constants;
+using Utilities;
 
 namespace SocialNetwork.Web.Models
 {
@@ -9,14 +13,8 @@ namespace SocialNetwork.Web.Models
 
         public string Text { get; set; }
 
-        public string Heading { get; set; }
+        public int RateActionId { get; set; }
 
-        public bool Like { get; set; } = false;
-
-        public bool Dislike { get; set; } = false;
-
-        public bool UnLike { get; set; } = false;
-
-        public bool UnDislike { get; set; } = false;
+        public PostAction RateAction => (PostAction) RateActionId;
     }
 }
