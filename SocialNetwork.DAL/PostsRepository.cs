@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SocialNetwork.Interface.DAL;
 using SocialNetwork.Interface.Models.Entities;
-using Utilities;
 
 namespace SocialNetwork.DAL
 {

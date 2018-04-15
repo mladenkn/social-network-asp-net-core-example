@@ -2,7 +2,6 @@
 using Bogus;
 using SocialNetwork.Interface.Models.Entities;
 using Utilities;
-using Utils = Utilities.Utils;
 
 namespace SocialNetwork.DevelopmentUtilities
 {

@@ -7,9 +7,9 @@ namespace SocialNetwork.Services
 {
     public class PostsHub : IPostsHub
     {
-        private readonly IHubContext<Microsoft.AspNetCore.SignalR.Hub> _wrapee;
+        private readonly IHubContext<Hub> _wrapee;
 
-        public PostsHub(IHubContext<Microsoft.AspNetCore.SignalR.Hub> wrapee)
+        public PostsHub(IHubContext<Hub> wrapee)
         {
             _wrapee = wrapee;
         }
