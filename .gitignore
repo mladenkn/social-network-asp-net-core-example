@@ -20,3 +20,5 @@ SocialNetwork.Services/bin/
 SocialNetwork/Properties/
 SocialNetwork.Interface/obj/
 SocialNetwork.Interface/bin/
+SocialNetwork.Web/bin/
+SocialNetwork.Web/obj/
