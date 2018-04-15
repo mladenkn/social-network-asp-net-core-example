@@ -6,7 +6,7 @@ using Utilities;
 
 namespace SocialNetwork.Web.Models
 {
-    public class UpdatePostModel
+    public class UpdatePostModel : IValidatableObject
     {
         [Required]
         public long? Id { get; set; }
@@ -16,5 +16,13 @@ namespace SocialNetwork.Web.Models
         public int RateActionId { get; set; }
 
         public PostAction RateAction => (PostAction) RateActionId;
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if(!RateAction.EqualsAny(PostAction.None, PostAction.Like, PostAction.Dislike, PostAction.UnLike,
+                PostAction.UnDislike))
+                yield return new ValidationResult("Unallowed action type", 
+                                                   new []{nameof(RateActionId), nameof(RateAction)});
+        }
     }
 }
