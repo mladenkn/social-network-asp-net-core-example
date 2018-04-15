@@ -42,11 +42,17 @@
             },
 
             onUnLike: function (postId) {
-
+                ajaxCalls.updatePost({
+                    id: postId,
+                    unLike: true
+                })
             },
 
             onUnDislike: function (postId) {
-
+                ajaxCalls.updatePost({
+                    id: postId,
+                    unDislike: true
+                })
             }
         }
     }

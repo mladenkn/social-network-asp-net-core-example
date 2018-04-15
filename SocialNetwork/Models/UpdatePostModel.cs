@@ -14,5 +14,9 @@ namespace SocialNetwork.Web.Models
         public bool Like { get; set; } = false;
 
         public bool Dislike { get; set; } = false;
+
+        public bool UnLike { get; set; } = false;
+
+        public bool UnDislike { get; set; } = false;
     }
 }

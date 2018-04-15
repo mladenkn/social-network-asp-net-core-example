@@ -75,7 +75,7 @@ namespace SocialNetwork.Web.Controllers
             var postVm = _viewModelFactory.CreatePostViewModel(storedPost, author.Id);
             string postHtml = await _renderer.RenderPartialView("_Post", postVm);
             await saveChangesTask;
-            await _hub.Emit(PostsEvents.PostPublished, postHtml);
+            await _hub.Emit(PostsEvents.PostPublished.ToString(), postHtml);
 
             return Ok("");
         }
@@ -166,13 +166,29 @@ namespace SocialNetwork.Web.Controllers
                     return Forbid();
             }
 
+            if (model.UnLike)
+            {
+                if (post.AuthorId != currentUser.Id && hasCurrentUserLikedPost)
+                    post.LikedBy.RemoveIf(it => it.Id == currentUser.Id);
+                else
+                    return Forbid();
+            }
+
+            if (model.UnDislike)
+            {
+                if (post.AuthorId != currentUser.Id && hasCurrentUserDislikedPost)
+                    post.DislikedBy.RemoveIf(it => it.Id == currentUser.Id);
+                else
+                    return Forbid();
+            }
+
             _posts.Update(post);
     
             Task saveChangesTask = _dbOps.SaveChangesAsync();
             var postVm = _viewModelFactory.CreatePostViewModel(post, currentUser.Id);
             string postHtml = await _renderer.RenderPartialView("_Post", postVm);
             await saveChangesTask;
-            await _hub.Emit(PostsEvents.PostChanged, postHtml);
+            await _hub.Emit(PostsEvents.PostChanged.ToString(), postHtml);
 
             return Ok("");
         }
@@ -189,7 +205,7 @@ namespace SocialNetwork.Web.Controllers
                 return Forbid();
 
             await _dbOps.SaveChangesAsync();
-            await _hub.Emit(PostsEvents.PostDeleted, postId);
+            await _hub.Emit(PostsEvents.PostDeleted.ToString(), postId);
 
             return Ok("");
         }

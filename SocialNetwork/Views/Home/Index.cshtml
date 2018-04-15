@@ -39,24 +39,24 @@
         var connection = new signalR.HubConnection('/posts');
         var postsCount = $('.post').length
         
-        connection.on('@PostsEvents.PostPublished', function (postHtml){
+        connection.on('@PostsEvents.PostPublished.ToString()', function (postHtml){
             var id = $(postHtml).attr('id')
             $('#posts-list').prepend(postHtml)
             setHandlersForPost($('#' + id))
             postsCount++;
         })
 
-        connection.on('@PostsEvents.PostDeleted', function (postId){
-            var postHtml = $('#posts-list ' + ' #post-' + postId)
-            postHtml.remove()
-            postsCount--;
-        })
-
-        connection.on('@PostsEvents.PostChanged', function (newPostHtml){
+        connection.on('@PostsEvents.PostChanged.ToString()', function (newPostHtml){
             var postId = $(newPostHtml).attr('id')
             var oldPostHtml = $('#' + postId)
             oldPostHtml.replaceWith(newPostHtml)
             setHandlersForPost($('#' + postId))
+        })
+
+        connection.on('@PostsEvents.PostDeleted.ToString()', function (postId){
+            var postHtml = $('#posts-list ' + ' #post-' + postId)
+            postHtml.remove()
+            postsCount--;
         })
 
         connection.start()
@@ -137,15 +137,25 @@
             $post.find('.control-btn-like').click(function (e) {
                 var $postRoot = $(e.currentTarget).parents().eq(3)
                 var postId = $postRoot.attr('id').replace('post-', '')
-                console.log("oćeš lajkat" + postId)
                 postActionHandlers.onLike(postId)
             })
 
             $post.find('.control-btn-dislike').click(function (e) {
                 var $postRoot = $(e.currentTarget).parents().eq(3)
                 var postId = $postRoot.attr('id').replace('post-', '')
-                console.log("oćeš dislajkat" + postId)
                 postActionHandlers.onDislike(postId)
+            })
+
+            $post.find('.control-btn-unlike').click(function (e) {
+                var $postRoot = $(e.currentTarget).parents().eq(3)
+                var postId = $postRoot.attr('id').replace('post-', '')
+                postActionHandlers.onUnLike(postId)
+            })
+
+            $post.find('.control-btn-undislike').click(function (e) {
+                var $postRoot = $(e.currentTarget).parents().eq(3)
+                var postId = $postRoot.attr('id').replace('post-', '')
+                postActionHandlers.onUnDislike(postId)
             })
         }
 
