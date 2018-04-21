@@ -6,8 +6,7 @@ Besides just ASP.NET Core, I have also used Entity Framework Core 2, Identity, a
 Solution is split into many projects, as in Clean/Onion architecture.
 
 Project is using some practices from functional programming such as pure methods and method chaining.
-To accomplish better method chaining I have used some of my generic extension methods like Let and Also, which enables me to chain
-almost any method calls.
+To accomplish better method chaining I have used some of my generic extension methods like Let and Also (like in Kotlin), which enables me to chain almost any method calls.
 
 Application is using the in memory database, so it should be easier for you to check it out.
 
