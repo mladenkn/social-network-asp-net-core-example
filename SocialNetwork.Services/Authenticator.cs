@@ -6,7 +6,6 @@ using SocialNetwork.Interface.Models;
 using SocialNetwork.Interface.Models.Entities;
 using SocialNetwork.Interface.Services;
 using Utilities;
-using SignInResult = SocialNetwork.Interface.Models.SignInResult;
 
 namespace SocialNetwork.Services
 {
@@ -21,29 +20,29 @@ namespace SocialNetwork.Services
             _signInManager = signInManager;
         }
 
-        public Task<RegistrationResult> Register(User user, string password)
+        public Task<Result> Register(User user, string password)
         {
             return _manager
                 .CreateAsync(user, password)
                 .Map(it =>
                 {
                     if (it.Succeeded)
-                        return (RegistrationResult) new RegistrationSuccess();
+                        return (Result) new Success();
                     else
                     {
                         if (it.Errors.Any(e => e.Code == "DuplicateUserName"))
-                            return new RegistrationFailure(RegistrationError.DuplicateUserName);
+                            return new Failure<RegistrationError>(RegistrationError.DuplicateUserName);
                         else
-                            return new RegistrationFailure();
+                            return new Failure<RegistrationError>();
                     }
                 });
         }
 
-        public Task<SignInResult> SignIn(string username, string password, bool isPersistent = true)
+        public Task<Result> SignIn(string username, string password, bool isPersistent = true)
         {
             return _signInManager
                 .PasswordSignInAsync(username, password, isPersistent: isPersistent, lockoutOnFailure: false)
-                .Map(it => it.Succeeded ? (SignInResult) new SignInSuccess() : new SignInFailure());
+                .Map(it => it.Succeeded ? (Result) new Success() : new Failure<RegistrationError>());
         }
 
         public Task SignOut() => _signInManager.SignOutAsync();

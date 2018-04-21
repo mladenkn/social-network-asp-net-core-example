@@ -12,7 +12,6 @@ using SocialNetwork.Interface.Services;
 using SocialNetwork.Web.Services;
 using SocialNetwork.Web.ViewModels;
 using Utilities;
-using SignInResult = SocialNetwork.Interface.Models.SignInResult;
 
 namespace SocialNetwork.Web.Controllers
 {
@@ -50,15 +49,15 @@ namespace SocialNetwork.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = Generator.GenerateUser(userName: model.UserName, email: "someone@mailservice.com");
-                RegistrationResult result = await _authenticator.Register(user, model.Password);
+                Result result = await _authenticator.Register(user, model.Password);
 
                 switch (result)
                 {
-                    case RegistrationSuccess _:
+                    case Success _:
                         await _authenticator.SignIn(user.UserName, model.Password, isPersistent: false);
                         return RedirectToAction(nameof(HomeController.Index), "Home");
 
-                    case RegistrationFailure r:
+                    case Failure<RegistrationError> r:
                         ModelState.AddModelError("", "Invalid registration attempt");
                         if (r.Errors.Contains(RegistrationError.DuplicateUserName))
                             ModelState.AddModelError(nameof(RegisterFormViewModel.UserName), "Provided username allready exists");
@@ -66,8 +65,8 @@ namespace SocialNetwork.Web.Controllers
                 }
             }
 
-            return model
-                .Let(_viewModelFactory.CreateRegisterViewModel)
+            return _viewModelFactory
+                .CreateRegisterViewModel(model)
                 .Let(View);
         }
 
@@ -80,15 +79,15 @@ namespace SocialNetwork.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                SignInResult result = await _authenticator.SignIn(model.UserName, model.Password, 
+                Result result = await _authenticator.SignIn(model.UserName, model.Password, 
                     isPersistent: model.RememberMe);
 
                 switch (result)
                 {
-                    case SignInSuccess _:
+                    case Success _:
                         return RedirectToAction(nameof(HomeController.Index), "Home");
 
-                    case SignInFailure _:
+                    case Failure<RegistrationError> _:
                         ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                         break;
                 }
