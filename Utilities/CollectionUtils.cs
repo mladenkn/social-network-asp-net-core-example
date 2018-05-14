@@ -45,7 +45,7 @@ namespace Utilities
                 .Next(col.Count)
                 .Let(i => col[i]);
 
-        // Gets thr next random element that satisfyies the condition
+        // Gets the next random element that satisfyies the condition
         public static T RandomElement<T>(this IList<T> col, Func<T, bool> condition)
         {
             if(!col.Any(condition))
@@ -59,7 +59,7 @@ namespace Utilities
             }
         }
 
-        // Gets thr next random element that satisfyies the condition
+        // Gets the next random element that satisfyies the condition
         public static T RandomElement<T>(this IReadOnlyList<T> col, Func<T, bool> condition)
         {
             if (!col.Any(condition))
