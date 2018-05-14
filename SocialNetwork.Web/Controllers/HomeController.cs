@@ -50,17 +50,7 @@ namespace SocialNetwork.Web.Controllers
                 propsToInclude: new []{ nameof(Post.Author), nameof(Post.LikedBy), nameof(Post.DislikedBy) }
             );
 
-            var postsViewModels = posts
-                .Select(it => _viewModelFactory.CreatePostViewModel(it, currentUser.Id))
-                .ToList().AsReadOnly();
-
-            var vm = new HomeViewModel
-            {
-                Posts = postsViewModels,
-                Title = "Social Network",
-                ActivePage = Page.Home,
-                Username = currentUser.UserName
-            };
+            var vm = _viewModelFactory.CreateHomeViewModel(posts.AsReadOnly(), currentUser);
 
             return View(vm);
         }

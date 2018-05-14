@@ -26,6 +26,21 @@ namespace SocialNetwork.Web.Services
                     Title = "Login"
                 };
 
+        public HomeViewModel CreateHomeViewModel(IReadOnlyCollection<Post> posts, User currentUser)
+        {
+            var postVms = posts
+                .Select(it => CreatePostViewModel(it, currentUser.Id))
+                .ToList();
+
+            return new HomeViewModel
+            {
+                Posts = postVms,
+                Title = "Social Network",
+                ActivePage = Page.Home,
+                Username = currentUser.UserName
+            };
+        }
+
         public PostViewModel CreatePostViewModel(Post post, string currentUserId)
         {
             bool isCurrentUserAuthor = post.AuthorId == currentUserId;
