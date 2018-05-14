@@ -3,7 +3,7 @@
 This is a social network application built with ASP.NET Core.
 
 Besides just ASP.NET Core, I have also used Entity Framework Core 2, Identity, and plain JavaScript. 
-Solution is split into many projects, as in Clean/Onion architecture.
+The architecture is somewhat similar to Clean/Onion because the project is split into many small projects.
 
 Project is using some practices from functional programming such as pure methods and method chaining.
 To accomplish better method chaining I have used some of my generic extension methods like Let and Also (like in Kotlin), which enables me to chain almost any method calls.
