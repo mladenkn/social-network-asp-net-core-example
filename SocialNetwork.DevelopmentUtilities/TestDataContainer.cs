@@ -22,7 +22,7 @@ namespace SocialNetwork.DevelopmentUtilities
                     .Select(it => new KeyValuePair<string, User>(it.UserName, it))
                     .Let(it => new Dictionary<string, User>(it));
 
-            UsersList = Users.Values.ToList();
+            UsersList = Users.Values.ToArray();
 
             DateTime lastKnowDate = new DateTime(2018, 1, 18);
 

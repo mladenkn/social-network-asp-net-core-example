@@ -30,7 +30,7 @@ namespace SocialNetwork.Web.Services
         {
             var postVms = posts
                 .Select(it => CreatePostViewModel(it, currentUser.Id))
-                .ToList();
+                .ToArray();
 
             return new HomeViewModel
             {
