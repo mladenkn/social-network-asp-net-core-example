@@ -8,6 +8,7 @@ Frameworks/libraries used:
 * MediatR
 * AutoMapper
 * FluentValidation
+* XUnit and FluentAssertions for tests
 
 Project contains ApplicationKernel libraries which can be reused on other projects which use similar technologies.
 
