@@ -1,14 +1,17 @@
-# social-network
+# Social Network
 
-This is a social network application built with ASP.NET Core.
+This is a web api for social network application built with ASP.NET Core using domain driven design and CQRS patterns/principles.
 
-Besides just ASP.NET Core, I have also used Entity Framework Core 2, Identity, and plain JavaScript. 
-The architecture is somewhat similar to Clean/Onion because the project is split into many small projects.
+Frameworks/libraries used:
+* ASP.NET Core
+* Entity Framework Core
+* MediatR
+* AutoMapper
+* FluentValidation
 
-Project is using some practices from functional programming such as pure methods and method chaining.
-To accomplish better method chaining I have used some of my generic extension methods like Let and Also (like in Kotlin), which enables me to chain almost any method calls.
+Project contains ApplicationKernel libraries which can be reused on other projects which use similar technologies.
 
-Application is using the in memory database, so it should be easier for you to check it out.
-
-And about the functionalities, it is a social network that enables registered users to create, edit, delete, and rate posts.
-Users can edit and delete only their own posts, and like/dislike posts from other users.
+### The Use case pattern
+Every use case / request to the system is either a command or a query, and each is coded in a separate file. It consists of a request model structure, the use case handler/executor (which is called by mediator), and optionally a fluent validator.
+Since all of the domain logic is coded in the use cases, controller actions usually consist of just one line that dispatches the request to the mediator.
+Result of the use case executor is an IOperationResult, which is automatically converted into IActionResult in ApiRequestHandler class, before it's returned to controller.
