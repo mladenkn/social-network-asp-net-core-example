@@ -13,9 +13,8 @@ namespace SocialNetwork.Tests
         public void MasterValidator_should_validate()
         {
             Initialize();
-            var validator = Services.GetService<IMasterRequestValidator>();
+            var validator = Services.GetService<IValidatorProvider>();
             validator.Should().NotBeNull();
-            validator.Validate(new DeletePost.Request()).Should().NotBeNull();
         }
     }
 }

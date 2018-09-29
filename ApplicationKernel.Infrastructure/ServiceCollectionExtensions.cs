@@ -59,7 +59,7 @@ namespace ApplicationKernel.Infrastructure
                     services.AddTransient(typeof(IValidator), pair.ValidatorType);
                     services.AddTransient(pair.InterfaceType, pair.ValidatorType);
                 });
-            services.AddTransient<IMasterRequestValidator, MasterRequestValidator>();
+            services.AddTransient<IValidatorProvider, ValidatorProvider>();
             return services;
         }
     }
