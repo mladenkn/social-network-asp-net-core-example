@@ -1,5 +1,4 @@
 ﻿using ApplicationKernel.Infrastructure;
-using ApplicationKernel.Infrastructure.WebApi;
 using Microsoft.Extensions.DependencyInjection;
 using SocialNetwork.Domain.Posts;
 using SocialNetwork.Domain.UseCases;

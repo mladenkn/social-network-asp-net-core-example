@@ -14,7 +14,6 @@ using SocialNetwork.Domain;
 using SocialNetwork.Domain.UseCases;
 using SocialNetwork.Infrastructure;
 using Swashbuckle.AspNetCore.Swagger;
-using Utilities;
 
 namespace SocialNetwork.WebApi
 {

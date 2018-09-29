@@ -2,7 +2,6 @@
 using SocialNetwork.Tests.Abstract;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
-using SocialNetwork.Domain.UseCases;
 using FluentAssertions;
 
 namespace SocialNetwork.Tests

@@ -1,8 +1,6 @@
 using ApplicationKernel.Infrastructure;
-using ApplicationKernel.Infrastructure.WebApi;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using Xunit;
 
 namespace ApplicationKernel.Tests

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Utilities;
 
 namespace ApplicationKernel.Domain.DataPersistance
 {

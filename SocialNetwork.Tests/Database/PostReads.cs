@@ -4,7 +4,6 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using SocialNetwork.Domain.Posts;
 using SocialNetwork.Domain.Users;
-using SocialNetwork.Domain.PostRatings;
 using Xunit;
 
 namespace SocialNetwork.Tests.Database

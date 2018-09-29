@@ -2,7 +2,6 @@
 using SocialNetwork.Domain.PostRatings;
 using SocialNetwork.Domain.Posts;
 using SocialNetwork.Domain.Users;
-using SocialNetwork.Domain.UseCases;
 
 namespace SocialNetwork.Domain
 {

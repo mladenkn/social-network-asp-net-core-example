@@ -1,7 +1,5 @@
 ﻿using System.Threading.Tasks;
-using ApplicationKernel.Domain;
 using ApplicationKernel.Domain.MediatorSystem;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApplicationKernel.Infrastructure.WebApi

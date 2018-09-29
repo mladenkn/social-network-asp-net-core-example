@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ApplicationKernel.Domain.MediatorSystem;
+﻿using ApplicationKernel.Domain.MediatorSystem;
 using ApplicationKernel.Infrastructure.WebApi;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using Utilities;
 using Xunit;
 
 namespace ApplicationKernel.Tests
