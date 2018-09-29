@@ -42,7 +42,7 @@ namespace SocialNetwork.Domain.UseCases
                     return Responses.Failure("PostRating not found.");
 
                 if (rating.UserId != _tools.CurrentUserId())
-                    return Responses.Failure($"User cannot delete someone else's post");
+                    return Responses.Failure($"User cannot delete someone else's PostRating");
 
                 await _tools.Transaction().Delete(rating).Commit();
                 return Responses.Success();
