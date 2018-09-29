@@ -14,9 +14,11 @@ namespace ApplicationKernel.Infrastructure.WebApi
         {
             if (response.IsSuccess)
             {
-                if (response.GetType().GetProperties().Any(p => p.Name == "Payload"))
+                var payloadProperty = response.GetType().GetProperties().FirstOrDefault(p => p.Name == "Payload");
+
+                if (payloadProperty != null)
                 {
-                    var payload = response.GetType().GetProperty("Payload").GetValue(response);
+                    var payload = payloadProperty.GetValue(response);
                     return new OkObjectResult(payload);
                 }
                 else
