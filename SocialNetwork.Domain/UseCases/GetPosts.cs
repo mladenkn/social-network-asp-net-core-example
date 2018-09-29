@@ -67,7 +67,7 @@ namespace SocialNetwork.Domain.UseCases
                     return mappedPost;
                 }).ToList();
 
-                var pagedList = PagedList.Create(postsWithActions, args.Paging.PageNumber, postsCount);
+                var pagedList = PagedList.Of(postsWithActions, postsCount);
 
                 return Responses.Success(pagedList);
             }
