@@ -3,6 +3,7 @@ using ApplicationKernel.Domain;
 using ApplicationKernel.Domain.DataPersistance;
 using ApplicationKernel.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
 using SocialNetwork.Domain.Posts;
@@ -37,7 +38,7 @@ namespace SocialNetwork.Infrastructure
             modelBuilder.Entity<User>()
                 .MakePropertyRequired(it => it.UserName)
                 .MakePropertyRequired(it => it.ProfileImageUrl);
-
+            
             modelBuilder.Entity<PostRating>()
                 .MakePropertyRequired(it => it.PostId)
                 .MakePropertyRequired(it => it.UserId)
@@ -48,15 +49,26 @@ namespace SocialNetwork.Infrastructure
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            bool ConsoleLoggerFilter(string category, LogLevel level)
+            optionsBuilder
+                .ConfigureWarnings(it => it.Throw(RelationalEventId.QueryClientEvaluationWarning))
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                .UseLoggerFactory(Logger).EnableSensitiveDataLogging();
+        }
+
+        private static LoggerFactory Logger
+        {
+            get
             {
-                return level.EqualsAny(LogLevel.Information, LogLevel.Warning);
+                bool ConsoleLoggerFilter(string category, LogLevel level)
+                {
+                    return level.EqualsAny(LogLevel.Information, LogLevel.Warning);
+                }
+
+                var consoleLogger = new ConsoleLoggerProvider(ConsoleLoggerFilter, true);
+                var loggerFactory = new LoggerFactory(new[] { consoleLogger });
+
+                return loggerFactory;
             }
-
-            var consoleLogger = new ConsoleLoggerProvider(ConsoleLoggerFilter, true);
-            var loggerFactory = new LoggerFactory(new []{consoleLogger});
-
-            optionsBuilder.UseLoggerFactory(loggerFactory).EnableSensitiveDataLogging();
         }
     }
 }

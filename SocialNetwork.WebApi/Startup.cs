@@ -54,13 +54,8 @@ namespace SocialNetwork.WebApi
             }
             else
             {
-                //var connection = Configuration.GetSection("Database").GetValue<string>("ConnectionString");
                 var connection = Configuration.GetValue<string>("Database:ConnectionString");
-                services.AddDatabase<SocialNetworkDbContext>(options => 
-                    options
-                        .UseSqlServer(connection)
-                        .ConfigureWarnings(it => it.Throw(RelationalEventId.QueryClientEvaluationWarning))
-                        .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+                services.AddDatabase<SocialNetworkDbContext>(options => options.UseSqlServer(connection));
             }
 
             _additionalConfiguration?.AddMoreServices?.Invoke(services);    
