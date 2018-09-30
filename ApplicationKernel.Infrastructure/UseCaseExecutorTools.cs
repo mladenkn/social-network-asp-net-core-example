@@ -15,7 +15,7 @@ namespace ApplicationKernel.Infrastructure
             _db = db;
         }
 
-        public IQueryable<T> QueryWithDeletedIncluded<T>()
+        public IQueryable<T> Query2<T>()
             where T : class
         {
             return _db.Set<T>();
