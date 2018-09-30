@@ -35,7 +35,7 @@ namespace SocialNetwork.Tests.Abstract
                 foreach (var (type, instance) in _mockedServices)
                     services.AddSingleton(type, instance);
             };
-            
+
             startupConfig.AddDatabase = services =>
                 services.AddDatabase<SocialNetworkDbContext>(
                     options => options.UseInMemoryDatabase("social-network-test-db"), ServiceLifetime.Singleton);

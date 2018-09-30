@@ -6,7 +6,7 @@ using SocialNetwork.Domain.Users;
 
 namespace SocialNetwork.Domain.Posts
 { 
-    public class Post : IEntity
+    public class Post : IEntity, IDeletable
     {
         public long Id { get; set; }
         public string AuthorId { get; set; }
@@ -15,5 +15,7 @@ namespace SocialNetwork.Domain.Posts
 
         public User Author { get; set; }
         public IReadOnlyCollection<PostRating> Ratings { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

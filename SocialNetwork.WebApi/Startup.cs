@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -53,8 +54,13 @@ namespace SocialNetwork.WebApi
             }
             else
             {
-                var connection = Configuration.GetSection("Database").GetValue<string>("ConnectionString");
-                services.AddDatabase<SocialNetworkDbContext>(options => options.UseSqlServer(connection));
+                //var connection = Configuration.GetSection("Database").GetValue<string>("ConnectionString");
+                var connection = Configuration.GetValue<string>("Database:ConnectionString");
+                services.AddDatabase<SocialNetworkDbContext>(options => 
+                    options
+                        .UseSqlServer(connection)
+                        .ConfigureWarnings(it => it.Throw(RelationalEventId.QueryClientEvaluationWarning))
+                        .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
             }
 
             _additionalConfiguration?.AddMoreServices?.Invoke(services);    

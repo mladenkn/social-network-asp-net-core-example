@@ -8,6 +8,7 @@ namespace ApplicationKernel.Domain.DataPersistance
         IDatabaseTransaction Save(IEntity entity);
         IDatabaseTransaction Update(IEntity entity);
         IDatabaseTransaction Delete(IEntity entity);
+        IDatabaseTransaction Delete<T>(T entity) where T : IDeletable, IEntity;
         Task Commit();
     }
 

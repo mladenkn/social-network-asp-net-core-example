@@ -1,4 +1,6 @@
-﻿using ApplicationKernel.Domain.DataPersistance;
+﻿using System.Linq;
+using ApplicationKernel.Domain;
+using ApplicationKernel.Domain.DataPersistance;
 using ApplicationKernel.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -15,7 +17,7 @@ namespace SocialNetwork.Infrastructure
         public DbSet<User> Users { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostRating> PostRatings { get; set; }
-
+        
         public SocialNetworkDbContext(DbContextOptions<SocialNetworkDbContext> options)
             : base(options)
         {

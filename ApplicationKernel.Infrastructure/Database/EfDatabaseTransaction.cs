@@ -32,6 +32,13 @@ namespace ApplicationKernel.Infrastructure.Database
             return this;
         }
 
+        public IDatabaseTransaction Delete<T>(T entity) where T : IDeletable, IEntity
+        {
+            entity.IsDeleted = true;
+            Update(entity);
+            return this;
+        }
+
         public async Task Commit() => await _dbContext.SaveChangesAsync();
     }
 }

@@ -5,7 +5,8 @@ namespace ApplicationKernel.Domain
 {
     public interface IUseCaseExecutorTools
     {
-        IQueryable<T> Query<T>() where T : class;
+        IQueryable<T> QueryWithDeletedIncluded<T>() where T : class;
+        IQueryable<T> Query<T>() where T : class, IDeletable;
         IDatabaseTransaction Transaction();
     }
 }

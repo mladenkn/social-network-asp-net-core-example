@@ -4,7 +4,7 @@ using SocialNetwork.Domain.Users;
 
 namespace SocialNetwork.Domain.PostRatings
 {
-    public class PostRating : IEntity
+    public class PostRating : IEntity, IDeletable
     {
         public long Id { get; set; }
         public long PostId { get; set; }
@@ -13,6 +13,8 @@ namespace SocialNetwork.Domain.PostRatings
 
         public User User { get; set; }
         public Post Post { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 
     public enum PostRatingType { Like = 0, Dislike = 1 }
