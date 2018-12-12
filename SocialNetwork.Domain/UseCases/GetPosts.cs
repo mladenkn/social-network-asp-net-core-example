@@ -43,7 +43,7 @@ namespace SocialNetwork.Domain.UseCases
 
             public async Task<Response> Handle(Request args, CancellationToken cancellationToken)
             {
-                var query = _tools.Query<Post>();
+                var query = _tools.Query.Of<Post>();
 
                 if (args.AuthorId != null)
                     query = query.Where(p => p.AuthorId == args.AuthorId);

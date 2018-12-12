@@ -3,53 +3,51 @@ using System.Threading.Tasks;
 
 namespace ApplicationKernel.Domain.DataPersistance
 {
-    public interface IDatabaseTransaction
+    public interface IUnitOfWork
     {
-        IDatabaseTransaction Save(IEntity entity);
-        IDatabaseTransaction Update(IEntity entity);
-        IDatabaseTransaction Delete(IEntity entity);
-        IDatabaseTransaction Delete<T>(T entity) where T : IDeletable, IEntity;
-        Task Commit();
+        void Add(IEntity entity);
+        void Update(IEntity entity);
+        void Delete(IEntity entity);
+        void Delete<T>(T entity) where T : IDeletable, IEntity;
+        Task PersistChanges();
     }
 
-    public delegate IDatabaseTransaction RunDatabaseTransaction();
+    public delegate IUnitOfWork RunDatabaseTransaction();
 
-    public static class DatabaseTransaction
+    public static class UnitOfWork
     {
-        public static IDatabaseTransaction SaveRange(this IDatabaseTransaction transaction, IEnumerable<IEntity> entities)
+        public static void SaveRange(this IUnitOfWork unitOfWork, IEnumerable<IEntity> entities)
         {
             foreach (var entity in entities)
-                transaction.Save(entity);
-            return transaction;
+                unitOfWork.Add(entity);
         }
 
-        public static IDatabaseTransaction UpdateRange(this IDatabaseTransaction transaction, IEnumerable<IEntity> entities)
+        public static void UpdateRange(this IUnitOfWork unitOfWork, IEnumerable<IEntity> entities)
         {
             foreach (var entity in entities)
-                transaction.Update(entity);
-            return transaction;
+                unitOfWork.Update(entity);
         }
 
-        public static IDatabaseTransaction DeleteRange(this IDatabaseTransaction transaction, IEnumerable<IEntity> entities)
+        public static IUnitOfWork DeleteRange(this IUnitOfWork unitOfWork, IEnumerable<IEntity> entities)
         {
             foreach (var entity in entities)
-                transaction.Delete(entity);
-            return transaction;
+                unitOfWork.Delete(entity);
+            return unitOfWork;
         }
 
-        public static IDatabaseTransaction SaveRange(this IDatabaseTransaction transaction, params IEntity[] entities)
+        public static void SaveRange(this IUnitOfWork unitOfWork, params IEntity[] entities)
         {
-            return transaction.SaveRange((IEnumerable<IEntity>) entities);
+            unitOfWork.SaveRange((IEnumerable<IEntity>) entities);
         }
 
-        public static IDatabaseTransaction UpdateRange(this IDatabaseTransaction transaction, params IEntity[] entities)
+        public static void UpdateRange(this IUnitOfWork unitOfWork, params IEntity[] entities)
         {
-            return transaction.UpdateRange((IEnumerable<IEntity>)entities);
+            unitOfWork.UpdateRange((IEnumerable<IEntity>)entities);
         }
 
-        public static IDatabaseTransaction DeleteRange(this IDatabaseTransaction transaction, params IEntity[] entities)
+        public static void DeleteRange(this IUnitOfWork unitOfWork, params IEntity[] entities)
         {
-            return transaction.DeleteRange((IEnumerable<IEntity>)entities);
+            unitOfWork.DeleteRange((IEnumerable<IEntity>)entities);
         }
     }
 }

@@ -20,13 +20,10 @@ namespace Utilities
                 action(o);
         }
 
-        public static IReadOnlyCollection<T> AsReadOnly<T>(this ICollection<T> collection) => new ReadOnlyCollectionWrapper<T>(collection);
-
-        public static IReadOnlyList<T> AsReadOnly<T>(this IList<T> collection) => new ReadOnlyListWrapper<T>(collection);
-
-        public static bool ContainsAll<T>(this IEnumerable<T> enumerable, IEnumerable<T> items)
+        public static bool ContainsOne<T>(this IEnumerable<T> enumerable, Func<T,bool> predicate)
         {
-            return items.All(enumerable.Contains);
+            var count = enumerable.Count(predicate);
+            return count == 1;
         }
 
         public static void RemoveIf<T>(this ICollection<T> collection, Func<T, bool> predicate)
@@ -36,17 +33,6 @@ namespace Utilities
                 if (predicate(item))
                     collection.Remove(item);
             }
-        }
-
-        public static TAcumulator Aggregate<TElement, TAcumulator>(this IEnumerable<TElement> source, TAcumulator acumulator,
-            Action<TAcumulator, TElement> action)
-        {
-            var result = source.Aggregate(acumulator, (accumulator, element) =>
-            {
-                action(acumulator, element);
-                return acumulator;
-            });
-            return result;
         }
     }
 }

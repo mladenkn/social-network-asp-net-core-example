@@ -5,40 +5,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationKernel.Infrastructure.Database
 {
-    public class EfDatabaseTransaction : IDatabaseTransaction
+    public class EfUnitOfWork : IUnitOfWork
     {
         private readonly DbContext _dbContext;
 
-        public EfDatabaseTransaction(DbContext dbContext)
+        public EfUnitOfWork(DbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public IDatabaseTransaction Save(IEntity entity)
-        {
-            _dbContext.Add(entity);
-            return this;
-        }
+        public void Add(IEntity entity) => _dbContext.Add(entity);
 
-        public IDatabaseTransaction Update(IEntity entity)
-        {
-            _dbContext.Update(entity);
-            return this;
-        }
+        public void Update(IEntity entity) => _dbContext.Update(entity);
 
-        public IDatabaseTransaction Delete(IEntity entity)
-        {
-            _dbContext.Remove(entity);
-            return this;
-        }
+        public void Delete(IEntity entity) => _dbContext.Remove(entity);
 
-        public IDatabaseTransaction Delete<T>(T entity) where T : IDeletable, IEntity
+        public void Delete<T>(T entity) where T : IDeletable, IEntity
         {
             entity.IsDeleted = true;
             Update(entity);
-            return this;
         }
 
-        public async Task Commit() => await _dbContext.SaveChangesAsync();
+        public async Task PersistChanges() => await _dbContext.SaveChangesAsync();
     }
 }

@@ -40,7 +40,7 @@ namespace SocialNetwork.Domain.UseCases
             {
                 var userId = _tools.CurrentUserId();
 
-                var postToRate = await _tools.Query<Post>()
+                var postToRate = await _tools.Query.Of<Post>()
                     .Where(p => p.Id == request.PostId)
                     .FirstOrDefaultAsync(cancellationToken);
 
@@ -50,7 +50,7 @@ namespace SocialNetwork.Domain.UseCases
                 if (postToRate.AuthorId == userId)
                     return Responses.Failure("User cant rate his own post");
 
-                var rating = await _tools.Query<PostRating>()
+                var rating = await _tools.Query.Of<PostRating>()
                     .Where(r => r.PostId == request.PostId &&
                                 r.UserId == userId)
                     .FirstOrDefaultAsync(cancellationToken);
@@ -63,7 +63,8 @@ namespace SocialNetwork.Domain.UseCases
                         UserId = userId,
                         Type = request.RatingType
                     };
-                    await _tools.Transaction().Save(newRating).Commit();
+                    _tools.UnitOfWork.Add(newRating);
+                    await _tools.UnitOfWork.PersistChanges();
                     return Responses.Success(newRating);
                 }
                 else
@@ -72,7 +73,8 @@ namespace SocialNetwork.Domain.UseCases
                         return Responses.Failure("Attempt to rate post by the same user with the same rating type");
 
                     rating.Type = request.RatingType;
-                    await _tools.Transaction().Update(rating).Commit();
+                    _tools.UnitOfWork.Update(rating);
+                    await _tools.UnitOfWork.PersistChanges();
 
                     return Responses.Success(rating);
                 }

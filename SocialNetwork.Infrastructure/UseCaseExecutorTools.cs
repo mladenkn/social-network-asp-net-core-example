@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using ApplicationKernel.Domain.DataQueries;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SocialNetwork.Domain;
 using SocialNetwork.Domain.Users;
@@ -12,8 +13,9 @@ namespace SocialNetwork.Infrastructure
         public UseCaseExecutorTools(
             DbContext db,
             GetCurrentUserId getCurrentUserId, 
-            IMapper mapper) 
-            : base(db)
+            IMapper mapper,
+            IQuery query) 
+            : base(db, query)
         {
             Mapper = mapper;
             _getCurrentUserId = getCurrentUserId;

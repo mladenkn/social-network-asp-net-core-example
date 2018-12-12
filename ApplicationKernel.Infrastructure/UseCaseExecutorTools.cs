@@ -1,5 +1,6 @@
 ﻿using ApplicationKernel.Domain;
 using ApplicationKernel.Domain.DataPersistance;
+using ApplicationKernel.Domain.DataQueries;
 using ApplicationKernel.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -8,24 +9,13 @@ namespace ApplicationKernel.Infrastructure
 {
     public class UseCaseExecutorTools : IUseCaseExecutorTools
     {
-        private readonly DbContext _db;
-
-        public UseCaseExecutorTools(DbContext db)
+        public UseCaseExecutorTools(DbContext db, IQuery query)
         {
-            _db = db;
+            Query = query;
+            UnitOfWork = new EfUnitOfWork(db);
         }
 
-        public IQueryable<T> Query2<T>()
-            where T : class
-        {
-            return _db.Set<T>();
-        }
-
-        public IQueryable<T> Query<T>() where T : class, IDeletable
-        {
-            return _db.Set<T>().Where(it => !it.IsDeleted);
-        }
-
-        public IDatabaseTransaction Transaction() => new EfDatabaseTransaction(_db);
+        public IQuery Query { get; }
+        public IUnitOfWork UnitOfWork { get; }
     }
 }

@@ -36,7 +36,7 @@ namespace SocialNetwork.Domain.UseCases
 
             public async Task<Response> Handle(Request command, CancellationToken cancellationToken)
             {
-                var post = await _tools.Query<Post>()
+                var post = await _tools.Query.Of<Post>()
                     .Where(p => p.Id == command.PostId)
                     .FirstOrDefaultAsync(cancellationToken);
 
@@ -48,7 +48,8 @@ namespace SocialNetwork.Domain.UseCases
                 if (post.AuthorId == userId)
                 {
                     post.Text = command.NewText;
-                    await _tools.Transaction().Update(post).Commit();
+                    _tools.UnitOfWork.Update(post);
+                    await _tools.UnitOfWork.PersistChanges();
                     return Responses.Success(post);
                 }
                 else

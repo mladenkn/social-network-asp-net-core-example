@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ApplicationKernel.Domain\ApplicationKernel.Domain.csproj" />
     <ProjectReference Include="..\ApplicationKernel.Infrastructure\ApplicationKernel.Infrastructure.csproj" />
+    <ProjectReference Include="..\SocialNetwork.Domain\SocialNetwork.Domain.csproj" />
   </ItemGroup>
 
 </Project>

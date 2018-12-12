@@ -40,7 +40,8 @@ namespace SocialNetwork.Domain.UseCases
                     CreatedAt = DateTime.Now,
                     Text = command.Text
                 };
-                await _tools.Transaction().Save(post).Commit();
+                _tools.UnitOfWork.Add(post);
+                await _tools.UnitOfWork.PersistChanges();
                 return Responses.Success(post);
             }
         }

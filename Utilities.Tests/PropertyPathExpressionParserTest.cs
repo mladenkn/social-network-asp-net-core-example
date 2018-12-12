@@ -4,7 +4,7 @@ using FluentAssertions;
 using Utilities;
 using Xunit;
 
-namespace ApplicationKernel.Tests
+namespace Utilities.Tests
 {
     public class PropertyPathExpressionParserTest
     {

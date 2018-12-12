@@ -24,8 +24,6 @@ namespace SocialNetwork.Infrastructure
         {
         }
 
-        public IDatabaseTransaction RunTransaction() => new EfDatabaseTransaction(this);
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -51,7 +49,6 @@ namespace SocialNetwork.Infrastructure
         {
             optionsBuilder
                 .ConfigureWarnings(it => it.Throw(RelationalEventId.QueryClientEvaluationWarning))
-                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                 .UseLoggerFactory(Logger).EnableSensitiveDataLogging();
         }
 

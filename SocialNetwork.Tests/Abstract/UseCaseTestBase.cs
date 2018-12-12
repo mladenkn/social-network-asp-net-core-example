@@ -40,7 +40,8 @@ namespace SocialNetwork.Tests.Abstract
         protected async Task SaveToDatabase(params IEntity[] entities)
         {
             var db = Services.GetService<SocialNetworkDbContext>();
-            await db.RunTransaction().SaveRange(entities).Commit();
+            db.AddRange(entities);
+            await db.SaveChangesAsync();
         }
 
         protected Faker<T> Generate<T>()

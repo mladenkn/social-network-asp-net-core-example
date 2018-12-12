@@ -34,7 +34,7 @@ namespace SocialNetwork.Domain.UseCases
 
             public async Task<Response> Handle(Request command, CancellationToken cancellationToken)
             {
-                var rating = await _tools.Query<PostRating>()
+                var rating = await _tools.Query.Of<PostRating>()
                     .Where(r => r.Id == command.PostRatingId)
                     .FirstOrDefaultAsync(cancellationToken);
 
@@ -42,9 +42,10 @@ namespace SocialNetwork.Domain.UseCases
                     return Responses.Failure("PostRating not found.");
 
                 if (rating.UserId != _tools.CurrentUserId())
-                    return Responses.Failure($"User cannot delete someone else's PostRating");
+                    return Responses.Failure("User cannot delete someone else's PostRating");
 
-                await _tools.Transaction().Delete(rating).Commit();
+                _tools.UnitOfWork.Delete(rating);
+                await _tools.UnitOfWork.PersistChanges();
                 return Responses.Success();
             }
         }
