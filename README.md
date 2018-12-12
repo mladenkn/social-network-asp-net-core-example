@@ -1,7 +1,5 @@
 # Social Network
 
-This is a web api for social network application built with ASP.NET Core using domain driven design and CQRS patterns/principles.
-
 Frameworks/libraries used:
 * ASP.NET Core
 * Entity Framework Core
